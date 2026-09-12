@@ -50,8 +50,12 @@ When entering an existing codebase, an AI agent must behave like a senior softwa
 ### 1. Project Discovery Before Execution
 
 > [!IMPORTANT]
-> **Static Local Discovery Only (Zero Unsolicited Remote/SSH Probing):**
-> Discovery is strictly a local inspection of files within the workspace. Do **NOT** run network probes, SSH into remote servers (`ssh ...`), query remote Docker daemons, or execute cloud CLI commands (`kubectl`, `aws`, `gcloud`) to inspect deployment. Understand deployment declaratively by reading configuration files (`Dockerfile`, `compose.yaml`, `.github/workflows/`). Never trigger out-of-sandbox permission confirmation prompts for reconnaissance.
+> **Static Local Discovery Only (Zero Remote SSH / Network / Port Probing):**
+> Discovery is strictly a local inspection of files within the workspace.
+> - **NEVER** SSH into remote servers (`ssh ...`) to inspect containers, processes, or ports.
+> - **NEVER** run network/port probes (`curl`, `wget`, `nc`, `telnet`) against remote hosts or localhost endpoints over SSH tunnels (e.g., `ssh server "curl http://127.0.0.1:..."`).
+> - **Determine ports and containers statically**: Read `docker-compose.yml` (`ports:`, `expose:`), `Dockerfile` (`EXPOSE`), reverse proxy configs (`nginx.conf`), and `.env.example`.
+> - Never trigger out-of-sandbox permission confirmation prompts (`BypassSandbox: true`) for reconnaissance.
 
 Before making any changes, proposing code, or answering domain-specific inquiries, the agent **MUST** methodically inspect the repository in this exact order:
 
@@ -134,6 +138,7 @@ The agent must act as a custodian of the existing codebase:
 
 #### Strict Anti-Patterns (Avoid):
 - 🚫 **Unsolicited Remote/SSH Probing**: NEVER run `ssh`, `scp`, `rsync`, remote `docker`, or remote `kubectl` commands during discovery. Understand deployment statically by reading `docker-compose.yml`, `Dockerfile`, and CI workflows.
+- 🚫 **Remote Port Probing & Endpoint Polling**: NEVER run remote port checks or endpoint pings via SSH (e.g., `ssh ... "curl -s -I http://127.0.0.1:..."`). Determine ports and URLs statically from configs.
 - 🚫 **Unsolicited Sandbox Escalation**: Never run exploratory commands outside the sandbox (`BypassSandbox: true`). Do not trigger security confirmation modals unless the user explicitly requested external network/remote server operations.
 - 🚫 **Unnecessary Rewrites**: Do not replace an entire file or subsystem when a 5-line diff solves the problem.
 - 🚫 **Duplicate Systems**: Do not write a new HTTP client or utility when the repository already has an internal helper for it.
