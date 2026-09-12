@@ -1,8 +1,8 @@
 # agent-project-discovery-skill 🧭
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/badge/release-v1.0.0-emerald.svg)](#)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/your-org/agent-project-discovery-skill/pulls)
+[![Release](https://img.shields.io/badge/release-v1.0.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/tmolavi/agent-project-discovery-skill/pulls)
 [![Supported Agents](https://img.shields.io/badge/Agents-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Antigravity%20%7C%20Copilot-blueviolet.svg)](#supported-ai-agents)
 
 > **"An AI agent should understand before it changes."**
@@ -129,7 +129,7 @@ Check the [`examples/`](examples/) directory to see the discovery protocol in ac
 
 1. Copy [`templates/AGENTS.md`](templates/AGENTS.md) into the root of your project:
    ```bash
-   curl -sSL https://raw.githubusercontent.com/your-org/agent-project-discovery-skill/main/templates/AGENTS.md -o AGENTS.md
+   curl -sSL https://raw.githubusercontent.com/tmolavi/agent-project-discovery-skill/main/templates/AGENTS.md -o AGENTS.md
    ```
 2. (Optional) Customize the bottom section in `AGENTS.md` with your repository's specific package manager, test command, and lint commands.
 3. Your AI agent will automatically detect and respect this protocol upon entering your repository!
