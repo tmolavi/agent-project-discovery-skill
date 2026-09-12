@@ -144,6 +144,7 @@ The agent must act as a custodian of the existing codebase:
 - 🚫 **Unnecessary Rewrites**: Do not replace an entire file or subsystem when a 5-line diff solves the problem.
 - 🚫 **Duplicate Systems**: Do not write a new HTTP client or utility when the repository already has an internal helper for it.
 - 🚫 **Architectural Churn**: Do not change libraries (e.g. replacing Axios with Fetch or Jest with Vitest) unless explicitly instructed.
+- 🚫 **Tampering with Global IDE / System Configurations**: NEVER attempt to modify global IDE configs, agent permission files (e.g., `config.json`), shell profiles (`~/.zshrc`, `~/.bashrc`), or files outside the workspace root. All project configurations, scripts, and dependencies must remain strictly self-contained within the repository.
 - 🚫 **Phantom Dependencies**: Do not add new entries to `package.json` or `requirements.txt` if an existing dependency can fulfill the need.
 
 ---
