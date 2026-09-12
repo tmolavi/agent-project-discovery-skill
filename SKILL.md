@@ -50,11 +50,12 @@ When entering an existing codebase, an AI agent must behave like a senior softwa
 ### 1. Project Discovery Before Execution
 
 > [!IMPORTANT]
-> **Static Local Discovery Only (Zero Remote SSH / Network / Port / Docker Probing):**
+> **Static Local Discovery Only (Zero Remote SSH / Network / Port / Docker / Git Probing):**
 > Discovery is strictly a local inspection of files within the workspace.
 > - **NEVER** SSH into remote servers (`ssh ...`) to inspect containers, images, processes, or ports (e.g., `ssh server "docker images | grep ..."`, `ssh server "docker ps"`, `ssh server "docker inspect ..."`).
 > - **NEVER** run network/port probes (`curl`, `wget`, `nc`, `telnet`) against remote hosts or localhost endpoints over SSH tunnels (e.g., `ssh server "curl http://127.0.0.1:..."`).
-> - **Determine images, ports, and containers statically**: Read local `docker-compose.yml` (`image:`, `ports:`, `labels:`), `Dockerfile` (`FROM`, `EXPOSE`), reverse proxy configs (`nginx.conf`), and CI build workflows.
+> - **NEVER** run unsolicited remote Git/SSH authentication probes (e.g., `ssh server "ssh -T git@github.com"`) during discovery.
+> - **Determine images, ports, remotes, and containers statically**: Read local `.git/config`, `docker-compose.yml` (`image:`, `ports:`, `labels:`), `Dockerfile` (`FROM`, `EXPOSE`), reverse proxy configs (`nginx.conf`), and CI build workflows.
 > - Never trigger out-of-sandbox permission confirmation prompts (`BypassSandbox: true`) for reconnaissance.
 
 Before making any changes, proposing code, or answering domain-specific inquiries, the agent **MUST** methodically inspect the repository in this exact order:

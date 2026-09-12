@@ -51,6 +51,7 @@ Do **NOT** ask questions such as:
 - **Zero Hallucinated Dependencies**: Do not introduce new third-party dependencies without verifying existing alternatives in the lockfile.
 - **Zero Unsolicited Remote/SSH Probing**: NEVER run `ssh`, `scp`, `rsync`, or remote `docker` commands (`docker ps`, `docker images`, `docker inspect`) on external servers during discovery or development. Understand deployment statically by reading `Dockerfile`, `compose.yaml`, and CI configs.
 - **Zero Remote Port Probing**: NEVER run port checks or endpoint pings via SSH (e.g. `ssh server "curl ..."`). Determine port mappings statically from `docker-compose.yml`, `Dockerfile`, and service configs.
+- **Zero Remote Git SSH Probing**: NEVER run unsolicited remote Git/SSH authentication probes (e.g. `ssh server "ssh -T git@github.com"`).
 - **Sandbox Discipline**: Run all commands inside the default sandbox without triggering permission confirmation modals unless the user explicitly requested remote operations.
 - **Verification First**: Always run existing lints, typechecks, and tests before and after making changes.
 
