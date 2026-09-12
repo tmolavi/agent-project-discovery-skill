@@ -50,11 +50,11 @@ When entering an existing codebase, an AI agent must behave like a senior softwa
 ### 1. Project Discovery Before Execution
 
 > [!IMPORTANT]
-> **Static Local Discovery Only (Zero Remote SSH / Network / Port Probing):**
+> **Static Local Discovery Only (Zero Remote SSH / Network / Port / Docker Probing):**
 > Discovery is strictly a local inspection of files within the workspace.
-> - **NEVER** SSH into remote servers (`ssh ...`) to inspect containers, processes, or ports.
+> - **NEVER** SSH into remote servers (`ssh ...`) to inspect containers, images, processes, or ports (e.g., `ssh server "docker images | grep ..."`, `ssh server "docker ps"`, `ssh server "docker inspect ..."`).
 > - **NEVER** run network/port probes (`curl`, `wget`, `nc`, `telnet`) against remote hosts or localhost endpoints over SSH tunnels (e.g., `ssh server "curl http://127.0.0.1:..."`).
-> - **Determine ports and containers statically**: Read `docker-compose.yml` (`ports:`, `expose:`), `Dockerfile` (`EXPOSE`), reverse proxy configs (`nginx.conf`), and `.env.example`.
+> - **Determine images, ports, and containers statically**: Read local `docker-compose.yml` (`image:`, `ports:`, `labels:`), `Dockerfile` (`FROM`, `EXPOSE`), reverse proxy configs (`nginx.conf`), and CI build workflows.
 > - Never trigger out-of-sandbox permission confirmation prompts (`BypassSandbox: true`) for reconnaissance.
 
 Before making any changes, proposing code, or answering domain-specific inquiries, the agent **MUST** methodically inspect the repository in this exact order:
@@ -137,7 +137,7 @@ The agent must act as a custodian of the existing codebase:
 - **Reversible Changes**: Keep edits modular and easy to roll back cleanly via git.
 
 #### Strict Anti-Patterns (Avoid):
-- 🚫 **Unsolicited Remote/SSH Probing**: NEVER run `ssh`, `scp`, `rsync`, remote `docker`, or remote `kubectl` commands during discovery. Understand deployment statically by reading `docker-compose.yml`, `Dockerfile`, and CI workflows.
+- 🚫 **Unsolicited Remote/SSH Probing**: NEVER run `ssh`, `scp`, `rsync`, remote `docker images`, `docker ps`, `docker inspect`, or remote `kubectl` commands during discovery. Understand deployment statically by reading `docker-compose.yml`, `Dockerfile`, and CI workflows.
 - 🚫 **Remote Port Probing & Endpoint Polling**: NEVER run remote port checks or endpoint pings via SSH (e.g., `ssh ... "curl -s -I http://127.0.0.1:..."`). Determine ports and URLs statically from configs.
 - 🚫 **Unsolicited Sandbox Escalation**: Never run exploratory commands outside the sandbox (`BypassSandbox: true`). Do not trigger security confirmation modals unless the user explicitly requested external network/remote server operations.
 - 🚫 **Unnecessary Rewrites**: Do not replace an entire file or subsystem when a 5-line diff solves the problem.
