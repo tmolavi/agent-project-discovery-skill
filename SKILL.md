@@ -55,7 +55,8 @@ When entering an existing codebase, an AI agent must behave like a senior softwa
 > - **NEVER** SSH into remote servers (`ssh ...`) to inspect containers, images, processes, or ports (e.g., `ssh server "docker images | grep ..."`, `ssh server "docker ps"`, `ssh server "docker inspect ..."`).
 > - **NEVER** run network/port probes (`curl`, `wget`, `nc`, `telnet`) against remote hosts or localhost endpoints over SSH tunnels (e.g., `ssh server "curl http://127.0.0.1:..."`).
 > - **NEVER** run unsolicited remote Git/SSH authentication probes (e.g., `ssh server "ssh -T git@github.com"`) during discovery.
-> - **Determine images, ports, remotes, and containers statically**: Read local `.git/config`, `docker-compose.yml` (`image:`, `ports:`, `labels:`), `Dockerfile` (`FROM`, `EXPOSE`), reverse proxy configs (`nginx.conf`), and CI build workflows.
+> - **NEVER** run live route crawlers or active HTTP endpoint scanners (e.g., automated checks of "all required live routes" via curl/requests/scripts). Discover routes statically from source router definitions (`app/`, `pages/`, `routes/`, controller files) and OpenAPI specs.
+> - **Determine images, ports, remotes, routes, and containers statically**: Read local `.git/config`, router files, `docker-compose.yml` (`image:`, `ports:`, `labels:`), `Dockerfile` (`FROM`, `EXPOSE`), reverse proxy configs (`nginx.conf`), and CI build workflows.
 > - Never trigger out-of-sandbox permission confirmation prompts (`BypassSandbox: true`) for reconnaissance.
 
 Before making any changes, proposing code, or answering domain-specific inquiries, the agent **MUST** methodically inspect the repository in this exact order:
