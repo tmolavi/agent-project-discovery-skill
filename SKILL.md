@@ -49,6 +49,10 @@ When entering an existing codebase, an AI agent must behave like a senior softwa
 
 ### 1. Project Discovery Before Execution
 
+> [!IMPORTANT]
+> **Static Local Discovery Only (Zero Unsolicited Remote/SSH Probing):**
+> Discovery is strictly a local inspection of files within the workspace. Do **NOT** run network probes, SSH into remote servers (`ssh ...`), query remote Docker daemons, or execute cloud CLI commands (`kubectl`, `aws`, `gcloud`) to inspect deployment. Understand deployment declaratively by reading configuration files (`Dockerfile`, `compose.yaml`, `.github/workflows/`). Never trigger out-of-sandbox permission confirmation prompts for reconnaissance.
+
 Before making any changes, proposing code, or answering domain-specific inquiries, the agent **MUST** methodically inspect the repository in this exact order:
 
 | Step | Discovery Target | Files / Signals to Inspect |
@@ -129,6 +133,8 @@ The agent must act as a custodian of the existing codebase:
 - **Reversible Changes**: Keep edits modular and easy to roll back cleanly via git.
 
 #### Strict Anti-Patterns (Avoid):
+- 🚫 **Unsolicited Remote/SSH Probing**: NEVER run `ssh`, `scp`, `rsync`, remote `docker`, or remote `kubectl` commands during discovery. Understand deployment statically by reading `docker-compose.yml`, `Dockerfile`, and CI workflows.
+- 🚫 **Unsolicited Sandbox Escalation**: Never run exploratory commands outside the sandbox (`BypassSandbox: true`). Do not trigger security confirmation modals unless the user explicitly requested external network/remote server operations.
 - 🚫 **Unnecessary Rewrites**: Do not replace an entire file or subsystem when a 5-line diff solves the problem.
 - 🚫 **Duplicate Systems**: Do not write a new HTTP client or utility when the repository already has an internal helper for it.
 - 🚫 **Architectural Churn**: Do not change libraries (e.g. replacing Axios with Fetch or Jest with Vitest) unless explicitly instructed.
