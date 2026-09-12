@@ -50,14 +50,15 @@ When entering an existing codebase, an AI agent must behave like a senior softwa
 ### 1. Project Discovery Before Execution
 
 > [!IMPORTANT]
-> **Static Local Discovery Only (Zero Remote SSH / Network / Port / Docker / Git Probing):**
-> Discovery is strictly a local inspection of files within the workspace.
+> **Static Local Discovery & Silent Autonomy (Zero Sandbox Escapes):**
+> The #1 killer of overnight autonomous execution is issuing unprompted out-of-sandbox commands (`BypassSandbox: true` / SSH / network probes), which triggers human confirmation modals and freezes the agent until morning.
+> - **Stay 100% inside the workspace sandbox**: Local file operations (`read`, `write`, `edit`, `git status`, local tests) execute completely silently without bothering the user.
 > - **NEVER** SSH into remote servers (`ssh ...`) to inspect containers, images, processes, or ports (e.g., `ssh server "docker images | grep ..."`, `ssh server "docker ps"`, `ssh server "docker inspect ..."`).
-> - **NEVER** run network/port probes (`curl`, `wget`, `nc`, `telnet`) against remote hosts or localhost endpoints over SSH tunnels (e.g., `ssh server "curl http://127.0.0.1:..."`).
-> - **NEVER** run unsolicited remote Git/SSH authentication probes (e.g., `ssh server "ssh -T git@github.com"`) during discovery.
-> - **NEVER** run live route crawlers or active HTTP endpoint scanners (e.g., automated checks of "all required live routes" via curl/requests/scripts). Discover routes statically from source router definitions (`app/`, `pages/`, `routes/`, controller files) and OpenAPI specs.
+> - **NEVER** run network/port probes (`curl`, `wget`, `nc`, `telnet`) against remote hosts or localhost endpoints over SSH tunnels.
+> - **NEVER** run unsolicited remote Git/SSH authentication probes (e.g., `ssh server "ssh -T git@github.com"`).
+> - **NEVER** run live route crawlers or active HTTP endpoint scanners. Discover routes statically from source router definitions (`app/`, `pages/`, `routes/`) and OpenAPI specs.
 > - **Determine images, ports, remotes, routes, and containers statically**: Read local `.git/config`, router files, `docker-compose.yml` (`image:`, `ports:`, `labels:`), `Dockerfile` (`FROM`, `EXPOSE`), reverse proxy configs (`nginx.conf`), and CI build workflows.
-> - Never trigger out-of-sandbox permission confirmation prompts (`BypassSandbox: true`) for reconnaissance.
+> - **Batch Remote Operations**: If the user explicitly commands remote server work, combine all operations into a single script or unified execution rather than firing dozens of fragmented SSH commands that re-prompt the user.
 
 Before making any changes, proposing code, or answering domain-specific inquiries, the agent **MUST** methodically inspect the repository in this exact order:
 

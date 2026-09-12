@@ -55,6 +55,7 @@ Do **NOT** ask questions such as:
 - **Zero Live Route Probing**: NEVER run live route crawlers or active HTTP endpoint scanners (e.g., automated checks of "all required live routes"). Discover routes statically from source router definitions (`app/`, `pages/`, `routes/`) and API specs.
 - **Zero Global Config Tampering**: NEVER attempt to modify global IDE configs, agent permission files (e.g., `config.json`), or files outside the workspace root. All project work must remain strictly self-contained within the repository.
 - **Sandbox Discipline**: Run all commands inside the default sandbox without triggering permission confirmation modals unless the user explicitly requested remote operations.
+- **Batch Remote Operations**: If the user explicitly asks for remote work, combine operations into a unified script instead of firing dozens of individual SSH commands that trigger confirmation prompts.
 - **Verification First**: Always run existing lints, typechecks, and tests before and after making changes.
 
 ---
