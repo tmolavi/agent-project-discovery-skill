@@ -18,14 +18,15 @@ Bu proje, kodlama yapan yapay zeka ajanları (Claude Code, Cursor, Google Antigr
 
 ## 🎯 Bu Beceri Neden Geliştirildi? (Gece Boyu Otonom Çalışma)
 
-Yapay zeka asistanı kullanmanın asıl amacı **görevi verip uyumak**, sabah kalktığınızda işin tamamlanmış olduğunu görmektir. Sizi sabaha kadar ekran başında tutup sürekli *"Şunu çalıştırayım mı?"*, *"Onaylıyor musunuz?"* diye sorması yapay zekanın mantığına aykırıdır!
+Yapay zeka asistanı kullanmanın asıl amacı **görevi verip bilgisayarı kapatıp rahatça uyumak**, sabah kalktığınızda işin tamamen test edilmiş ve tamamlanmış olduğunu görmektir. Ajanın gece yarısı gereksiz onay pencereleri açarak durması yapay zekanın amacına aykırıdır!
 
-Bu beceri olmadan ajanların yaptığı kritik hatalar:
-1. **Keşif Yapmadan Kod Değiştirme:** Proje yapısını, paketleri veya mimariyi incelemeden rastgele dosyalarda değişiklik yapmaya başlarlar.
-2. **Gereksiz ve Bunalten Sorular:** *"Kod nerede?"*, *"Yapılandırma dosyası hangisi?"*, *"Ne yapmalıyım?"* gibi kod tabanında zaten cevabı olan sorular sorarlar.
-3. **Sürekli Güvenlik ve Onay Pencereleri (Prompts):** Basit bir port veya konteyner kontrolü için gereksiz yere dış komutlar tetikleyip onayınızı beklerler.
-4. **Kaydedilmemiş Değişiklikleri Ezme (Uncommitted Changes):** Geliştiricinin o anda üzerinde çalıştığı kodları fark etmeden siler veya üzerine yazarlar.
-5. **Var Olan Kütüphaneleri Yeniden Yazma:** Projede zaten bulunan yardımcı fonksiyonları görmezden gelip sıfırdan gereksiz kodlar üretirler.
+Gece boyu otonom çalışmayı engelleyen yaygın ajan hataları:
+1. **Canlı Genel URL'leri Sorgulamak:** Kod değişikliklerini yerel olarak test etmek yerine canlı prodüksiyon adreslerine `curl` istekleri atarak güvenlik duvarını tetikler ve sistemi kilitlerler.
+2. **Standart Dışı Git Komutları Çalıştırmak:** `git count-objects` veya `git fsck` gibi nadir dahili komutları çalıştırarak izin pencerelerine takılırlar.
+3. **Sürekli Güvenlik ve Onay Pencereleri (Prompts):** Gereksiz yere dış komutlar tetikleyip onayınızı beklerler.
+4. **Keşif Yapmadan Kod Değiştirme:** Proje yapısını incelemeden rastgele dosyalarda değişiklik yapmaya başlarlar.
+5. **Gereksiz ve Bunalten Sorular:** Kod tabanında zaten cevabı olan sorular sorarlar.
+6. **Kaydedilmemiş Değişiklikleri Ezme (Uncommitted Changes):** Geliştiricinin o anda üzerinde çalıştığı kodları siler veya üzerine yazarlar.
 
 ---
 

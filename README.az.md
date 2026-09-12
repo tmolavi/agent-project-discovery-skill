@@ -18,14 +18,15 @@ Bu layihə kodlaşdırma agentləri (Claude Code, Cursor, Google Antigravity, Op
 
 ## 🎯 Bu Bacarıq Niyə Yaradıldı? (Gecə Boyu Tam Avtonom İş)
 
-Süni intellektdən istifadənin əsas məqsədi **tapşırığı verib dincəlmək**, səhər işin tam hazır olduğunu görməkdir. Agentin sizi səhərə qədər kompüter qarşısında saxlayıb hər addımda *"Bunu icra edimmi?"*, *"Təsdiq edirsinizmi?"* deyə soruşması süni intellektin təyinatına ziddir!
+Süni intellektdən istifadənin əsas məqsədi **tapşırığı verib kompüteri bağlamaq və rahat yatmaqdır**; səhər isə işin tam test edilib hazır olduğunu görməkdir. Agentin gecə yarısı lüzumsuz təsdiq pəncərələri açıb dayanması süni intellektin məntiqinə ziddir!
 
-Bu bacarıq olmadıqda agentlərin etdiyi xətalar:
-1. **Kəşf etmədən kod dəyişdirmək:** Layihə strukturunu və asılılıqları yoxlamadan təsadüfi fayllarda dəyişiklik edirlər.
-2. **Yersiz və yorucu suallar:** *"Kod haradadır?"*, *"Konfiqurasiya faylı hansıdır?"*, *"Nə edim?"* kimi kod bazasında cavabı olan suallar verirlər.
-3. **Davamlı təhlükəsizlik və icazə pəncərələri:** Sadə port və ya konteyner yoxlaması üçün xarici əmrlər çağırıb sizin təsdiqinizi gözləyirlər.
-4. **Yadda saxlanılmamış dəyişiklikləri silmək (Uncommitted Changes):** Proqramçının üzərində işlədiyi cari dəyişiklikləri nəzərə almadan üstündən yazırlar.
-5. **Mövcud funksiyaları yenidən yazmaq:** Layihədə artıq mövcud olan köməkçi modulları görməzdən gəlib təkrar kod yaradırlar.
+Gecə boyu avtonom işə mane olan xətalar:
+1. **Canlı İctimai URL-ləri Yoxlamaq:** Kodu lokal yoxlamaq əvəzinə canlı server ünvanlarına `curl` sorğuları göndərib təhlükəsizlik divarına ilişirlər.
+2. **Qeyri-standart Git Əmrləri İcra Etmək:** `git count-objects` və ya `git fsck` kimi nadir daxili əmrləri işə salaraq icazə bildirişləri yaradırlar.
+3. **Davamlı İcazə Pəncərələri:** Lüzumsuz olaraq xarici əmrlər çağırıb istifadəçinin təsdiqini gözləyirlər.
+4. **Kəşf Etmədən Kod Dəyişdirmək:** Layihə strukturunu bilmədən təsadüfi fayllarda dəyişiklik edirlər.
+5. **Yersiz və Yorucu Suallar:** Kod bazasında artıq cavabı olan suallar verirlər.
+6. **Yadda Saxlanılmamış Dəyişiklikləri Silmək:** Proqramçının üzərində işlədiyi kodları xəbərsiz silir və ya yenidən yazırlar.
 
 ---
 

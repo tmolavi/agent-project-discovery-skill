@@ -29,6 +29,22 @@ Today's AI coding assistants are capable, but their default initialization behav
 | **Clobbering Diffs**: Overwrites uncommitted work or ignores ongoing work in the working tree. | **Git Awareness**: Inspects `git status`, current branch, recent commits, and protects existing user modifications. |
 | **Architectural Churn**: Rewrites working patterns, duplicates existing utilities, or installs redundant libraries. | **Pattern Adherence**: Matches existing conventions, preserves backward compatibility, and produces minimal diffs. |
 | **No Accountability**: Leaves ambiguous completion messages without test results. | **Deterministic Protocols**: Mandates structured First Response (`Understanding`, `Current State`, `Plan`, `Blocking Questions`) and Completion Reports (`STATUS`, `CHANGES`, `VALIDATION`, `DEPLOYMENT`, `REMAINING`). |
+| **Middle-of-the-Night Halts**: Executes unprompted out-of-sandbox commands (`ssh`, public `curl`, obscure git diagnostics) that trigger confirmation modals and freeze the agent while you sleep. | **The "Sleep-Well" Protocol**: Enforces 100% in-sandbox deterministic local builds and canonical commands so agents work completely unattended until morning. |
+
+---
+
+## 🌙 The "Sleep-Well" Principle: True Overnight Autonomy
+
+The ultimate goal of this skill is simple:
+> **"Assign a task, close your laptop, go to sleep, and review clean completed code in the morning without waking up to stalled confirmation prompts."**
+
+Traditional agents freeze overnight because they execute unprompted out-of-sandbox actions:
+- ❌ Curling live public production URLs (`curl https://...`)
+- ❌ Running obscure plumbing commands (`git count-objects`, `git fsck`)
+- ❌ Probing remote servers over SSH (`ssh ... "docker ps"`)
+- ❌ Tampering with global IDE configuration files
+
+**Under this skill**, agents stick strictly to deterministic local verification (`npm run build`, `pytest`, `cargo test`, unit tests), standard canonical git commands, and in-workspace file operations. Everything runs silently, safely, and unattended.
 
 ---
 

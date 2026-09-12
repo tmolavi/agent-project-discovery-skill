@@ -50,15 +50,14 @@ When entering an existing codebase, an AI agent must behave like a senior softwa
 ### 1. Project Discovery Before Execution
 
 > [!IMPORTANT]
-> **Static Local Discovery & Silent Autonomy (Zero Sandbox Escapes):**
-> The #1 killer of overnight autonomous execution is issuing unprompted out-of-sandbox commands (`BypassSandbox: true` / SSH / network probes), which triggers human confirmation modals and freezes the agent until morning.
-> - **Stay 100% inside the workspace sandbox**: Local file operations (`read`, `write`, `edit`, `git status`, local tests) execute completely silently without bothering the user.
-> - **NEVER** SSH into remote servers (`ssh ...`) to inspect containers, images, processes, or ports (e.g., `ssh server "docker images | grep ..."`, `ssh server "docker ps"`, `ssh server "docker inspect ..."`).
-> - **NEVER** run network/port probes (`curl`, `wget`, `nc`, `telnet`) against remote hosts or localhost endpoints over SSH tunnels.
-> - **NEVER** run unsolicited remote Git/SSH authentication probes (e.g., `ssh server "ssh -T git@github.com"`).
-> - **NEVER** run live route crawlers or active HTTP endpoint scanners. Discover routes statically from source router definitions (`app/`, `pages/`, `routes/`) and OpenAPI specs.
-> - **Determine images, ports, remotes, routes, and containers statically**: Read local `.git/config`, router files, `docker-compose.yml` (`image:`, `ports:`, `labels:`), `Dockerfile` (`FROM`, `EXPOSE`), reverse proxy configs (`nginx.conf`), and CI build workflows.
-> - **Batch Remote Operations**: If the user explicitly commands remote server work, combine all operations into a single script or unified execution rather than firing dozens of fragmented SSH commands that re-prompt the user.
+> **The "Sleep-Well" Protocol: Zero Sandbox Escapes & Unattended Autonomy:**
+> The primary design goal of this skill is that **the developer can assign a task, close their laptop, go to sleep, and review clean completed results in the morning without waking up to stalled confirmation prompts.**
+> - **Stay 100% inside the local sandbox**: Standard local commands (`git status`, `git diff`, `cat`, `grep`, local builds, local test runners) execute completely silently without prompting the human.
+> - **Zero Live Public URL Probing**: NEVER fire `curl`, `wget`, or HTTP requests against live public domains (e.g. `curl -s https://example.com/...`) to verify your code. Verify code locally and deterministically using build outputs (`next build`, `npm run build`, `cargo check`), local unit/integration tests, or loopback testing (`http://127.0.0.1:<port>`).
+> - **Canonical Git Commands Only**: Stick strictly to high-level standard commands (`git status`, `git diff`, `git log -n 5`, `git branch`). NEVER run obscure plumbing or diagnostic commands (e.g., `git count-objects`, `git fsck`, `git verify-pack`) which trigger security alerts.
+> - **Zero Remote Infrastructure Probing**: NEVER run `ssh`, `scp`, `rsync`, remote `docker`, or remote `kubectl` commands to inspect deployment state. Inspect deployment statically from repository files (`docker-compose.yml`, `Dockerfile`, `.env.example`, CI/CD workflows).
+> - **Avoid Complex Multi-Pipe Shell Chaining**: Long chains of `curl ... && curl ... | grep ... | awk` break command prefix auto-approval rules in agent IDEs. Use clean, single-purpose commands or run local script files.
+> - **Batch When Remote Work Is Explicitly Requested**: If the user explicitly asks for remote server operations, combine all commands into a single runner script rather than firing fragmented, piecemeal commands that repeatedly prompt the user.
 
 Before making any changes, proposing code, or answering domain-specific inquiries, the agent **MUST** methodically inspect the repository in this exact order:
 
@@ -87,6 +86,7 @@ A senior engineer checks their surroundings before touching code. The agent must
    - *Rule*: Never revert, wipe, or overwrite existing uncommitted user changes without explicit user permission.
 3. **Recent Commits**: Inspect `git log -n 5` to understand recent contextual changes, commit message conventions (Conventional Commits, ticket IDs, etc.).
 4. **Existing Diffs**: If files are modified, inspect `git diff` to understand what the user was doing immediately prior to invoking the agent.
+5. **Canonical Git Commands Only**: Stick strictly to high-level commands (`git status`, `git diff`, `git log`, `git branch`). NEVER execute obscure repository plumbing or internal diagnostics (e.g. `git count-objects`, `git fsck`, `git verify-pack`) that trigger confirmation prompts.
 
 ---
 
@@ -146,7 +146,8 @@ The agent must act as a custodian of the existing codebase:
 - 🚫 **Unnecessary Rewrites**: Do not replace an entire file or subsystem when a 5-line diff solves the problem.
 - 🚫 **Duplicate Systems**: Do not write a new HTTP client or utility when the repository already has an internal helper for it.
 - 🚫 **Architectural Churn**: Do not change libraries (e.g. replacing Axios with Fetch or Jest with Vitest) unless explicitly instructed.
-- 🚫 **Tampering with Global IDE / System Configurations**: NEVER attempt to modify global IDE configs, agent permission files (e.g., `config.json`), shell profiles (`~/.zshrc`, `~/.bashrc`), or files outside the workspace root. All project configurations, scripts, and dependencies must remain strictly self-contained within the repository.
+- 🚫 **Live Public Domain Verification**: NEVER verify code changes by curling live public domains (`curl https://example.com/...`). Always verify through local builds (`npm run build`, `cargo test`, `pytest`) or local loopback servers.
+- 🚫 **Obscure Diagnostics & Plumbing**: NEVER run low-level repository plumbing (`git count-objects`, `git fsck`) that trigger security confirmation modals.
 - 🚫 **Phantom Dependencies**: Do not add new entries to `package.json` or `requirements.txt` if an existing dependency can fulfill the need.
 
 ---
