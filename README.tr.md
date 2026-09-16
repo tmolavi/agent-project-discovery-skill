@@ -2,7 +2,7 @@
 ### `agent-project-discovery-skill`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/badge/release-v1.1.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
+[![Release](https://img.shields.io/badge/release-v1.2.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/tmolavi/agent-project-discovery-skill/pulls)
 
 > **"Bir yapay zeka ajanı, değişiklik yapmadan önce projeyi derinlemesine anlamalıdır."**
@@ -16,17 +16,84 @@ Bu proje, kodlama yapan yapay zeka ajanları (Claude Code, Cursor, Google Antigr
 
 ---
 
-## 🎯 Bu Beceri Neden Geliştirildi? (Gece Boyu Otonom Çalışma)
+## 🌙 "Rahat Uyu" Protokolü (Sleep-Well Protocol): Kesintisiz Gece Otonomisi
 
-Yapay zeka asistanı kullanmanın asıl amacı **görevi verip bilgisayarı kapatıp rahatça uyumak**, sabah kalktığınızda işin tamamen test edilmiş ve tamamlanmış olduğunu görmektir. Ajanın gece yarısı gereksiz onay pencereleri açarak durması yapay zekanın amacına aykırıdır!
+Bu projenin en temel tasarım hedefi şudur:
+> **"Görevi yapay zekaya verin, dizüstü bilgisayarınızın kapağını kapatın ve rahatça uyuyun. Sabah kalktığınızda onay pencerelerine takılıp donmamış, temizce test edilmiş ve tamamlanmış bir iş teslim alın."**
 
-Gece boyu otonom çalışmayı engelleyen yaygın ajan hataları:
-1. **Canlı Genel URL'leri Sorgulamak:** Kod değişikliklerini yerel olarak test etmek yerine canlı prodüksiyon adreslerine `curl` istekleri atarak güvenlik duvarını tetikler ve sistemi kilitlerler.
-2. **Standart Dışı Git Komutları Çalıştırmak:** `git count-objects` veya `git fsck` gibi nadir dahili komutları çalıştırarak izin pencerelerine takılırlar.
-3. **Sürekli Güvenlik ve Onay Pencereleri (Prompts):** Gereksiz yere dış komutlar tetikleyip onayınızı beklerler.
-4. **Keşif Yapmadan Kod Değiştirme:** Proje yapısını incelemeden rastgele dosyalarda değişiklik yapmaya başlarlar.
-5. **Gereksiz ve Bunalten Sorular:** Kod tabanında zaten cevabı olan sorular sorarlar.
-6. **Kaydedilmemiş Değişiklikleri Ezme (Uncommitted Changes):** Geliştiricinin o anda üzerinde çalıştığı kodları siler veya üzerine yazarlar.
+---
+
+### ❓ Ajanlar Neden Sürekli Onay Penceresi (Approval Modal) Açar?
+
+Modern yapay zeka kodlama araçlarında (Google Antigravity, Claude Code, Cursor) yerleşik bir **Güvenli Kum Havuzu (Sandbox)** mimarisi bulunur:
+1. **Kum Havuzu İçi Standart Komutlar (Standard Sandbox)**: Çalışma alanı içindeki dosya okuma/yazma işlemleri, yerel git durumları (`git status`, `git diff`), yerel derleme (`npm run build`, `cargo check`) ve yerel testler (`pytest`, `vitest`) **tamamen sessiz, otomatik ve kullanıcıdan onay istemeden** çalışır.
+2. **Onay Penceresi Tetikleyen Durumlar**:
+   - **Kum Havuzunu Aşma Talebi (`BypassSandbox: true`)**: Ajanın ham ağ erişimi veya disk geneline erişim talep etmesi ve buna uygun izin kuralının tanımlı olmaması.
+   - **Canlı Genel URL'leri Sorgulamak (`curl https://...`)**: Kod doğrulaması için canlı internet sitelerine HTTP istekleri atılması.
+   - **Gereksiz Uzak Sunucu Sorguları (`ssh`, `scp`, uzak `docker images`)**: Konfigürasyon dosyalarını okumak yerine canlı sunuculara veya GitHub'a SSH ile bağlanmaya çalışılması.
+   - **Derin Git Sıhhat Komutları (`git count-objects`, `git fsck`)**: Standart dışı dahili komutlar izin filtrelerini aşar ve onay gerektirir.
+   - **Proje Dışı Ayar Dosyalarını Değiştirme**: Sistemin genel ayarlarını veya IDE konfigürasyonunu (`config.json`) kurcalamaya çalışmak.
+   - **Boru Hattı ile Zincirlenmiş Kabuk Komutları (`cmd1 && cmd2 | grep ... | awk ...`)**: Karmaşık zincirler IDE'nin ön ek eşleştirme mekanizmasını bozar.
+   - **Parçalı Tarayıcı / AppleScript Kodları (`osascript -e '...'`)**: Tarayıcı sekmelerini veya masaüstünü sorgularken parça parça onlarca satır çalıştırmak.
+
+---
+
+### 🛠️ Bu Beceri Sorunları Nasıl Çözer?
+
+1. **Yalnızca Yerel ve Belirleyici Doğrulama**: Kodlar canlı genel sitelere istek atılarak değil; yerel testler, derleme çıktıları ve yerel döngü (`127.0.0.1`) üzerinden doğrulanır.
+2. **Tek Dosyalı Otomasyon (Single-Runner Batching)**: Kullanıcı tarayıcı oturumlarını (Chrome, Safari, cPanel, bulut panelleri, Colab) veya uzak veritabanlarını incelemeyi istediğinde, ajan parçalı komutlar çalıştırmak yerine tek bir yardımcı betik (Python veya AppleScript) yazar, bunu tek seferde çalıştırır ve yapılandırılmış JSON çıktısını işler.
+3. **Statik Dağıtım Analizi**: Konteynerler ve portlar canlı sunucuya bağlanmadan, `docker-compose.yml` ve `Dockerfile` dosyalarından okunur.
+4. **Proje İzolasyonu**: Çalışma alanı dışındaki hiçbir dosya değiştirilmez.
+
+---
+
+### 🛡️ Geliştirici Kılavuzu: Tam Erişim İzni (Full Access Setup)
+
+Ajanınızın hiçbir onay penceresi açmadan tam otonom çalışmasını isterseniz:
+
+#### 1. Google Antigravity
+Kullanıcı ayarlarınızdaki `~/.gemini/config/config.json` dosyasına ön ek izinlerini ekleyin:
+```json
+{
+  "globalPermissionGrants": {
+    "allow": [
+      "command(git)",
+      "command(pnpm)",
+      "command(npm)",
+      "command(python3)",
+      "command(node)",
+      "command(ssh)",
+      "command(docker)",
+      "command(curl)",
+      "command(osascript)",
+      "unsandboxed(python3)",
+      "unsandboxed(bash)",
+      "unsandboxed(osascript)",
+      "unsandboxed(ssh)",
+      "unsandboxed(docker)",
+      "unsandboxed(curl)"
+    ]
+  }
+}
+```
+
+#### 2. Claude Code
+Proje veya kullanıcı konfigürasyonunuza otomatik onaylanan komutları ekleyin:
+```json
+{
+  "allowedCommands": [
+    "git *",
+    "pnpm *",
+    "npm *",
+    "python3 *",
+    "pytest *",
+    "node *"
+  ]
+}
+```
+
+#### 3. Cursor
+`.cursorrules` veya `.cursor/rules/discovery.mdc` içerisine `templates/AGENTS.md` kurallarını dahil edin.
 
 ---
 
@@ -60,17 +127,17 @@ cp SKILL.md ~/.gemini/config/skills/agent-project-discovery-skill/SKILL.md
 mkdir -p .claude/skills
 cp SKILL.md .claude/skills/project-discovery.md
 ```
-Veya projenizdeki `CLAUDE.md` dosyasına ekleyin.
+Veya projenizin `CLAUDE.md` dosyasına `templates/AGENTS.md` içeriğini ekleyin.
 
 ### 3. Cursor
-`.cursor/rules/discovery.mdc` oluşturun veya `.cursorrules` dosyasına ekleyin:
+`.cursor/rules/discovery.mdc` dosyasını oluşturun veya `.cursorrules` içerisine ekleyin:
 ```markdown
 Before making any code edits or asking questions, read and execute the discovery steps in SKILL.md.
 Always begin your first response with the 4-part protocol (Understanding, Current State, Plan, Blocking Questions).
 ```
 
 ### 4. GitHub Copilot
-`templates/AGENTS.md` içeriğini `.github/copilot-instructions.md` içerisine yerleştirin.
+`templates/AGENTS.md` içeriğini `.github/copilot-instructions.md` içerisine ekleyin.
 
 ### 5. Herhangi Bir Projede Hızlı Başlangıç (30 Saniye)
 ```bash
@@ -80,4 +147,4 @@ curl -sSL https://raw.githubusercontent.com/tmolavi/agent-project-discovery-skil
 ---
 
 ## 📄 Lisans
-Bu proje [MIT Lisansı](LICENSE) ile dağıtılmaktadır. Kişisel, kurumsal ve ticari projelerde özgürce kullanılabilir.
+Bu proje açık kaynaklı [MIT](LICENSE) lisansı ile sunulmaktadır. Bireysel ve kurumsal kullanım için tamamen ücretsizdir.

@@ -1,7 +1,7 @@
 ---
 name: agent-project-discovery-skill
 description: Universal startup and context discovery skill for AI coding agents to inspect, understand, and plan before modifying existing projects.
-version: 1.0.0
+version: 1.2.0
 license: MIT
 metadata:
   author: agent-project-discovery-skill contributors
@@ -52,12 +52,31 @@ When entering an existing codebase, an AI agent must behave like a senior softwa
 > [!IMPORTANT]
 > **The "Sleep-Well" Protocol: Zero Sandbox Escapes & Unattended Autonomy:**
 > The primary design goal of this skill is that **the developer can assign a task, close their laptop, go to sleep, and review clean completed results in the morning without waking up to stalled confirmation prompts.**
-> - **Stay 100% inside the local sandbox**: Standard local commands (`git status`, `git diff`, `cat`, `grep`, local builds, local test runners) execute completely silently without prompting the human.
-> - **Zero Live Public URL Probing**: NEVER fire `curl`, `wget`, or HTTP requests against live public domains (e.g. `curl -s https://example.com/...`) to verify your code. Verify code locally and deterministically using build outputs (`next build`, `npm run build`, `cargo check`), local unit/integration tests, or loopback testing (`http://127.0.0.1:<port>`).
-> - **Canonical Git Commands Only**: Stick strictly to high-level standard commands (`git status`, `git diff`, `git log -n 5`, `git branch`). NEVER run obscure plumbing or diagnostic commands (e.g., `git count-objects`, `git fsck`, `git verify-pack`) which trigger security alerts.
-> - **Zero Remote Infrastructure Probing**: NEVER run `ssh`, `scp`, `rsync`, remote `docker`, or remote `kubectl` commands to inspect deployment state. Inspect deployment statically from repository files (`docker-compose.yml`, `Dockerfile`, `.env.example`, CI/CD workflows).
-> - **Avoid Complex Multi-Pipe Shell Chaining**: Long chains of `curl ... && curl ... | grep ... | awk` break command prefix auto-approval rules in agent IDEs. Use clean, single-purpose commands or run local script files.
-> - **Batch When Remote Work Is Explicitly Requested**: If the user explicitly asks for remote server operations, combine all commands into a single runner script rather than firing fragmented, piecemeal commands that repeatedly prompt the user.
+>
+> **Why Agents Stall (The Sandbox Security Model):**
+> Modern AI coding environments (Antigravity, Claude Code, Cursor) operate inside a secure local sandbox by default. In standard sandbox mode, workspace reads/writes and local processes execute automatically without human approval. However, **confirmation modals are immediately triggered** whenever an agent:
+> 1. Requests out-of-sandbox execution (`BypassSandbox: true`) without matching auto-approval grants.
+> 2. Probes external network endpoints or live public domains.
+> 3. Tries to access or mutate files outside the active workspace (such as `~/.gemini/config/config.json` or system configs).
+> 4. Executes long, complex chained shell pipelines (`cmd1 && cmd2 | grep ... | awk ...`) that defeat prefix-based permission matching.
+>
+> **The 8 Forbidden Modal-Triggering Traps (NEVER Do These Unprompted):**
+> - 🚫 **Trap 1: Live Public URL Probing**: NEVER fire `curl`, `wget`, or HTTP requests against live public domains (e.g. `curl -s https://molavi.pro/fa`) to test code changes. Verify code locally using build outputs (`next build`, `npm run build`, `cargo check`), unit/integration test suites, or local loopback servers (`http://127.0.0.1:<port>`).
+> - 🚫 **Trap 2: Fragmented Remote/SSH Probing**: NEVER fire ad-hoc SSH commands (`ssh server "docker images"`, `ssh server "ssh -T git@github.com"`, `ssh server "echo ..."`) during discovery. Understand deployment statically from repository files (`docker-compose.yml`, `Dockerfile`, `.env.example`, CI/CD workflows).
+> - 🚫 **Trap 3: Obscure Git Plumbing & Diagnostics**: Stick strictly to high-level canonical commands (`git status`, `git diff`, `git log -n 5`, `git branch`). NEVER run obscure low-level plumbing commands (e.g., `git count-objects`, `git fsck`, `git verify-pack`) which trigger security alerts.
+> - 🚫 **Trap 4: Global Config Tampering**: NEVER attempt to edit or read global IDE configs, agent permission files (e.g., `~/.gemini/config/config.json`), or files outside the workspace root. All project work must remain strictly self-contained.
+> - 🚫 **Trap 5: Complex Multi-Pipe Shell Chaining**: Long chains of commands joined by `&&`, `;`, `||`, or `|` break command prefix auto-approval rules. Use clean, single-purpose commands or run local script files.
+> - 🚫 **Trap 6: Fragmented OS / AppleScript Snippets**: Never run multiple iterative one-liner `osascript -e` or GUI automation commands from the shell.
+> - 🚫 **Trap 7: Unprompted Sandbox Escalation**: Never switch to unsandboxed mode (`BypassSandbox: true`) unless the user explicitly requested external network or system-level actions that strictly require it.
+> - 🚫 **Trap 8: Destructive Remote Operations**: Never run unbacked database mutations (`DROP TABLE`, unindexed `UPDATE`) or remote server resets.
+>
+> **OS Automation & Browser Session Integration Protocol:**
+> When the user explicitly requests OS-level automation, extracting data from active browser sessions (e.g. Google Chrome, Safari, cPanel, Cloud Consoles, Colab, or Figma via AppleScript/CDP), or remote database inspection:
+> 1. **The Single-Runner Batching Rule**: NEVER execute a series of iterative shell commands or fragmented AppleScript snippets. Instead, write a clean, self-contained Python or AppleScript helper script (e.g., in the workspace `scripts/` or temporary `.scratch/` directory).
+> 2. **Single Execution**: Execute the helper script in a single, prefix-matchable command call.
+> 3. **Structured Machine Output**: Design the helper script to output structured JSON or delimited key-value lines so the agent can parse the results deterministically without repeated exploratory queries.
+> 4. **Safe Credential Handling**: When credentials or session keys are retrieved via browser inspection, store them only in local environment files (`.env.local`) that are verified to be in `.gitignore`. NEVER log raw secrets to stdout or git history.
+> 5. **Batch Remote Operations**: If the user explicitly asks for remote server or remote database actions, bundle all queries into a single script (e.g., `remote_inspect.sh`), run it once, and analyze the aggregated output.
 
 Before making any changes, proposing code, or answering domain-specific inquiries, the agent **MUST** methodically inspect the repository in this exact order:
 
@@ -138,11 +157,14 @@ The agent must act as a custodian of the existing codebase:
 - **Backward Compatibility**: Preserve existing function signatures, API schemas, database schemas, and CLI options.
 - **Test Before Deployment**: Verify existing tests pass before modifying code, and add new tests covering your changes.
 - **Reversible Changes**: Keep edits modular and easy to roll back cleanly via git.
+- **Batched Automation**: When interacting with OS utilities, browser tabs, or external servers, write a single runner script instead of firing fragmented, multi-step shell calls.
 
 #### Strict Anti-Patterns (Avoid):
 - 🚫 **Unsolicited Remote/SSH Probing**: NEVER run `ssh`, `scp`, `rsync`, remote `docker images`, `docker ps`, `docker inspect`, or remote `kubectl` commands during discovery. Understand deployment statically by reading `docker-compose.yml`, `Dockerfile`, and CI workflows.
 - 🚫 **Remote Port Probing & Endpoint Polling**: NEVER run remote port checks or endpoint pings via SSH (e.g., `ssh ... "curl -s -I http://127.0.0.1:..."`). Determine ports and URLs statically from configs.
 - 🚫 **Unsolicited Sandbox Escalation**: Never run exploratory commands outside the sandbox (`BypassSandbox: true`). Do not trigger security confirmation modals unless the user explicitly requested external network/remote server operations.
+- 🚫 **Global Config Tampering**: NEVER attempt to read or modify global configuration files (`~/.gemini/config/config.json`, IDE settings, or OS configs) outside the workspace directory.
+- 🚫 **Fragmented Browser/OS Automation**: NEVER fire multiple, piecemeal `osascript -e` snippets or inline GUI commands that interrupt the user with consecutive modals.
 - 🚫 **Unnecessary Rewrites**: Do not replace an entire file or subsystem when a 5-line diff solves the problem.
 - 🚫 **Duplicate Systems**: Do not write a new HTTP client or utility when the repository already has an internal helper for it.
 - 🚫 **Architectural Churn**: Do not change libraries (e.g. replacing Axios with Fetch or Jest with Vitest) unless explicitly instructed.

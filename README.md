@@ -1,7 +1,7 @@
 # agent-project-discovery-skill 🧭
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/badge/release-v1.1.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
+[![Release](https://img.shields.io/badge/release-v1.2.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/tmolavi/agent-project-discovery-skill/pulls)
 [![Supported Agents](https://img.shields.io/badge/Agents-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Antigravity%20%7C%20Copilot-blueviolet.svg)](#supported-ai-agents)
 
@@ -29,22 +29,81 @@ Today's AI coding assistants are capable, but their default initialization behav
 | **Clobbering Diffs**: Overwrites uncommitted work or ignores ongoing work in the working tree. | **Git Awareness**: Inspects `git status`, current branch, recent commits, and protects existing user modifications. |
 | **Architectural Churn**: Rewrites working patterns, duplicates existing utilities, or installs redundant libraries. | **Pattern Adherence**: Matches existing conventions, preserves backward compatibility, and produces minimal diffs. |
 | **No Accountability**: Leaves ambiguous completion messages without test results. | **Deterministic Protocols**: Mandates structured First Response (`Understanding`, `Current State`, `Plan`, `Blocking Questions`) and Completion Reports (`STATUS`, `CHANGES`, `VALIDATION`, `DEPLOYMENT`, `REMAINING`). |
-| **Middle-of-the-Night Halts**: Executes unprompted out-of-sandbox commands (`ssh`, public `curl`, obscure git diagnostics) that trigger confirmation modals and freeze the agent while you sleep. | **The "Sleep-Well" Protocol**: Enforces 100% in-sandbox deterministic local builds and canonical commands so agents work completely unattended until morning. |
+| **Middle-of-the-Night Halts**: Executes unprompted out-of-sandbox commands (`ssh`, public `curl`, obscure git diagnostics) that trigger confirmation modals and freeze the agent while you sleep. | **The "Sleep-Well" Protocol**: Enforces 100% in-sandbox deterministic local builds, canonical commands, and single-script automation so agents work completely unattended until morning. |
 
 ---
 
 ## 🌙 The "Sleep-Well" Principle: True Overnight Autonomy
 
-The ultimate goal of this skill is simple:
+The ultimate design goal of this skill is simple:
 > **"Assign a task, close your laptop, go to sleep, and review clean completed code in the morning without waking up to stalled confirmation prompts."**
 
-Traditional agents freeze overnight because they execute unprompted out-of-sandbox actions:
-- ❌ Curling live public production URLs (`curl https://...`)
-- ❌ Running obscure plumbing commands (`git count-objects`, `git fsck`)
-- ❌ Probing remote servers over SSH (`ssh ... "docker ps"`)
-- ❌ Tampering with global IDE configuration files
+### Why Do AI Agents Prompt for Approvals?
+Modern AI coding assistants (Google Antigravity, Claude Code, Cursor) enforce a **Sandbox Security Boundary**:
+1. **Standard Sandboxed Commands**: Local file edits, git status/diff, local test runners (`pytest`, `vitest`), and builds execute silently with zero approval prompts.
+2. **Approval Prompts Triggered When**:
+   - The agent requests **Unsandboxed Execution** (`BypassSandbox: true`) to gain raw network or full filesystem access without pre-configured permission grants.
+   - The agent probes **live public URLs** or external domains (`curl -s https://example.com/...`).
+   - The agent runs **unsolicited remote server commands** (`ssh server "docker images"` or `ssh server "ssh -T git@github.com"`).
+   - The agent executes **obscure Git plumbing** (`git count-objects`, `git fsck`).
+   - The agent attempts to **tamper with system or IDE config files** (`config.json`, global settings outside workspace).
+   - The agent runs **long chained shell pipelines** (`cmd1 && cmd2 | grep ... | awk ...`) that break prefix-based auto-approval rules.
+   - The agent runs **fragmented, iterative AppleScript/OS one-liners** (`osascript -e '...'`) to inspect browser sessions.
 
-**Under this skill**, agents stick strictly to deterministic local verification (`npm run build`, `pytest`, `cargo test`, unit tests), standard canonical git commands, and in-workspace file operations. Everything runs silently, safely, and unattended.
+### How This Skill Fixes It:
+- **Enforces Canonical Local Verification**: All code changes are verified through local builds (`npm run build`, `cargo check`, `go test`) and unit tests instead of hitting live production domains.
+- **Batched Single-Runner Pattern for OS & Browser Automation**: If interacting with an active browser session (Chrome, Safari, cPanel, Colab, Figma via AppleScript/CDP) or remote database is required, the agent writes a single self-contained script (e.g. in workspace or scratch), runs it once, and parses structured JSON output.
+- **Zero Global Config Tampering**: Agents never touch files outside the workspace root.
+
+---
+
+### 🛡️ Developer Guide: Granting Full Access Without Dialogs
+
+If you prefer to give your agent full unattended power without confirmation prompts:
+
+#### 1. Google Antigravity
+Add prefix grants to your `~/.gemini/config/config.json` under `globalPermissionGrants.allow`:
+```json
+{
+  "globalPermissionGrants": {
+    "allow": [
+      "command(git)",
+      "command(pnpm)",
+      "command(npm)",
+      "command(python3)",
+      "command(node)",
+      "command(ssh)",
+      "command(docker)",
+      "command(curl)",
+      "command(osascript)",
+      "unsandboxed(python3)",
+      "unsandboxed(bash)",
+      "unsandboxed(osascript)",
+      "unsandboxed(ssh)",
+      "unsandboxed(docker)",
+      "unsandboxed(curl)"
+    ]
+  }
+}
+```
+
+#### 2. Claude Code
+In your project or user configuration, enable auto-approved commands or run in non-interactive batch mode:
+```json
+{
+  "allowedCommands": [
+    "git *",
+    "pnpm *",
+    "npm *",
+    "python3 *",
+    "pytest *",
+    "node *"
+  ]
+}
+```
+
+#### 3. Cursor
+In `.cursorrules` or `.cursor/rules/discovery.mdc`, instruct the agent to run strictly within the workspace environment and follow the single-runner batch pattern.
 
 ---
 

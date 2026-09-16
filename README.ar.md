@@ -2,7 +2,7 @@
 ### `agent-project-discovery-skill`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/badge/release-v1.1.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
+[![Release](https://img.shields.io/badge/release-v1.2.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/tmolavi/agent-project-discovery-skill/pulls)
 
 > **"يجب على وكيل الذكاء الاصطناعي أن يفهم المشروع بعمق قبل أن يُغيّر أي سطر برمجياً."**
@@ -16,17 +16,84 @@
 
 ---
 
-## 🎯 ليش بنينا هذي المهارة؟ (شغل ذاتي طول الليل بدون وجع راس)
+## 🌙 بروتوكول النوم الهانئ (Sleep-Well Protocol): أتمتة ليلية ذاتية بالكامل
 
-الفكرة الأساسية من هذا المشروع إنك **تعطي الوكيل المهمة، وتقفل لابتوبك وتروح تنام مرتاح**، وتصحى الصباح وتلقى الشغل مخلص ومختبر بالكامل؛ مو إن الوكيل يصحّيك كل دقيقة أو يوقف الشغل نص الليل ينتظر تضغط زر موافقة!
+الفكرة الأساسية من هذا المشروع إنك:
+> **"تعطي الوكيل المهمة، وتقفل لابتوبك وتروح تنام مرتاح؛ وتصحى الصباح وتلقى الشغل مخلص ومختبر ونظيف بالكامل، مو واقف نص الليل ينتظر تضغط زر موافقة!"**
 
-الأخطاء الشائعة للوكلاء اللي تخرب الشغل الذاتي الليلي:
-1. **فحص الروابط العامة الحية (Live Public URLs):** بدلاً من فحص الكود محلياً، يرسل أوامر `curl` للموقع الفعلي الحي، مما يشغّل فايِروول الساندبوكس ويجمّد الوكيل.
-2. **أوامر Git الغريبة والنادرة:** تشغيل أوامر غير شائعة مثل `git count-objects` أو `git fsck` التي لا توجد في القائمة المسموحة فتطلب إذناً يدوياً.
-3. **نوافذ التأكيد المزعجة (Permission Popups):** إرسال أوامر ريموت عبر SSH بدون داعٍ وتعطيل المستخدم.
-4. **التعديل المتهوّر بدون استكشاف:** الدخول على ملفات عشوائية والتعديل عليها بدون فهم البنية.
-5. **الأسئلة البديهية اللي ترفع الضغط:** طرح أسئلة إجاباتها موجودة في الكود نفسه.
-6. **مسح وتخريب التعديلات الحالية (Uncommitted Changes):** تجاهل تعديلات المطور غير المحفوظة والكتابة فوقها.
+---
+
+### ❓ ليش الوكلاء يطلبون تأكيدات ونوافذ موافقة (Approval Modals) طول الوقت؟
+
+في بيئات البرمجة الذكية الحديثة (مثل Google Antigravity، Claude Code، و Cursor)، يوجد **نظام حماية وساندبوكس (Sandbox)**:
+1. **الأوامر الداخلية بالساندبوكس (Standard Sandbox)**: قراءة وتعديل الملفات داخل المشروع، فحص `git status` و `git diff`، البناء المحلي (`npm run build`, `cargo check`) والاختبارات (`pytest`, `vitest`) تشتغل **بشكل صامت وتلقائي 100% بدون أي طلب تأكيد**.
+2. **الأسباب اللي تفتح نوافذ التأكيد فجأة وتوقّف الشغل**:
+   - **طلب الخروج من الساندبوكس (`BypassSandbox: true`)**: لما يحاول الوكيل الوصول المباشر للشبكة أو كامل القرص بدون وجود صلاحية مسجلة مسبقاً.
+   - **فحص الروابط الحية على الإنترنت (`curl https://...`)**: إرسال طلبات HTTP لمواقع حية للتأكد من الكود بدلاً من فحصه محلياً.
+   - **أوامر الخوادم العشوائية (`ssh`, `scp`, `docker images` على السيرفر)**: محاولة الاتصال بالخادم الحي بدون طلب صريح.
+   - **أوامر Git الداخلية العميقة (`git count-objects`, `git fsck`)**: أوامر غير معتادة تخرق فلاتر الأوامر المسموحة وتطلب إذناً يدوياً.
+   - **محاولة تعديل ملفات النظام وإعدادات الـ IDE**: العبث بملفات خارج مجلد المشروع (مثل `config.json`).
+   - **سلاسل الأوامر الطويلة بالأنابيب (`cmd1 && cmd2 | grep ... | awk ...`)**: السلاسل المعقدة تكسر ميزة التعرف التلقائي على الأوامر المصرح بها.
+   - **أوامر أبل سكربت / المتصفح المتفرقة (`osascript -e '...'`)**: تشغيل سكربتات فردية متتالية لفحص المتصفح تفتح نوافذ تأكيد متكررة.
+
+---
+
+### 🛠️ كيف تعالج هذه المهارة كل هذي المشاكل؟
+
+1. **التحقق المحلي والحتمي فقط**: منع فحص الروابط الحية؛ ويتم التحقق من الأكواد عبر البناء المحلي (`npm run build`)، والاختبارات، والسيرفر المحلي (`127.0.0.1`).
+2. **سكربت التشغيل الموحد لأتمتة المتصفح والنظام (Single-Runner Batching)**: إذا طلب المستخدم فحص تبويبات المتصفح النشطة (مثل cPanel، سحابة، كولاب) أو فحص قاعدة بيانات، يقوم الوكيل بكتابة سكربت بايثون أو أبل سكربت كامل ومستقل، ويشغله **مرة واحدة فقط** ويقرأ النتيجة المهيكلة (JSON) بدون تكرار النوافذ المزعجة.
+3. **الفحص الساكن للنشر**: قراءة الحاويات والمنافذ من `docker-compose.yml` و `Dockerfile` بدلاً من إرسال أوامر SSH متكررة.
+4. **عزل المشروع بالكامل**: عدم المساس بأي ملفات عامة خارج مجلد العمل.
+
+---
+
+### 🛡️ دليل المطور: تفعيل الصلاحيات الكاملة (Full Access Setup)
+
+إذا كنت تبغى تعطي الأداة صلاحيات كاملة وتشتغل بدون أي نافذة تأكيد:
+
+#### 1. Google Antigravity
+أضف الأوامر المسموحة في ملف إعداداتك `~/.gemini/config/config.json` تحت `globalPermissionGrants.allow`:
+```json
+{
+  "globalPermissionGrants": {
+    "allow": [
+      "command(git)",
+      "command(pnpm)",
+      "command(npm)",
+      "command(python3)",
+      "command(node)",
+      "command(ssh)",
+      "command(docker)",
+      "command(curl)",
+      "command(osascript)",
+      "unsandboxed(python3)",
+      "unsandboxed(bash)",
+      "unsandboxed(osascript)",
+      "unsandboxed(ssh)",
+      "unsandboxed(docker)",
+      "unsandboxed(curl)"
+    ]
+  }
+}
+```
+
+#### 2. Claude Code
+حدّد الأوامر التلقائية في الإعدادات:
+```json
+{
+  "allowedCommands": [
+    "git *",
+    "pnpm *",
+    "npm *",
+    "python3 *",
+    "pytest *",
+    "node *"
+  ]
+}
+```
+
+#### 3. Cursor
+أضف `templates/AGENTS.md` في جذر مشروعك أو في `.cursorrules`.
 
 ---
 
@@ -60,20 +127,19 @@ cp SKILL.md ~/.gemini/config/skills/agent-project-discovery-skill/SKILL.md
 mkdir -p .claude/skills
 cp SKILL.md .claude/skills/project-discovery.md
 ```
-أو ضع الإرشادات في ملف `CLAUDE.md` داخل مشروعك.
+أو أضف محتوى `templates/AGENTS.md` إلى ملف `CLAUDE.md`.
 
 ### 3. Cursor
-أنشئ الملف `.cursor/rules/discovery.mdc` أو أضف القاعدة في `.cursorrules`:
+أنشئ ملف `.cursor/rules/discovery.mdc` أو أضف هذا التوجيه إلى `.cursorrules`:
 ```markdown
 Before making any code edits or asking questions, read and execute the discovery steps in SKILL.md.
 Always begin your first response with the 4-part protocol (Understanding, Current State, Plan, Blocking Questions).
 ```
 
-### 4. GitHub Copilot Workspace
-أضف محتوى `templates/AGENTS.md` في المسار `.github/copilot-instructions.md`.
+### 4. GitHub Copilot
+أضف محتوى `templates/AGENTS.md` إلى `.github/copilot-instructions.md`.
 
-### 5. تشغيل سريع في أي مشروع جديد (خلال 30 ثانية)
-نزّل القالب وضعه في المجلد الرئيسي للمشروع:
+### 5. بداية سريعة في أي مشروع (30 ثانية)
 ```bash
 curl -sSL https://raw.githubusercontent.com/tmolavi/agent-project-discovery-skill/main/templates/AGENTS.md -o AGENTS.md
 ```
@@ -81,4 +147,4 @@ curl -sSL https://raw.githubusercontent.com/tmolavi/agent-project-discovery-skil
 ---
 
 ## 📄 الترخيص
-هذا المشروع منشور ومتاح تحت رخصة [MIT](LICENSE) المفتوحة، ومجاني بالكامل للاستخدام الشخصي والتجاري والشركات.
+هذا المشروع منشور تحت رخصة البرمجيات الحرة مفتوحة المصدر [MIT](LICENSE)، وهو متاح للاستخدام الشخصي والتجاري والمؤسسي مجاناً بالكامل.

@@ -47,7 +47,7 @@ Do **NOT** ask questions such as:
 
 - **Minimal Diffs**: Make targeted, atomic modifications. Never refactor surrounding untouched code unless explicitly asked.
 - **Pattern Matching**: Match the existing paradigm (error handling, logging, naming, formatting, type definitions).
-- **Backward Compatibility**: Preserve existing public interfaces, APIs, schemas, and runtime contracts.
+- **Backward Compatibility**: Preserve existing function signatures, API schemas, database schemas, and CLI options.
 - **Zero Hallucinated Dependencies**: Do not introduce new third-party dependencies without verifying existing alternatives in the lockfile.
 - **Zero Unsolicited Remote/SSH Probing**: NEVER run `ssh`, `scp`, `rsync`, or remote `docker` commands (`docker ps`, `docker images`, `docker inspect`) on external servers during discovery or development. Understand deployment statically by reading `Dockerfile`, `compose.yaml`, and CI configs.
 - **Zero Remote Port Probing**: NEVER run port checks or endpoint pings via SSH (e.g. `ssh server "curl ..."`). Determine port mappings statically from `docker-compose.yml`, `Dockerfile`, and service configs.
@@ -56,7 +56,8 @@ Do **NOT** ask questions such as:
 - **Canonical Git Commands Only**: Stick strictly to high-level commands (`git status`, `git diff`, `git log`, `git branch`). NEVER run obscure repository plumbing (`git count-objects`, `git fsck`).
 - **Zero Global Config Tampering**: NEVER attempt to modify global IDE configs, agent permission files (e.g., `config.json`), or files outside the workspace root. All project work must remain strictly self-contained within the repository.
 - **Sandbox Discipline**: Run all commands inside the default sandbox without triggering permission confirmation modals unless the user explicitly requested remote operations.
-- **Batch Remote Operations**: If the user explicitly asks for remote work, combine operations into a unified script instead of firing dozens of individual SSH commands that trigger confirmation prompts.
+- **Batched Browser & OS Automation**: When interacting with active browser sessions (Chrome, Safari, cPanel, cloud consoles via AppleScript/CDP), NEVER run multiple fragmented inline `osascript -e` or shell one-liners. Always write a self-contained helper script, run it once, and parse structured output cleanly.
+- **Batch Remote Operations**: If the user explicitly asks for remote work or remote database queries, combine operations into a unified script instead of firing dozens of individual SSH commands that trigger confirmation prompts.
 - **Verification First**: Always run existing lints, typechecks, and tests before and after making changes.
 
 ---

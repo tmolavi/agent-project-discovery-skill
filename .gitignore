@@ -1,0 +1,5 @@
+.DS_Store
+geo-aeo-news-engine/
+node_modules/
+__pycache__/
+*.pyc

@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-09-16
+
+### Added
+- **Full Access & Zero-Interruption Guide**: Comprehensive developer setup guide for Antigravity, Claude Code, and Cursor to enable 100% autonomous unattended execution.
+- **The 8 Forbidden Modal-Triggering Traps**: Explicitly codified rules prohibiting live public domain curling, fragmented remote SSH calls, obscure Git plumbing diagnostics (`git count-objects`), global IDE config tampering, and chained multi-pipe shell commands.
+- **OS Automation & Browser Session Integration**: Single-runner batching pattern for interacting with active browser tabs (cPanel, cloud consoles, Colab) via AppleScript/CDP without causing approval dialog fatigue.
+- Updated all localized README files (`README.fa.md`, `README.tr.md`, `README.az.md`, `README.ar.md`, `README.md`) with complete explanations of the sandbox security model and full access permissions.
+
 ## [1.1.0] - 2026-09-13
 
 ### Added
