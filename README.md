@@ -230,6 +230,20 @@ Contributions are welcome from the open-source and AI engineering community!
 
 ---
 
-## 📄 License
+## 🔗 Related Projects
 
+Part of the **Molavi AI Engineering Ecosystem**:
+
+* [**mcp-agent-skills-hub**](https://github.com/tmolavi/mcp-agent-skills-hub): Curated production agent skills and MCP configurations.
+* [**lean-agent-skills**](https://github.com/tmolavi/lean-agent-skills): Token-efficient, context-compressed skills for coding agents.
+* [**n8n-agent-skills**](https://github.com/tmolavi/n8n-agent-skills): Production n8n agent workflow architecture.
+* [**geo-scope**](https://github.com/tmolavi/geo-scope): Multi-model empirical AI visibility benchmark engine.
+* [**Ecosystem Map**](https://github.com/tmolavi/geo-scope/blob/main/docs/GITHUB_ECOSYSTEM.md): Complete architecture and evidence flow.
+
+---
+
+## 👤 Author & License
+
+Developed by **Taghi Molavi** — [molavi.pro](https://molavi.pro)  
 Distributed under the [MIT License](LICENSE). Open-source and free for personal, commercial, and enterprise use.
+
