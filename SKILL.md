@@ -1,7 +1,7 @@
 ---
 name: agent-project-discovery-skill
 description: Universal startup and context discovery skill for AI coding agents to inspect, understand, and plan before modifying existing projects.
-version: 1.4.0
+version: 1.5.0
 license: MIT
 metadata:
   author: agent-project-discovery-skill contributors
@@ -24,7 +24,8 @@ When entering an existing codebase, an AI agent must behave like a senior softwa
 3. **Never ask frivolous questions** that can be answered by reading the codebase or documentation.
 4. **Never ask timid permission questions for routine testing or verification**—decide and verify autonomously ("خودش تصمیم بگیره").
 5. **Never SSH into remote servers to read source code or routes**—inspect local repository files directly.
-6. **Always respect existing conventions, formatting, architecture, and invariants.**
+6. **Never ask confirmation to test model routers, dispatchers, or reasoning gateways**—verify routing logic autonomously via local mocks.
+7. **Always respect existing conventions, formatting, architecture, and invariants.**
 
 ---
 
@@ -72,7 +73,8 @@ When entering an existing codebase, an AI agent must behave like a senior softwa
 > - 🚫 **Trap 6: Fragmented OS / AppleScript Snippets**: Never run multiple iterative one-liner `osascript -e` or GUI automation commands from the shell.
 > - 🚫 **Trap 7: Unprompted Sandbox Escalation**: Never switch to unsandboxed mode (`BypassSandbox: true`) unless the user explicitly requested external network or system-level actions that strictly require it.
 > - 🚫 **Trap 8: Destructive Remote Operations**: Never run unbacked database mutations (`DROP TABLE`, unindexed `UPDATE`) or remote server resets.
-> - 🚫 **Trap 9: Timid Test Approvals & Live Endpoint Probing ("Allow testing /api/...?")**: NEVER stall the developer by asking permission questions or confirmation prompts to run tests, execute SSH snippets, or probe live remote endpoints (e.g. `Allow testing /api/models/generate? ssh root@server "docker exec ... python3 -c ..."`). **The agent must decide autonomously ("خودش تصمیم بگیره")**:
+> - 🚫 **Trap 9: Timid Test Approvals, Model Dispatch & Live Inference Probing ("Allow testing central model dispatch?", "Allow testing /api/...?")**: NEVER stall the developer by asking permission questions or confirmation prompts to run tests, execute SSH snippets, probe live remote endpoints, or test model dispatchers/reasoning routers (e.g. `Allow testing central model dispatch?`, `Allow testing /api/models/generate? ssh root@server "docker exec ... python3 -c '... test_meeting_reasoning() ...'"`). **The agent must decide autonomously ("خودش تصمیم بگیره")**:
+>   - Model routing, central dispatch, reasoning routers (`HermesReasoningRouter`), payload schemas, headers, and tier selection must be verified autonomously via local unit tests with mocked transports (`httpx.MockTransport`, `respx`, `unittest.mock`) or local test fixtures.
 >   - Always verify via local unit tests, test doubles, mocks, or local loopback servers without asking.
 >   - If live remote testing is not explicitly ordered by the user, decide autonomously to mock it locally and proceed.
 >   - If live testing was explicitly ordered, execute it directly in batch without halting to ask permission.
@@ -145,6 +147,7 @@ AI agents lose user trust when they ask trivial, helpless, or timid permission-s
 - ❌ *"What does function XYZ do?"*
 - ❌ *"Allow testing <endpoint>?"* (e.g., `Allow testing /api/models/generate?` followed by SSH/docker snippets).
 - ❌ *"Allow checking model router endpoints?"* (e.g., `Allow checking model router endpoints? ssh ... "docker exec ... python3 -c 'with open(...) ...'"`).
+- ❌ *"Allow testing central model dispatch?"* (e.g., `Allow testing central model dispatch? ssh ... "docker exec ... python3 -c '... test_meeting_reasoning() ...'"`).
 - ❌ *"Allow checking <routes / endpoints / source files / schemas> via SSH?"*
 - ❌ *"Should I test this on the server or run this SSH command?"*
 - ❌ *"Can I execute this snippet to verify the live model/API?"*
@@ -156,10 +159,11 @@ The agent must take full engineering ownership rather than interrupting the deve
    - **Secondary**: Local builds (`npm run build`, `cargo check`, `go test`) and typechecks.
    - **Tertiary**: Local loopback server (`http://127.0.0.1:<port>`) if an internal service is already running.
 2. **Autonomous Local Route & Code Discovery**: Never reach out via SSH or remote container commands to inspect source files that belong to the repository (e.g. `app/api/routers/models.py`). To discover endpoints, handlers, models, or schemas, autonomously inspect the local workspace codebase using local search, ripgrep, AST, or file viewing. Never ask permission to inspect routes or code.
-3. **Autonomous Remote Handling**:
+3. **Autonomous Model Router & Central Dispatch Verification**: When testing reasoning routers (`HermesReasoningRouter`), multi-model tier dispatchers, central dispatch gateways, or LLM payload builders, autonomously test logic, message structures, prompt formatting, headers (`X-Project-ID`, `X-API-Key`), and tier selection locally using mocks (`unittest.mock`, `httpx.MockTransport`, `respx`). Never fire unsolicited prompt generation queries (`"سلام آرا، خودتو خیلی کوتاه معرفی کن."`) to remote server containers, and never stall the user asking *"Allow testing central model dispatch?"*.
+4. **Autonomous Remote Handling**:
    - If the user did NOT explicitly order live remote testing, autonomously decide to mock/stub the endpoint locally. Never pop prompts asking to probe live servers.
    - If the user DID explicitly command remote server verification, execute it directly in a single batch runner script without asking for permission again.
-4. **State Decisions in the Report**: Do not block on human confirmation. Document what you decided and executed cleanly in the final Completion Report under `VALIDATION`.
+5. **State Decisions in the Report**: Do not block on human confirmation. Document what you decided and executed cleanly in the final Completion Report under `VALIDATION`.
 
 #### The Autonomous Resolution Process:
 1. **Search First**: Use grep, file name matchers, AST symbol lookup, or ripgrep.
@@ -188,9 +192,9 @@ The agent must act as a custodian of the existing codebase:
 - **Batched Automation**: When interacting with OS utilities, browser tabs, or external servers, write a single runner script instead of firing fragmented, multi-step shell calls.
 
 #### Strict Anti-Patterns (Avoid):
-- 🚫 **Timid Test & Inspection Permission Seeking**: Asking the developer for permission before running tests, checking router endpoints, or inspecting files (e.g., `Allow testing /api/models/generate?`, `Allow checking model router endpoints?`). The agent must autonomously decide to inspect and test locally with mocks or local runners ("خودش تصمیم بگیره").
+- 🚫 **Timid Test & Dispatch Permission Seeking**: Asking the developer for permission before running tests, checking router endpoints, or testing model dispatch (e.g., `Allow testing /api/models/generate?`, `Allow checking model router endpoints?`, `Allow testing central model dispatch?`). The agent must autonomously decide to inspect and test locally with mocks or local runners ("خودش تصمیم بگیره").
 - 🚫 **Remote Code & Route Probing**: Running `ssh` or remote container commands (`docker exec ... python3 -c "open('/workspace/...')"` ) to inspect source files, grep router decorators, or parse python ASTs on a remote server. Inspect all routes and models locally from the repository.
-- 🚫 **Unsolicited Live Inference & Remote Probing**: Calling remote live model generation endpoints (`/api/models/generate`) or container shell executions (`ssh ... "docker exec ... python3 -c '...' "`) on remote servers without explicit instruction.
+- 🚫 **Unsolicited Live Inference & Central Dispatch Probing**: Calling remote live model generation endpoints (`/api/models/generate`) or container shell executions (`ssh ... "docker exec ... python3 -c '... test_meeting_reasoning() ...' "`) on remote servers without explicit instruction.
 - 🚫 **Unsolicited Remote/SSH Probing**: NEVER run `ssh`, `scp`, `rsync`, remote `docker images`, `docker ps`, `docker inspect`, or remote `kubectl` commands during discovery. Understand deployment statically by reading `docker-compose.yml`, `Dockerfile`, and CI workflows.
 - 🚫 **Remote Port Probing & Endpoint Polling**: NEVER run remote port checks or endpoint pings via SSH (e.g., `ssh ... "curl -s -I http://127.0.0.1:..."`). Determine ports and URLs statically from configs.
 - 🚫 **Unsolicited Sandbox Escalation**: Never run exploratory commands outside the sandbox (`BypassSandbox: true`). Do not trigger security confirmation modals unless the user explicitly requested external network/remote server operations.

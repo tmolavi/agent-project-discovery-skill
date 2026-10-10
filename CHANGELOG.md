@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 2026-10-10
+
+### Added
+- **Prohibition of Central Model Dispatch & Reasoning Router Approvals**: Strictly forbidden asking `Allow testing central model dispatch?` or running ad-hoc remote SSH scripts testing central dispatchers/reasoning routers (e.g. `HermesReasoningRouter`, gateway `/api/models/generate`).
+- **Autonomous Router Mocking & Reasoning Validation Mandate ("خودش تصمیم بگیره")**: Agents must autonomously decide verification approaches using local mocking (`httpx.MockTransport`, `respx`, `unittest.mock`) and local unit tests, rather than halting execution or triggering remote confirmation modals.
+- Updated `SKILL.md`, `templates/AGENTS.md`, and all localized README files (`README.md`, `README.fa.md`, `README.tr.md`, `README.az.md`, `README.ar.md`) with explicit dispatch and reasoning router rules.
+
 ## [1.4.0] - 2026-10-10
 
 ### Added

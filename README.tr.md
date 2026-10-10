@@ -2,12 +2,12 @@
 ### `agent-project-discovery-skill`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/badge/release-v1.4.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
+[![Release](https://img.shields.io/badge/release-v1.5.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/tmolavi/agent-project-discovery-skill/pulls)
 
 > **"Bir yapay zeka ajanı, değişiklik yapmadan önce projeyi derinlemesine anlamalıdır."**
 
-Bu پروژه, kodlama yapan yapay zeka ajanları (Claude Code, Cursor, Google Antigravity, OpenAI Codex, GitHub Copilot vb.) için evrensel, üretime hazır bir başlangıç becerisidir (startup skill). Ajanların projeyi anlamadan aceleyle kod değiştirmesini, çalışan sistemleri baştan yazmasını, gereksiz sorular sormasını, test veya rota kontrolü için izin istemesini ve sizi sürekli ekran başında onay butonlarına basmak zorunda bırakmasını engeller.
+Bu پروژه, kodlama yapan yapay zeka ajanları (Claude Code, Cursor, Google Antigravity, OpenAI Codex, GitHub Copilot vb.) için evrensel, üretime hazır bir başlangıç becerisidir (startup skill). Ajanların projeyi anlamadan aceleyle kod değiştirmesini, çalışan sistemleri baştan yazmasını, gereksiz sorular sormasını, test, rota veya model dağıtım (central dispatch) kontrolü için izin istemesini ve sizi sürekli ekran başında onay butonlarına basmak zorunda bırakmasını engeller.
 
 ---
 
@@ -29,6 +29,7 @@ Modern yapay zeka kodlama araçlarında (Google Antigravity, Claude Code, Cursor
 1. **Kum Havuzu İçi Standart Komutlar (Standard Sandbox)**: Çalışma alanı içindeki dosya okuma/yazma işlemleri, yerel git durumları (`git status`, `git diff`), yerel derleme (`npm run build`, `cargo check`) ve yerel testler (`pytest`, `vitest`) **tamamen sessiz, otomatik ve kullanıcıdan onay istemeden** çalışır.
 2. **Onay Penceresi Tetikleyen Durumlar**:
    - **Rutin Test Onayı İsteme (`Allow testing /api/... ?`)**: Ajanın bağımsız karar vermek yerine test çalıştırmak veya SSH betiği çalıştırmak için kullanıcıyı durdurup onay beklemesi.
+   - **Model Yönlendirme ve Dağıtım Onayı İsteme (`Allow testing central model dispatch?`)**: Ajanın model ağ geçidini yerel ortamda mock'lamak yerine canlı sunucuda test etmek için onay sorması.
    - **Rota ve Kod Kontrolü İçin İzin İsteme (`Allow checking model router endpoints?`)**: Ajanın yerel dosyaları okumak yerine uzak sunucuya SSH atıp rota dosyalarını parse etmeye çalışması.
    - **Kum Havuzunu Aşma Talebi (`BypassSandbox: true`)**: Ajanın ham ağ erişimi veya disk geneline erişim talep etmesi ve buna uygun izin kuralının tanımlı olmaması.
    - **Canlı Genel URL'leri Sorgulamak (`curl https://...`)**: Kod doğrulaması için canlı internet sitelerine HTTP istekleri atılması.
