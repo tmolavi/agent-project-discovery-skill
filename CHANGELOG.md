@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.20.0] - 2026-10-10
+
+### Added
+- **The 29th Forbidden Trap (Remote Docker Image & Tag Probing)**: Strictly forbidden asking `Allow checking docker images on server?` or `Allow checking <docker images / tags> on server?` and firing remote SSH commands (`ssh ... "docker images | grep -E '...'"` or `docker images`) to list, inspect, or filter images on remote server hosts.
+- **Autonomous Local Docker Image & Tag Discovery Mandate ("خودش تصمیم بگیره")**: Mandated that agents must determine Docker image tags, repository names, base images (e.g. `node:18-alpine`, `python:3.11-slim`), and build contexts statically from local repository manifests (`docker-compose.yml`, `Dockerfile`, CI pipelines), or build/inspect images locally in the workspace without remote SSH probing or user approval modals.
+- Updated `SKILL.md`, `templates/AGENTS.md`, and all localized README files (`README.md`, `README.fa.md`, `README.tr.md`, `README.az.md`, `README.ar.md`) to version `v1.20.0`.
+
 ## [1.19.0] - 2026-10-10
 
 ### Added

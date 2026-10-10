@@ -1,7 +1,7 @@
 # agent-project-discovery-skill 🧭
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/badge/release-v1.19.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
+[![Release](https://img.shields.io/badge/release-v1.20.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/tmolavi/agent-project-discovery-skill/pulls)
 [![Supported Agents](https://img.shields.io/badge/Agents-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Antigravity%20%7C%20Copilot-blueviolet.svg)](#supported-ai-agents)
 
@@ -45,6 +45,7 @@ Today's AI coding assistants are capable, but their default initialization behav
 | **Remote Build Directory Inspection**: Halts asking *"Allow inspecting container .next directory?"* and fires remote `ls -la /app/.next`. | **Autonomous Local Build Verification**: Generates and checks `.next/` and assets locally via `npm run build`. |
 | **Ad-hoc SCP Component & Page Copying**: Halts asking *"Allow copying components to server?"*, *"Allow copying page.tsx and robots.ts to server?"*, or *"Allow copying robots.ts to server?"*. | **Autonomous Git-Based Releases**: Commits all code locally and restricts server updates to canonical deployment scripts (`deploy.sh`). |
 | **Remote Host Runtime Probing**: Halts asking *"Allow checking node on server host?"* and fires SSH `node -v || true`. | **Autonomous Host Runtime Discovery**: Determines Node.js, Python, or package manager constraints statically from `package.json` (`engines`), `.nvmrc`, and `Dockerfile` without SSH. |
+| **Remote Docker Image Probing**: Halts asking *"Allow checking docker images on server?"* and fires SSH `docker images | grep ...`. | **Autonomous Docker Image Discovery**: Determines image tags, repositories, and base images statically from `docker-compose.yml`, `Dockerfile`, and CI manifests without SSH. |
 | **Server Container & Git Probing**: Halts asking *"Allow checking server container and git status?"*, *"Allow checking server git branch and log?"*, *"Allow listing git branches on server?"*, or *"Allow checking molavi-pro container on server?"* and fires SSH. | **Autonomous Container & Git Discovery**: Discovers container setups statically from `docker-compose.yml`/`Dockerfile` and checks git status, branches (`git branch -a`), and commit logs locally in the workspace. |
 | **Unpredicted State Freezes**: Halts work mid-task or interrupts repeatedly over unpredicted edge cases. | **Continuous Momentum & Deferred Batching**: Proceeds through unexpected situations with safe fallbacks, finishes all other work, and batches all questions for the end ("همه رو یه جا بپرسه"). |
 | **Clobbering Diffs**: Overwrites uncommitted work or ignores ongoing work in the working tree. | **Git Awareness**: Inspects `git status`, current branch, recent commits, and protects existing user modifications. |
@@ -83,6 +84,7 @@ Modern AI coding assistants (Google Antigravity, Claude Code, Cursor) enforce a 
    - The agent prompts to ask **container build directory inspection permission** (`Allow inspecting container .next directory?`).
    - The agent prompts to ask **ad-hoc SCP file copy permission** (`Allow copying components to server?`, `Allow copying page.tsx and robots.ts to server?`, `Allow copying robots.ts to server?`).
    - The agent prompts to ask **host runtime or binary check permission** (`Allow checking node on server host? ssh ... "node -v || true"`).
+   - The agent prompts to ask **docker image check permission** (`Allow checking docker images on server? ssh ... "docker images | grep ..."`).
    - The agent prompts to ask **server container or git state permission** (`Allow checking server container and git status?`, `Allow checking server git branch and log?`, `Allow listing git branches on server?`, `Allow checking molavi-pro container on server?`).
    - The agent halts mid-task to ask **unpredicted edge case questions** one by one instead of deferring them.
    - The agent probes **live public URLs** or external domains (`curl -s https://example.com/...`).
@@ -111,6 +113,7 @@ Modern AI coding assistants (Google Antigravity, Claude Code, Cursor) enforce a 
 - **Autonomous Build Output Verification**: Inspects build outputs (`.next/`, `dist/`) locally via `npm run build` without inspecting container directories.
 - **Autonomous Source Control Releases**: Manages file edits strictly via git commits and restricts server deployment to canonical deployment pipelines.
 - **Autonomous Host Runtime Discovery**: Inspects runtime requirements (Node.js versions, Python runtimes) from local repository manifests (`package.json` engines, `.nvmrc`, `Dockerfile`) without firing remote SSH `node -v` probes.
+- **Autonomous Docker Image Discovery**: Inspects Docker image tags, base images, and repositories statically from local manifests (`docker-compose.yml`, `Dockerfile`) without firing remote SSH `docker images` commands.
 - **Autonomous Container & Git Discovery**: Inspects container architectures and ports from local manifests (`docker-compose.yml`, `Dockerfile`) and checks git status, branch listings (`git branch`, `git branch -a`), and commit history locally without remote SSH probing.
 - **Autonomous Router & Dispatch Mocking**: Validates reasoning routers and model tier payloads using mocked transports locally.
 - **Autonomous Voice & TTS Mocking**: Validates speech synthesis speed, streaming chunks, updated Edge-TTS libraries, and audio services (`TTSService`) locally with dummy audio bytes and async mocks instead of remote SSH benchmarks.
