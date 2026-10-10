@@ -1,7 +1,7 @@
 # agent-project-discovery-skill 🧭
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/badge/release-v1.27.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
+[![Release](https://img.shields.io/badge/release-v1.28.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/tmolavi/agent-project-discovery-skill/pulls)
 [![Supported Agents](https://img.shields.io/badge/Agents-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Antigravity%20%7C%20Copilot-blueviolet.svg)](#supported-ai-agents)
 
@@ -51,6 +51,7 @@ Today's AI coding assistants are capable, but their default initialization behav
 | **Cross-Container Service Probing**: Halts asking *"Allow inspecting Hermes skills from hamzad-ara?"* and fires SSH cross-container HTTP requests. | **Autonomous Cross-Container Discovery**: Discovers service mesh topology and skill registries statically from local manifests and mocks inter-container endpoints locally. |
 | **Ad-hoc Container Hot-Patching**: Halts asking *"Allow deploying assets to container and restarting?"* and fires compound SSH `tar && docker cp && docker restart`. | **Autonomous Atomic Releases**: Manages deployments strictly via canonical release scripts (`deploy.sh`) without piecemeal hot-patching or modal prompts. |
 | **Exhaustive Skill Enumeration**: Halts asking *"Allow listing all Hermes skills?"* and fires SSH cross-container Python parsing scripts. | **Autonomous Static Skill Discovery**: Inspects complete skill catalogs statically from `hermes-skill-discovery-registry-v1.json` without remote SSH scripts. |
+| **Public URL Title Probing**: Halts asking *"Allow verifying title on public URL?"* and fires `curl -sk https://... | grep`. | **Autonomous Source Title Verification**: Inspects page titles and metadata directly in local layout/page components without live public URL probing. |
 | **Remote API Docs & OpenAPI Probing**: Halts asking *"Allow checking Hermes API endpoints?"* and fires SSH probes to `/docs` and `/openapi.json`. | **Autonomous API Schema Discovery**: Inspects route definitions and OpenAPI schemas statically from local codebase files without remote SSH probes. |
 | **Microservice Route Sweeping & Probing**: Halts asking *"Allow probing staging-hermes endpoints?"* and fires SSH loops over paths (`/`, `/api/v1`, `/health`, `/api/v1/models`). | **Autonomous Endpoint & Mock Verification**: Inspects endpoints statically in router files and tests routes locally using mock HTTP transports without remote SSH probing loops. |
 | **Ad-hoc Multi-File SCP Sync & SSH Cat**: Halts asking *"Allow syncing updated ARA files..."*, *"Allow copying updated files..."*, or *"Allow transferring stt_service.py via SSH cat?"*. | **Autonomous Git & Canonical Releases**: Commits all code locally and executes deployments strictly via planned release scripts (`deploy.sh`) without piecemeal SCP copies or SSH cat piping. |
@@ -133,6 +134,7 @@ Modern AI coding assistants (Google Antigravity, Claude Code, Cursor) enforce a 
 - **Autonomous Cross-Container Service Discovery**: Inspects service mesh capabilities, skill registries, and internal APIs statically from local manifests (`docker-compose.yml`, `hermes-skill-discovery-registry-v1.json`) without firing remote SSH cross-container probes.
 - **Autonomous Atomic Deployment Handling**: Manages container assets and release pipelines through canonical scripts (`deploy.sh`) without ad-hoc compound SSH container hot-patching.
 - **Autonomous Static Skill Catalog Discovery**: Inspects complete skill catalogs and tool definitions statically from `hermes-skill-discovery-registry-v1.json` without remote SSH scripts.
+- **Autonomous Title & Metadata Verification**: Inspects titles and HTML metadata statically from local layout/page source files without firing `curl` requests against live public domains.
 - **Autonomous API Schema Discovery**: Inspects API route definitions and schemas statically from local repository controllers without remote SSH `/docs` or `/openapi.json` probes.
 - **Autonomous Microservice Endpoint Discovery & Mocking**: Inspects microservice routes and APIs statically from codebase controllers and tests integration locally with mocked HTTP clients without remote SSH route sweeping loops.
 - **Autonomous Git-Based Releases & Anti-SSH-Cat Mandate**: Manages source updates strictly via local git commits and planned release scripts (`deploy.sh`) without ad-hoc multi-file SCP transfers or SSH cat redirections.

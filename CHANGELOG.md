@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.28.0] - 2026-10-11
+
+### Added
+- **Strengthened Trap 1 (Public URL Title & Metadata Probing)**: Strictly forbidden asking `Allow verifying title on public URL?` and executing `curl -sk https://... | grep -C 2 -i "..."` against live public domains.
+- **Autonomous Title & HTML Metadata Discovery Mandate ("خودش تصمیم بگیره")**: Mandated that agents must discover and verify page titles, HTML metadata, and headers statically from local source code files (`layout.tsx`, `page.tsx`, `index.html`) or local build test outputs rather than firing live HTTP requests to public production domains or prompting for confirmation.
+- **Engineering Standard Added**: Added `Zero Public URL & Live Domain Probing` to `templates/AGENTS.md`.
+- Updated `SKILL.md`, `templates/AGENTS.md`, and all localized README files (`README.md`, `README.fa.md`, `README.tr.md`, `README.az.md`, `README.ar.md`) to version `v1.28.0`.
+
 ## [1.27.0] - 2026-10-10
 
 ### Added
