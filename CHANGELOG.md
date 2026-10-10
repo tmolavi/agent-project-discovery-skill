@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.26.0] - 2026-10-10
+
+### Added
+- **The 35th Forbidden Trap (Remote Microservice API Docs & OpenAPI Specification Probing)**: Strictly forbidden asking `Allow checking Hermes API endpoints?` or `Allow checking <service> API endpoints?` and firing remote SSH commands (`docker exec ... urllib.request.urlopen("http://.../docs") ... /openapi.json`) to probe documentation routes or fetch OpenAPI specifications on remote servers.
+- **Autonomous API Schema & Route Discovery Mandate ("خودش تصمیم بگیره")**: Mandated that agents must discover API routes, schema models, and endpoint paths statically from local codebase files (router modules, controller definitions, local OpenAPI schemas) without remote SSH `/docs` or `/openapi.json` probes or user approval modals.
+- Updated `SKILL.md`, `templates/AGENTS.md`, and all localized README files (`README.md`, `README.fa.md`, `README.tr.md`, `README.az.md`, `README.ar.md`) to version `v1.26.0`.
+
 ## [1.25.0] - 2026-10-10
 
 ### Added

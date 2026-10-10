@@ -1,7 +1,7 @@
 # agent-project-discovery-skill 🧭
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/badge/release-v1.25.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
+[![Release](https://img.shields.io/badge/release-v1.26.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/tmolavi/agent-project-discovery-skill/pulls)
 [![Supported Agents](https://img.shields.io/badge/Agents-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Antigravity%20%7C%20Copilot-blueviolet.svg)](#supported-ai-agents)
 
@@ -51,6 +51,7 @@ Today's AI coding assistants are capable, but their default initialization behav
 | **Cross-Container Service Probing**: Halts asking *"Allow inspecting Hermes skills from hamzad-ara?"* and fires SSH cross-container HTTP requests. | **Autonomous Cross-Container Discovery**: Discovers service mesh topology and skill registries statically from local manifests and mocks inter-container endpoints locally. |
 | **Ad-hoc Container Hot-Patching**: Halts asking *"Allow deploying assets to container and restarting?"* and fires compound SSH `tar && docker cp && docker restart`. | **Autonomous Atomic Releases**: Manages deployments strictly via canonical release scripts (`deploy.sh`) without piecemeal hot-patching or modal prompts. |
 | **Exhaustive Skill Enumeration**: Halts asking *"Allow listing all Hermes skills?"* and fires SSH cross-container Python parsing scripts. | **Autonomous Static Skill Discovery**: Inspects complete skill catalogs statically from `hermes-skill-discovery-registry-v1.json` without remote SSH scripts. |
+| **Remote API Docs & OpenAPI Probing**: Halts asking *"Allow checking Hermes API endpoints?"* and fires SSH probes to `/docs` and `/openapi.json`. | **Autonomous API Schema Discovery**: Inspects route definitions and OpenAPI schemas statically from local codebase files without remote SSH probes. |
 | **Server Container & Git Probing**: Halts asking *"Allow checking server container and git status?"*, *"Allow checking server git branch and log?"*, *"Allow listing git branches on server?"*, or *"Allow checking molavi-pro container on server?"* and fires SSH. | **Autonomous Container & Git Discovery**: Discovers container setups statically from `docker-compose.yml`/`Dockerfile` and checks git status, branches (`git branch -a`), and commit logs locally in the workspace. |
 | **Unpredicted State Freezes**: Halts work mid-task or interrupts repeatedly over unpredicted edge cases. | **Continuous Momentum & Deferred Batching**: Proceeds through unexpected situations with safe fallbacks, finishes all other work, and batches all questions for the end ("همه رو یه جا بپرسه"). |
 | **Clobbering Diffs**: Overwrites uncommitted work or ignores ongoing work in the working tree. | **Git Awareness**: Inspects `git status`, current branch, recent commits, and protects existing user modifications. |
@@ -95,6 +96,7 @@ Modern AI coding assistants (Google Antigravity, Claude Code, Cursor) enforce a 
    - The agent prompts to ask **cross-container service inspection permission** (`Allow inspecting Hermes skills from hamzad-ara? ssh ... "docker exec ... http://staging-hermes:8090/api/v1/skills ..."`).
    - The agent prompts to ask **container asset deployment and restart permission** (`Allow deploying assets to container and restarting? ssh ... "tar -xzf ... && docker cp ... && docker restart ..."`).
    - The agent prompts to ask **exhaustive skill listing permission** (`Allow listing all Hermes skills? ssh ... "docker exec ... http://staging-hermes:8090/api/v1/skills ..."`).
+   - The agent prompts to ask **API endpoint or OpenAPI checking permission** (`Allow checking Hermes API endpoints? ssh ... "docker exec ... /docs ... /openapi.json ..."`).
    - The agent prompts to ask **server container or git state permission** (`Allow checking server container and git status?`, `Allow checking server git branch and log?`, `Allow listing git branches on server?`, `Allow checking molavi-pro container on server?`).
    - The agent halts mid-task to ask **unpredicted edge case questions** one by one instead of deferring them.
    - The agent probes **live public URLs** or external domains (`curl -s https://example.com/...`).
@@ -129,6 +131,7 @@ Modern AI coding assistants (Google Antigravity, Claude Code, Cursor) enforce a 
 - **Autonomous Cross-Container Service Discovery**: Inspects service mesh capabilities, skill registries, and internal APIs statically from local manifests (`docker-compose.yml`, `hermes-skill-discovery-registry-v1.json`) without firing remote SSH cross-container probes.
 - **Autonomous Atomic Deployment Handling**: Manages container assets and release pipelines through canonical scripts (`deploy.sh`) without ad-hoc compound SSH container hot-patching.
 - **Autonomous Static Skill Catalog Discovery**: Inspects complete skill catalogs and tool definitions statically from `hermes-skill-discovery-registry-v1.json` without remote SSH scripts.
+- **Autonomous API Schema Discovery**: Inspects API route definitions and schemas statically from local repository controllers without remote SSH `/docs` or `/openapi.json` probes.
 - **Autonomous Container & Git Discovery**: Inspects container architectures and ports from local manifests (`docker-compose.yml`, `Dockerfile`) and checks git status, branch listings (`git branch`, `git branch -a`), and commit history locally without remote SSH probing.
 - **Autonomous Router & Dispatch Mocking**: Validates reasoning routers and model tier payloads using mocked transports locally.
 - **Autonomous Voice & TTS Mocking**: Validates speech synthesis speed, streaming chunks, updated Edge-TTS libraries, and audio services (`TTSService`) locally with dummy audio bytes and async mocks instead of remote SSH benchmarks.
