@@ -2,7 +2,7 @@
 ### `agent-project-discovery-skill`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/badge/release-v1.26.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
+[![Release](https://img.shields.io/badge/release-v1.27.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/tmolavi/agent-project-discovery-skill/pulls)
 
 > **"Bir yapay zeka ajanı, değişiklik yapmadan önce projeyi derinlemesine anlamalıdır."**
@@ -88,9 +88,11 @@ Modern yapay zeka kodlama araçlarında (Google Antigravity, Claude Code, Cursor
 26. **Atomik Dağıtım ve Konteyner Sıcak Yama Engeli:** Konteyner güncellemeleri parçalı SSH komutları yerine resmi dağıtım betiği (`deploy.sh`) üzerinden atomik olarak yürütülür.
 27. **Statik Yetenek Kataloğu Keşfi:** Mikroservis yetenek listeleri doğrudan yerel kayıt dosyalarından (`hermes-skill-discovery-registry-v1.json`) okunur; uzak sunucuda yetenek tarama betikleri çalıştırılmaz.
 28. **Statik API Rotası ve Şema Keşfi:** API uç noktaları ve şemaları doğrudan yerel kaynak kodlarından incelenir; sunucudaki `/docs` veya `/openapi.json` adreslerine SSH sorguları gönderilmez.
-29. **Tek Dosyalı Otomasyon (Single-Runner Batching)**: Kullanıcı tarayıcı oturumlarını (Chrome, Safari, cPanel, bulut panelleri, Colab) veya uzak veritabanlarını incelemeyi istediğinde, ajan parçalı komutlar çalıştırmak yerine tek bir yardımcı betik (Python veya AppleScript) yazar, bunu tek seferde çalıştırır ve yapılandırılmış JSON çıktısını işler.
-30. **Statik Dağıtım Analizi**: Konteynerler ve portlar canlı sunucuya bağlanmadan, `docker-compose.yml` ve `Dockerfile` dosyalarından okunur.
-31. **Proje İzolasyonu**: Çalışma alanı dışındaki hiçbir dosya değiştirilmez.
+29. **Mikroservis Uç Noktalarını Yerel Keşfetme ve Mock Etme:** Mikroservis rotaları ve sağlık uç noktaları doğrudan yerel koddan incelenir ve uzak SSH tarama döngüleri yerine yerel mock istemcileri ile test edilir.
+30. **Git Tabanlı Sürümleme ve Çoklu SCP/SSH Cat Engeli:** Değişiklikler git commit olarak kaydedilir ve dağıtımlar parçalı çok dosyalı SCP veya SSH cat yönlendirmeleri yerine resmi dağıtım betiği (`deploy.sh`) üzerinden yapılır.
+31. **Tek Dosyalı Otomasyon (Single-Runner Batching)**: Kullanıcı tarayıcı oturumlarını (Chrome, Safari, cPanel, bulut panelleri, Colab) veya uzak veritabanlarını incelemeyi istediğinde, ajan parçalı komutlar çalıştırmak yerine tek bir yardımcı betik (Python veya AppleScript) yazar, bunu tek seferde çalıştırır ve yapılandırılmış JSON çıktısını işler.
+32. **Statik Dağıtım Analizi**: Konteynerler ve portlar canlı sunucuya bağlanmadan, `docker-compose.yml` ve `Dockerfile` dosyalarından okunur.
+33. **Proje İzolasyonu**: Çalışma alanı dışındaki hiçbir dosya değiştirilmez.
 
 ---
 

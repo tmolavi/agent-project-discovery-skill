@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.27.0] - 2026-10-10
+
+### Added
+- **The 36th Forbidden Trap (Remote Microservice Endpoint Sweeping & Multi-File SCP/SSH Cat Syncing)**: Strictly forbidden asking `Allow probing staging-hermes endpoints?`, `Allow syncing updated ARA files to production server?`, `Allow copying updated files to target directories on hamzad_server?`, or `Allow transferring stt_service.py via SSH cat?`, and firing remote SSH endpoint sweeping loops or ad-hoc multi-file `scp` / `ssh "cat > ..."` source sync commands.
+- **Autonomous Microservice Endpoint Mocking & Git-Based Sync Mandate ("خودش تصمیم بگیره")**: Mandated that agents must discover microservice routes and APIs statically from codebase controller files and test routes locally using mock HTTP transports (`httpx.MockTransport`), and restrict source code deployments strictly to local git commits and canonical release workflows (`deploy.sh`) without piecemeal SCP copies or SSH cat piping.
+- Updated `SKILL.md`, `templates/AGENTS.md`, and all localized README files (`README.md`, `README.fa.md`, `README.tr.md`, `README.az.md`, `README.ar.md`) to version `v1.27.0`.
+
 ## [1.26.0] - 2026-10-10
 
 ### Added
