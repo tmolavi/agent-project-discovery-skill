@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.1] - 2026-10-11
+
+### Added
+- **Strengthened Trap 1 (Production Health Endpoint & Live URL Probing)**: Strictly forbidden asking `Allow checking health endpoint on production?` and executing `curl -sk https://.../api/health` against live production domains in ANY project.
+- **Autonomous Production Health Route Mocking**: Mandated that agents must verify `/api/health` routes locally using route definitions and local mock clients (`TestClient` / `httpx.MockTransport`) without reaching out to live production URLs or interrupting with confirmation modals.
+- Updated `SKILL.md`, `templates/AGENTS.md`, and all localized README files (`README.md`, `README.fa.md`, `README.tr.md`, `README.az.md`, `README.ar.md`) to version `v2.0.1`.
+
 ## [2.0.0] - 2026-10-11
 
 ### Major Architecture Milestone: Universal Autonomous Decision Engine Across All Projects
