@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.3] - 2026-10-11
+
+### Added
+- **Strengthened Trap 1 (Public CSS Stylesheet & Asset Probing)**: Strictly forbidden asking `Allow verifying deployed style.css features?` and executing `curl -sk "https://.../static/css/style.css?v=..." | grep ...` against live public domains or CDNs in ANY project.
+- **Autonomous Local Stylesheet Verification Mandate**: Mandated that agents must verify CSS classes, selectors, styles, and themes directly in local workspace stylesheet files (`static/css/style.css`) without querying remote production URLs or triggering user approval modals.
+- Updated `SKILL.md`, `templates/AGENTS.md`, and all localized README files (`README.md`, `README.fa.md`, `README.tr.md`, `README.az.md`, `README.ar.md`) to version `v2.0.3`.
+
 ## [2.0.2] - 2026-10-11
 
 ### Added
