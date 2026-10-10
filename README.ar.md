@@ -2,7 +2,7 @@
 ### `agent-project-discovery-skill`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/badge/release-v1.20.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
+[![Release](https://img.shields.io/badge/release-v1.21.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/tmolavi/agent-project-discovery-skill/pulls)
 
 > **"يجب على وكيل الذكاء الاصطناعي أن يفهم المشروع بعمق قبل أن يُغيّر أي سطر برمجياً."**
@@ -48,6 +48,7 @@
    - **طلب الإذن لنسخ الملفات والصفحات عبر SCP عشوائياً (`Allow copying components to server?`, `Allow copying page.tsx and robots.ts to server?`, `Allow copying robots.ts to server?`):** محاولة النسخ اليدوي للملفات عبر SCP بدلاً من الالتزام بسجل الجيت وسكربتات النشر الرسمية.
    - **طلب الإذن لفحص بيئة التشغيل أو إصدار Node على الخادم المضيف (`Allow checking node on server host? ssh ... "node -v || true"`):** محاولة خاطئة من الوكيل لفحص إصدار نود أو البرمجيات على الخادم المضيف عبر SSH بدلاً من فحص ملفات المانيفست المحلية (`package.json`, `.nvmrc`, `Dockerfile`).
    - **طلب الإذن لفحص صور دوكر على السيرفر (`Allow checking docker images on server? ssh ... "docker images | grep ..."`):** محاولة خاطئة من الوكيل لفحص أو فلترة صور دوكر عبر SSH بدلاً من فحص مانيفست المشروع المحلي (`docker-compose.yml`, `Dockerfile`).
+   - **طلب الإذن لسرد الحاويات النشطة على السيرفر (`Allow listing containers on hamzad_server? ssh ... "docker ps --format ..."`):** محاولة خاطئة من الوكيل لتشغيل `docker ps` عبر SSH بدلاً من مراجعة الخدمات والمنافذ في مانيفست المشروع المحلي (`docker-compose.yml`, `Dockerfile`).
    - **طلب الإذن لفحص حاويات السيرفر وحالة الجيت البعيدة (`Allow checking server container and git status?`, `Allow checking server git branch and log?`, `Allow listing git branches on server?`, `Allow checking molavi-pro container on server?`):** محاولة خاطئة من الوكيل للاتصال بالخادم عبر SSH لتشغيل `docker ps`، أو `git status -s`، أو `git branch` و `git log` على السيرفر بدلاً من فحص ملفات المشروع وسجل الجيت محلياً.
    - **طلب الإذن لفحص المسارات والأكواد البعيدة (`Allow checking model router endpoints?`)**: محاولة خاطئة من الوكيل للاتصال بالخادم عبر SSH لقراءة ملفات الكود والمسارات بدلاً من قراءتها محلياً من ملفات المشروع.
    - **طلب الخروج من الساندبوكس (`BypassSandbox: true`)**: لما يحاول الوكيل الوصول المباشر للشبكة أو كامل القرص بدون وجود صلاحية مسجلة مسبقاً.
@@ -84,9 +85,10 @@
 20. **النشر الرسمي عبر Git وإلغاء النسخ اليدوي بـ SCP:** تُسجل جميع التعديلات كالتزامات في الجيت، ويقتصر النشر إلى السيرفر على سكربتات الإصدار الرسمية (`deploy.sh`) بدلاً من النسخ العشوائي عبر SCP.
 21. **الاستكشاف المحلي لبيئات التشغيل والمكتبات:** تُفحص متطلبات بيئة Node.js أو بايثون مباشرة من ملفات المانيفست المحلية (`package.json` حقل engines، ملف `.nvmrc`، `Dockerfile`) دون إرسال أوامر SSH مثل `node -v` إلى الخادم المضيف.
 22. **الاستكشاف المحلي لصور وتنسيقات دوكر:** تُفحص تعريفات صور دوكر والصور الأساسية مباشرة من ملفات المانيفست المحلية (`docker-compose.yml`, `Dockerfile`) دون إرسال أوامر `docker images` عبر SSH.
-23. **سكربت التشغيل الموحد لأتمتة المتصفح والنظام (Single-Runner Batching)**: إذا طلب المستخدم فحص تبويبات المتصفح النشطة (مثل cPanel، سحابة، كولاب) أو فحص قاعدة بيانات، يقوم الوكيل بكتابة سكربت بايثون أو أبل سكربت كامل ومستقل، ويشغله **مرة واحدة فقط** ويقرأ النتيجة المهيكلة (JSON) بدون تكرار النوافذ المزعجة.
-24. **الفحص الساكن للنشر**: قراءة الحاويات والمنافذ من `docker-compose.yml` و `Dockerfile` بدلاً من إرسال أوامر SSH متكررة.
-25. **عزل المشروع بالكامل**: عدم المساس بأي ملفات عامة خارج مجلد العمل.
+23. **الاستكشاف المحلي لتوزيع الحاويات والمنافذ:** تُستكشف أسماء الحاويات والخدمات والمنافذ مباشرة من ملفات المانيفست المحلية (`docker-compose.yml`, `Dockerfile`) دون إرسال أوامر `docker ps --format ...` عبر SSH.
+24. **سكربت التشغيل الموحد لأتمتة المتصفح والنظام (Single-Runner Batching)**: إذا طلب المستخدم فحص تبويبات المتصفح النشطة (مثل cPanel، سحابة، كولاب) أو فحص قاعدة بيانات، يقوم الوكيل بكتابة سكربت بايثون أو أبل سكربت كامل ومستقل، ويشغله **مرة واحدة فقط** ويقرأ النتيجة المهيكلة (JSON) بدون تكرار النوافذ المزعجة.
+25. **الفحص الساكن للنشر**: قراءة الحاويات والمنافذ من `docker-compose.yml` و `Dockerfile` بدلاً من إرسال أوامر SSH متكررة.
+26. **عزل المشروع بالكامل**: عدم المساس بأي ملفات عامة خارج مجلد العمل.
 
 ---
 

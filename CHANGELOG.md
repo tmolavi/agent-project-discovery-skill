@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.21.0] - 2026-10-10
+
+### Added
+- **The 30th Forbidden Trap (Remote Container Listing & Status Probing)**: Strictly forbidden asking `Allow listing containers on hamzad_server?` or `Allow listing containers on <server>?` and firing remote SSH commands (`ssh ... "docker ps --format 'table ...'"` or `docker ps`) to query active containers, status tables, or port mappings on remote server hosts.
+- **Autonomous Local Container Topology Discovery Mandate ("خودش تصمیم بگیره")**: Mandated that agents must determine service definitions, container names, exposed ports, and network bindings statically from local repository manifests (`docker-compose.yml`, `compose.yaml`, `Dockerfile`), without remote SSH probing or user approval modals.
+- Updated `SKILL.md`, `templates/AGENTS.md`, and all localized README files (`README.md`, `README.fa.md`, `README.tr.md`, `README.az.md`, `README.ar.md`) to version `v1.21.0`.
+
 ## [1.20.0] - 2026-10-10
 
 ### Added
