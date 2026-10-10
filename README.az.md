@@ -2,12 +2,12 @@
 ### `agent-project-discovery-skill`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/badge/release-v1.9.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
+[![Release](https://img.shields.io/badge/release-v1.10.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/tmolavi/agent-project-discovery-skill/pulls)
 
 > **"Süni intellekt agenti dəyişiklik etməzdən əvvəl layihəni dərindən anlamalıdır."**
 
-Bu layihə kodlaşdırma agentləri (Claude Code, Cursor, Google Antigravity, OpenAI Codex, GitHub Copilot və s.) üçün universal və istehsala hazır başlanğıc bacarığıdır (startup skill). Agentlərin layihəni başa düşmədən tələsik kod dəyişdirməsinin, mövcud arxitekturanı pozmasının, lazımsız suallar verməsinin, gözlənilməz hallarda dayanıb qalmasının, test, marşrut, paket versiyası (`pip show edge-tts`), server konteyner və git vəziyyəti (`docker ps && git status`), model paylama (central dispatch) və ya TTS nitq sintezi yoxlanışı üçün icazə istəməsinin və sizi daima ekran qarşısında təsdiq düymələrinə basmağa məcbur etməsinin qarşısını alır.
+Bu layihə kodlaşdırma agentləri (Claude Code, Cursor, Google Antigravity, OpenAI Codex, GitHub Copilot və s.) üçün universal və istehsala hazır başlanğıc bacarığıdır (startup skill). Agentlərin layihəni başa düşmədən tələsik kod dəyişdirməsinin, mövcud arxitekturanı pozmasının, lazımsız suallar verməsinin, gözlənilməz hallarda dayanıb qalmasının, test, marşrut, paket versiyası (`pip show edge-tts`), server konteyner və git vəziyyəti (`docker ps && git status`), git budaq və commit tarixçəsi (`git branch && git log`), model paylama (central dispatch) və ya TTS nitq sintezi yoxlanışı üçün icazə istəməsinin və sizi daima ekran qarşısında təsdiq düymələrinə basmağa məcbur etməsinin qarşısını alır.
 
 ---
 
@@ -33,7 +33,7 @@ Müasir süni intellekt mühitlərində (Google Antigravity, Claude Code, Cursor
    - **Mərkəzi Model Paylanması Onayı İstəmək (`Allow testing central model dispatch?`)**: Agentin model şlüzünü lokal mühitdə mock etmək əvəzinə canlı serverdə test etmək üçün icazə istəməsi.
    - **Səs və TTS Sintez Sürəti Yoxlanışı Üçün İcazə İstəmək (`Allow testing TTS synthesis speed? ssh ...`)**: Agentin nitq sintezini və ya səs emal sürətini lokal mühitdə mock etmək əvəzinə canlı serverdə test etmək üçün icazə istəməsi.
    - **Paket və Asılılıq Versiyası Yoxlanışı Üçün İcazə İstəmək (`Allow checking edge-tts version? ssh ... "pip show ...")**: Agentin lokal asılılıq bəyannamələrini oxumaq əvəzinə uzaq mühitə SSH ilə `pip show` və ya `pip list` əmrləri göndərməsi.
-   - **Server Konteyner və Git Vəziyyəti Yoxlanışı Üçün İcazə İstəmək (`Allow checking server container and git status? ssh ... "docker ps ... && git status -s"`)**: Agentin lokal faylları və lokal git vəziyyətini yoxlamaq əvəzinə uzaq serverə SSH ilə qoşulub `docker ps` və `git status` icra etməyə cəhd etməsi.
+   - **Server Konteyner və Git Vəziyyəti Yoxlanışı Üçün İcazə İstəmək (`Allow checking server container and git status?`, `Allow checking server git branch and log? ssh ... "git branch ... && git log ..."`)**: Agentin lokal faylları və lokal git vəziyyətini yoxlamaq əvəzinə uzaq serverə SSH ilə qoşulub `docker ps`, `git status -s`, `git branch` və `git log` icra etməyə cəhd etməsi.
    - **Marşrut və Kod Yoxlanışı Üçün İcazə İstəmək (`Allow checking model router endpoints?`)**: Agentin lokal faylları oxumaq əvəzinə uzaq serverə SSH ilə qoşulub kod fayllarını oxumağa cəhd etməsi.
    - **Qum Qutusundan Çıxış Tələbi (`BypassSandbox: true`)**: Agentin xam şəbəkəyə və ya diskə çıxış istəməsi və uyğun prefiks icazəsinin olmaması.
    - **Canlı İctimai Saytları Yoxlamaq (`curl https://...`)**: Kodun işləməsini yoxlamaq üçün canlı veb-saytlara HTTP sorğuları atmaq.
@@ -53,7 +53,7 @@ Müasir süni intellekt mühitlərində (Google Antigravity, Claude Code, Cursor
 4. **Model və Paylama Mocking**: Mühakimə router-ləri və model şlüzləri uzaq serverə qoşulmadan lokal maketlərlə yoxlanılır.
 5. **Lokal TTS və Səs Sintezi Mocking**: Səs sintezi xidmətləri (`TTSService`) və audio axını gecikmələri uzaq serverdə canlı test edilmək əvəzinə lokal asinxron mock-lar (`AsyncMock`) ilə yoxlanılır.
 6. **Lokal Asılılıq və Paket Təhlili (Manifest Discovery)**: Paket versiyaları və asılılıqlar uzaq serverə SSH ilə `pip show`, `pip list` və ya `pip freeze` icra etməklə deyil, lokal manifest fayllarından (`requirements.txt`, `pyproject.toml`, `poetry.lock`, `package.json`, `Dockerfile`) oxunur.
-7. **Lokal Konteyner və Git Vəziyyəti Təhlili**: Konteyner konfiqurasiyaları və portlar lokal manifest fayllarından (`docker-compose.yml`, `Dockerfile`), git budaq və dəyişiklik vəziyyəti isə birbaşa lokal iş qovluğundan (`git status -s`, `git branch`) oxunur; uzaq serverə SSH sorğusu göndərilmir.
+7. **Lokal Konteyner və Git Vəziyyəti Təhlili**: Konteyner konfiqurasiyaları və portlar lokal manifest fayllarından (`docker-compose.yml`, `Dockerfile`), git budaq, commit tarixçəsi və dəyişiklik vəziyyəti isə birbaşa lokal iş qovluğundan (`git status -s`, `git branch --show-current`, `git log -n 5`) oxunur; uzaq serverə SSH sorğusu göndərilmir.
 8. **Tək Fayllı Skript Metodu (Single-Runner Batching)**: İstifadəçi brauzer seanslarını (Chrome, Safari, cPanel, bulud konsolları, Colab) və ya uzaq verilənlər bazasını yoxlamağı tapşırdıqda, agent dağınıq sətirlər işlətmir; layihədə vahid köməkçi skript (Python və ya AppleScript) hazırlayır, onu bir dəfə icra edir və strukturlaşmış JSON nəticəsini oxuyur.
 9. **Statik Dağıtım Təhlili**: Portlar və konteynerlər canlı serverə bağlanmadan `docker-compose.yml` və `Dockerfile` fayllarından oxunur.
 10. **Layihə İzolasiyası**: Qovluqdan kənar heç bir qlobal fayla toxunulmur.

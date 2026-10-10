@@ -1,7 +1,7 @@
 ---
 name: agent-project-discovery-skill
 description: Universal startup and context discovery skill for AI coding agents to inspect, understand, and plan before modifying existing projects.
-version: 1.9.0
+version: 1.10.0
 license: MIT
 metadata:
   author: agent-project-discovery-skill contributors
@@ -28,7 +28,7 @@ When entering an existing codebase, an AI agent must behave like a senior softwa
 7. **Never ask confirmation to test audio/TTS synthesis speed or voice latency**—benchmark and verify audio pipeline logic autonomously via local mocks.
 8. **Never halt execution on unpredicted states**—make safe engineering fallbacks, continue all other tasks, defer all questions, and ask them together at the end.
 9. **Never SSH into remote servers to check package versions (e.g. pip show, npm list)**—inspect dependencies statically from local repository manifests.
-10. **Never SSH into remote servers to check running containers or git status (e.g. docker ps, git status -s)**—inspect container definitions statically and check git status in the local workspace.
+10. **Never SSH into remote servers to check running containers or git state (e.g. docker ps, git status -s, git branch, git log)**—inspect container definitions statically and check git status, branches, and commit history in the local workspace.
 11. **Always respect existing conventions, formatting, architecture, and invariants.**
 
 ---
@@ -95,11 +95,11 @@ When entering an existing codebase, an AI agent must behave like a senior softwa
 >   - Always inspect library versions statically from repository files, or verify locally via local virtualenv or mocks.
 >   - Never fire remote `pip show`, `pip list`, `pip freeze`, `npm list`, or `gem list` commands via SSH to remote servers.
 >   - Never ask permission to inspect package versions—inspect them locally and silently.
-> - 🚫 **Trap 13: Remote Container & Git Status Probing ("Allow checking server container and git status?")**: NEVER stall the developer by asking permission questions or confirmation prompts to check running containers, container health, or git status on remote servers (e.g. `Allow checking server container and git status? ssh -o ConnectTimeout=10 hamzad_server "docker ps --filter name=molavi-pro && cd /opt/projects/molavi-pro && git status -s"`). **The agent must decide autonomously ("خودش تصمیم بگیره")**:
+> - 🚫 **Trap 13: Remote Container & Git State Probing ("Allow checking server container and git status?", "Allow checking server git branch and log?")**: NEVER stall the developer by asking permission questions or confirmation prompts to check running containers, container health, git status, git branches, or git logs on remote servers (e.g. `Allow checking server container and git status?`, `Allow checking server git branch and log? ssh -o ConnectTimeout=10 hamzad_server "cd /opt/projects/molavi-pro && git branch --show-current && git log -n 3 --oneline"`). **The agent must decide autonomously ("خودش تصمیم بگیره")**:
 >   - Container configurations, service names, image tags, and port bindings exist in the local workspace repository (`docker-compose.yml`, `Dockerfile`, deploy scripts).
->   - Git branch, commit history, and working tree status must be checked locally in the workspace using canonical local git commands (`git status -s`, `git branch`, `git log`).
->   - Never fire ad-hoc SSH compound commands to probe remote container states (`docker ps`) or remote repo checkouts (`cd /opt/projects/... && git status -s`).
->   - Never ask permission to check server containers or remote git status—inspect them locally and silently.
+>   - All git state—current branch (`git branch --show-current`), commit history (`git log -n 5`), and working tree status (`git status -s`)—must be checked locally in the workspace using canonical local git commands.
+>   - Never fire ad-hoc SSH compound commands to probe remote container states (`docker ps`) or remote repository checkouts (`git branch`, `git log`, `git status -s`).
+>   - Never ask permission to check server containers or remote git branch/log—inspect them locally and silently.
 >
 > **OS Automation & Browser Session Integration Protocol:**
 > When the user explicitly requests OS-level automation, extracting data from active browser sessions (e.g. Google Chrome, Safari, cPanel, Cloud Consoles, Colab, or Figma via AppleScript/CDP), or remote database inspection:
@@ -169,8 +169,9 @@ AI agents lose user trust when they ask trivial, helpless, or timid permission-s
 - ❌ *"Allow testing TTS synthesis speed?"* (e.g., `Allow testing TTS synthesis speed? ssh ... "docker exec ... python3 -c '... TTSService.synthesize_chunk(...) ...'"`).
 - ❌ *"Allow checking edge-tts version?"* or *"Allow checking <package> version?"* (e.g., `Allow checking edge-tts version? ssh ... "docker exec ... pip show edge-tts"`).
 - ❌ *"Allow checking server container and git status?"* (e.g., `Allow checking server container and git status? ssh -o ConnectTimeout=10 hamzad_server "docker ps --filter name=molavi-pro && cd /opt/projects/molavi-pro && git status -s"`).
+- ❌ *"Allow checking server git branch and log?"* (e.g., `Allow checking server git branch and log? ssh -o ConnectTimeout=10 hamzad_server "cd /opt/projects/molavi-pro && git branch --show-current && git log -n 3 --oneline"`).
 - ❌ *"Allow running pip show / pip list / package inspection on remote server?"*
-- ❌ *"Allow running docker ps / remote git status inspection on server?"*
+- ❌ *"Allow running docker ps / remote git status / branch / log inspection on server?"*
 - ❌ *"Allow testing voice generation / audio synthesis / STT latency?"*
 - ❌ *"Allow checking <routes / endpoints / source files / schemas> via SSH?"*
 - ❌ *"Should I test this on the server or run this SSH command?"*
@@ -186,7 +187,7 @@ The agent must take full engineering ownership rather than interrupting the deve
 3. **Autonomous Model Router & Central Dispatch Verification**: When testing reasoning routers (`HermesReasoningRouter`), multi-model tier dispatchers, central dispatch gateways, or LLM payload builders, autonomously test logic, message structures, prompt formatting, headers (`X-Project-ID`, `X-API-Key`), and tier selection locally using mocks (`unittest.mock`, `httpx.MockTransport`, `respx`). Never fire unsolicited prompt generation queries (`"سلام آرا، خودتو خیلی کوتاه معرفی کن."`) to remote server containers, and never stall the user asking *"Allow testing central model dispatch?"*.
 4. **Autonomous Voice & TTS Synthesis Verification**: When validating text-to-speech services (`TTSService`), audio chunk streaming (`synthesize_chunk`), audio latency, or voice pipelines, autonomously test logic, byte streaming, error handling, and synthesis parameters locally using mocked async functions (`unittest.mock.AsyncMock`) and dummy audio byte payloads (e.g. `b"RIFF..."` or simulated chunk streams). Never fire live synthesis benchmarks (`"سلام. من آرا هستم..."`) or remote SSH container commands (`ssh ... "docker exec ... TTSService.synthesize_chunk(...)"`) to remote servers, and never stall the user asking *"Allow testing TTS synthesis speed?"*.
 5. **Autonomous Package & Dependency Discovery**: When checking installed libraries, package versions (such as `edge-tts`, `httpx`, `fastapi`), or dependencies, autonomously inspect local workspace manifests (`requirements.txt`, `pyproject.toml`, `poetry.lock`, `package.json`, `Dockerfile`) or use local environment tools. Never fire remote container inspection commands (`pip show`, `pip list`, `docker exec ... pip show ...`) over SSH, and never stall the user asking *"Allow checking edge-tts version?"*.
-6. **Autonomous Container & Git Status Discovery**: When checking container configurations, service health, or deployment status, autonomously inspect local manifests (`docker-compose.yml`, `Dockerfile`, deploy scripts). For git status, inspect the local repository tree (`git status -s`, `git branch`, `git log`). Never fire remote SSH compound commands (`docker ps`, remote `git status`) and never stall the user asking *"Allow checking server container and git status?"*.
+6. **Autonomous Container & Git State Discovery**: When checking container configurations, service health, or deployment status, autonomously inspect local manifests (`docker-compose.yml`, `Dockerfile`, deploy scripts). For git branch, commit history, and working tree status, inspect the local repository tree (`git status -s`, `git branch --show-current`, `git log`). Never fire remote SSH compound commands (`docker ps`, remote `git branch`, remote `git log`, remote `git status`) and never stall the user asking *"Allow checking server container and git status?"* or *"Allow checking server git branch and log?"*.
 7. **Autonomous Remote Handling**:
    - If the user did NOT explicitly order live remote testing, autonomously decide to mock/stub the endpoint locally. Never pop prompts asking to probe live servers.
    - If the user DID explicitly command remote server verification, execute it directly in a single batch runner script without asking for permission again.
@@ -229,8 +230,8 @@ The agent must act as a custodian of the existing codebase:
 - **Batched Automation**: When interacting with OS utilities, browser tabs, or external servers, write a single runner script instead of firing fragmented, multi-step shell calls.
 
 #### Strict Anti-Patterns (Avoid):
-- 🚫 **Timid Test, Dispatch, TTS, Package & Server Container Permission Seeking**: Asking the developer for permission before running tests, checking router endpoints, testing model dispatch, testing TTS synthesis speed, checking package versions, or checking server container and git status (e.g., `Allow testing /api/models/generate?`, `Allow checking model router endpoints?`, `Allow testing central model dispatch?`, `Allow testing TTS synthesis speed?`, `Allow checking edge-tts version?`, `Allow checking server container and git status?`). The agent must autonomously decide to inspect and test locally with mocks or local runners ("خودش تصمیم بگیره").
-- 🚫 **Remote Container & Git Status Probing via SSH**: Running `ssh` compound commands to execute `docker ps` or remote `git status -s` on remote servers. Inspect all deployment manifests statically and check git status locally in the workspace.
+- 🚫 **Timid Test, Dispatch, TTS, Package & Server Git/Container Permission Seeking**: Asking the developer for permission before running tests, checking router endpoints, testing model dispatch, testing TTS synthesis speed, checking package versions, or checking server container, git branch, or git log (e.g., `Allow testing /api/models/generate?`, `Allow checking model router endpoints?`, `Allow testing central model dispatch?`, `Allow testing TTS synthesis speed?`, `Allow checking edge-tts version?`, `Allow checking server container and git status?`, `Allow checking server git branch and log?`). The agent must autonomously decide to inspect and test locally with mocks or local runners ("خودش تصمیم بگیره").
+- 🚫 **Remote Container & Git State Probing via SSH**: Running `ssh` compound commands to execute `docker ps`, remote `git status -s`, `git branch`, or `git log` on remote servers. Inspect all deployment manifests statically and check all git state locally in the workspace.
 - 🚫 **Remote Package & Dependency Inspection via SSH**: Running `ssh` or remote container commands (`docker exec ... pip show ...`, `pip list`, `pip freeze`) to check installed libraries or package versions. Inspect all dependencies locally from repository manifests (`requirements.txt`, `poetry.lock`, `pyproject.toml`, `Dockerfile`).
 - 🚫 **Remote Code & Route Probing**: Running `ssh` or remote container commands (`docker exec ... python3 -c "open('/workspace/...')"` ) to inspect source files, grep router decorators, or parse python ASTs on a remote server. Inspect all routes and models locally from the repository.
 - 🚫 **Unsolicited Voice / TTS Synthesis Remote Benchmarking**: Running remote SSH or container commands to benchmark audio/voice synthesis latency or execute live TTS synthesis (`TTSService.synthesize_chunk`) on remote servers without explicit instruction.
