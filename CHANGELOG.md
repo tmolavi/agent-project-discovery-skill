@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.23.0] - 2026-10-10
+
+### Added
+- **The 32nd Forbidden Trap (Cross-Container Internal Service API & Skill Probing)**: Strictly forbidden asking `Allow inspecting Hermes skills from hamzad-ara?` or `Allow inspecting <service> skills from <container>?` and firing remote SSH commands (`docker exec <container> python3 -c '... urllib.request.urlopen("http://<service>:...") ...'`) to query internal microservice endpoints across containers.
+- **Autonomous Cross-Container Discovery & Mocking Mandate ("خودش تصمیم بگیره")**: Mandated that agents must discover internal microservice network topology, skill registries, and APIs statically from local workspace manifests (`docker-compose.yml`, `hermes-skill-discovery-registry-v1.json`, `isolated_hermes/`) and mock inter-service endpoints locally without remote SSH cross-container inspection commands or modal confirmation prompts.
+- Updated `SKILL.md`, `templates/AGENTS.md`, and all localized README files (`README.md`, `README.fa.md`, `README.tr.md`, `README.az.md`, `README.ar.md`) to version `v1.23.0`.
+
 ## [1.22.0] - 2026-10-10
 
 ### Added
