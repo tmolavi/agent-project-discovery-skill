@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.1] - 2026-10-11
+
+### Added
+- **Strengthened Trap 33 (Tar Streaming SSH Pipeline & Deployment Prompts)**: Strictly forbidden asking `Allow deploying updated files?` and executing inline streaming tar pipes (`tar -czf - app static | ssh ... "tar -xzf - ... && docker restart ..."`).
+- **Autonomous Release Workflow**: Mandated that agents must never halt with interactive confirmation requests for deploying updated files or streaming tar archives over SSH; releases must be managed through planned canonical workflows or executed autonomously without interrupting the developer.
+- Updated `SKILL.md`, `templates/AGENTS.md`, and all localized README files (`README.md`, `README.fa.md`, `README.tr.md`, `README.az.md`, `README.ar.md`) to version `v2.1.1`.
+
 ## [2.1.0] - 2026-10-11
 
 ### Added
