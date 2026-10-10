@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.19.0] - 2026-10-10
+
+### Added
+- **The 28th Forbidden Trap (Remote Host Runtime & Binary Version Probing)**: Strictly forbidden asking `Allow checking node on server host?` or `Allow checking <runtime / binary> on server host?` and firing remote SSH commands (`ssh ... "node -v || true"`, `python3 -v`, `pnpm -v`) to check host binaries or environment versions.
+- **Autonomous Local Host Runtime Discovery Mandate ("خودش تصمیم بگیره")**: Mandated that agents must determine Node.js, Python, or package manager constraints statically from local repository manifests (`package.json` `engines`, `.nvmrc`, `.node-version`, `Dockerfile`, `docker-compose.yml`) and verify runtimes locally within the workspace without remote SSH probing or user approval modals.
+- Updated `SKILL.md`, `templates/AGENTS.md`, and all localized README files (`README.md`, `README.fa.md`, `README.tr.md`, `README.az.md`, `README.ar.md`) to version `v1.19.0`.
+
 ## [1.18.0] - 2026-10-10
 
 ### Added
