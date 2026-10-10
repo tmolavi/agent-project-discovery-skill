@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.22.0] - 2026-10-10
+
+### Added
+- **The 31st Forbidden Trap (Ad-hoc SCP Build Asset & Archive Uploading)**: Strictly forbidden asking `Allow uploading build assets archive?` or `Allow uploading <archive / build assets> to server?` and firing ad-hoc `scp` commands (`scp ... /tmp/*.tar.gz hamzad_server:/tmp/...`) to upload build tarballs or bundle archives to production server hosts.
+- **Autonomous Release Workflow & Anti-SCP Archive Upload Mandate ("خودش تصمیم بگیره")**: Mandated that agents must verify build outputs locally (`npm run build`) and restrict artifact deployments strictly to canonical, planned release workflows (`deploy.sh`) without speculative ad-hoc SCP archive uploads or modal confirmation prompts.
+- Updated `SKILL.md`, `templates/AGENTS.md`, and all localized README files (`README.md`, `README.fa.md`, `README.tr.md`, `README.az.md`, `README.ar.md`) to version `v1.22.0`.
+
 ## [1.21.0] - 2026-10-10
 
 ### Added
