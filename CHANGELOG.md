@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.14.0] - 2026-10-10
+
+### Added
+- **Expanded Forbidden Trap 11 (Remote Voice / TTS Synthesis & Testing Updated Edge-TTS)**: Strictly forbidden asking `Allow testing updated Edge-TTS?` or `Allow testing TTS synthesis speed?` and executing remote SSH commands (`docker exec ... python3 -c '... TTSService.synthesize_chunk(...) ...'`) to benchmark speech synthesis latency, test updated Edge-TTS library behaviors, or probe live audio pipelines on remote servers.
+- **Autonomous Local Voice & TTS Verification Mandate ("خودش تصمیم بگیره")**: Mandated that agents must autonomously validate speech synthesis speed, streaming audio chunks, updated Edge-TTS libraries, and audio services (`TTSService`) locally using mocked async functions (`unittest.mock.AsyncMock`) and dummy audio chunk byte payloads without remote SSH execution or user approval modals.
+- Updated `SKILL.md`, `templates/AGENTS.md`, and all localized README files (`README.md`, `README.fa.md`, `README.tr.md`, `README.az.md`, `README.ar.md`) to version `v1.14.0`.
+
 ## [1.13.0] - 2026-10-10
 
 ### Added

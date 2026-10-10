@@ -2,12 +2,12 @@
 ### `agent-project-discovery-skill`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/badge/release-v1.13.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
+[![Release](https://img.shields.io/badge/release-v1.14.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/tmolavi/agent-project-discovery-skill/pulls)
 
 > **"Bir yapay zeka ajanı, değişiklik yapmadan önce projeyi derinlemesine anlamalıdır."**
 
-Bu proje, kodlama yapan yapay zeka ajanları (Claude Code, Cursor, Google Antigravity, OpenAI Codex, GitHub Copilot vb.) için evrensel, üretime hazır bir başlangıç becerisidir (startup skill). Ajanların projeyi anlamadan aceleyle kod değiştirmesini, çalışan sistemleri baştan yazmasını, gereksiz sorular sormasını, öngörülmeyen durumlarda durup kalmasını, test, rota, paket sürümü (`pip show edge-tts`), paket yükseltme (`pip install -U edge-tts`), konteyner içeriği (`docker exec ... ls`), sunucu git dallarını listeleme (`git branch -a`), sunucu konteyner ve git durumu (`docker ps && git status`), git branch ve commit geçmişi (`git branch && git log`), model dağıtım (central dispatch) veya TTS ses sentezi kontrolü için izin istemesini ve sizi sürekli ekran başında onay butonlarına basmak zorunda bırakmasını engeller.
+Bu proje, kodlama yapan yapay zeka ajanları (Claude Code, Cursor, Google Antigravity, OpenAI Codex, GitHub Copilot vb.) için evrensel, üretime hazır bir başlangıç becerisidir (startup skill). Ajanların projeyi anlamadan aceleyle kod değiştirmesini, çalışan sistemleri baştan yazmasını, gereksiz sorular sormasını, öngörülmeyen durumlarda durup kalmasını, test, rota, paket sürümü (`pip show edge-tts`), paket yükseltme (`pip install -U edge-tts`), konteyner içeriği (`docker exec ... ls`), sunucu git dallarını listeleme (`git branch -a`), sunucu konteyner ve git durumu (`docker ps && git status`), git branch ve commit geçmişi (`git branch && git log`), model dağıtım (central dispatch) veya güncellenmiş Edge-TTS ve TTS ses sentezi testi (`Allow testing updated Edge-TTS?`, `Allow testing TTS synthesis speed?`) kontrolü için izin istemesini ve sizi sürekli ekran başında onay butonlarına basmak zorunda bırakmasını engeller.
 
 ---
 
@@ -31,7 +31,7 @@ Modern yapay zeka kodlama araçlarında (Google Antigravity, Claude Code, Cursor
    - **Öngörülmeyen Durumlarda Durup Tek Tek Soru Sorma**: Ajanın diğer işleri bitirip soruları sona saklamak yerine çalışma ortasında sürekli duraklaması.
    - **Rutin Test Onayı İsteme (`Allow testing /api/... ?`)**: Ajanın bağımsız karar vermek yerine test çalıştırmak veya SSH betiği çalıştırmak için kullanıcıyı durdurup onay beklemesi.
    - **Model Yönlendirme ve Dağıtım Onayı İsteme (`Allow testing central model dispatch?`)**: Ajanın model ağ geçidini yerel ortamda mock'lamak yerine canlı sunucuda test etmek için onay sorması.
-   - **Ses ve TTS Sentez Hızı Testi Onayı İsteme (`Allow testing TTS synthesis speed? ssh ...`)**: Ajanın konuşma sentezi veya ses işleme hızını yerel ortamda mock'lamak yerine uzak sunucuda canlı test etmek için onay sorması.
+   - **Ses ve TTS Sentez Hızı veya Güncellenmiş Edge-TTS Testi Onayı İsteme (`Allow testing TTS synthesis speed?`, `Allow testing updated Edge-TTS? ssh ...`)**: Ajanın konuşma sentezi, güncellenmiş Edge-TTS veya ses işleme hızını yerel ortamda mock'lamak yerine uzak sunucuda canlı test etmek için onay sorması.
    - **Paket ve Bağımlılık Sürümü Kontrolü İçin İzin İsteme (`Allow checking edge-tts version? ssh ... "pip show ...")**: Ajanın yerel bağımlılık bildirimlerini okumak yerine uzak ortama SSH ile `pip show` veya `pip list` komutları göndermesi.
    - **Paket Yükseltme ve Değiştirme İçin İzin İsteme (`Allow upgrading edge-tts? ssh ... "pip install -U ...")**: Ajanın yerel manifest dosyalarını güncellemek yerine uzak sunucuya SSH atıp `pip install -U` komutu çalıştırmaya çalışması.
    - **Konteyner İçeriği ve Dizin Kontrolü İçin İzin İsteme (`Allow checking container contents? ssh ... "docker exec ... ls -la /app"`):** Ajanın yerel çalışma alanı ve `Dockerfile` direktiflerini incelemek yerine uzak sunucuya SSH atıp `docker exec ... ls` çalıştırmaya çalışması.
@@ -53,7 +53,7 @@ Modern yapay zeka kodlama araçlarında (Google Antigravity, Claude Code, Cursor
 2. **Bağımsız Test ve Doğrulama Kararı**: Ajan "Uç noktayı test edeyim mi?" diye sormaz. Değişiklikleri yerel mock'lar, birim testleri ve yerel döngü (`127.0.0.1`) ile kendisi doğrulamaya karar verir ve raporlar.
 3. **Yalnızca Yerel ve Belirleyici Doğrulama**: Kodlar canlı genel sitelere veya uzak sunuculara istek atılarak değil; yerel testler ve derleme çıktıları üzerinden doğrulanır.
 4. **Model ve Dağıtım Mocking**: Akıl yürütme router'ları ve model dağıtım katmanları uzak sunucuya bağlanmadan yerel mock'lar ile test edilir.
-5. **Yerel TTS ve Ses Sentezi Mocking**: Ses sentez servisleri (`TTSService`) ve ses akışı gecikmeleri uzak sunucuda canlı test edilmek yerine yerel asenkron mock'lar (`AsyncMock`) ile doğrulanır.
+5. **Yerel TTS, Ses Sentezi ve Güncellenmiş Edge-TTS Mocking**: Ses sentez servisleri (`TTSService`), güncellenmiş Edge-TTS kütüphanesi ve ses akışı gecikmeleri uzak sunucuda canlı test edilmek yerine yerel asenkron mock'lar (`AsyncMock`) ile doğrulanır.
 6. **Yerel Bağımlılık ve Paket Analizi (Manifest Discovery)**: Paket sürümleri ve bağımlılıklar uzak sunucuya SSH ile `pip show`, `pip list` veya `pip freeze` çalıştırılarak değil, yerel manifest dosyalarından (`requirements.txt`, `pyproject.toml`, `poetry.lock`, `package.json`, `Dockerfile`) okunur.
 7. **Yerel Paket Yükseltme ve Manifest Yönetimi**: Paket yükseltmeleri veya hata düzeltmeleri canlı sunucuya SSH ile `pip install -U` çalıştırılarak değil, doğrudan yerel manifest dosyalarında (`requirements.txt`, `pyproject.toml`) güncellenir ve yerel testlerle doğrulanır.
 8. **Yerel Konteyner ve Git Durumu Analizi**: Konteyner mimarisi ve portlar yerel manifest dosyalarından (`docker-compose.yml`, `Dockerfile`), git branch, tüm dallar (`git branch -a`), commit geçmişi ve değişiklik durumu ise doğrudan yerel çalışma alanından (`git status -s`, `git branch --show-current`, `git log -n 5`) okunur; uzak sunucuya SSH atılmaz.
