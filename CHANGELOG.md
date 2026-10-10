@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.18.0] - 2026-10-10
+
+### Added
+- **The 23rd Forbidden Trap (Remote SSH Connection Retries, Uptime & Echo Liveness Probing)**: Strictly forbidden asking `Allow retrying SSH connection?` or `Allow testing SSH to hamzad_server?` and firing `ssh -o ConnectTimeout=... hamzad_server "uptime"` or `echo 'connection test ok'`.
+- **The 24th Forbidden Trap (Remote Server Container & Git Status Compound Probing)**: Strictly forbidden asking `Allow checking server molavi-pro container and git?` and firing chained SSH commands (`ssh ... "docker ps ... && cd /opt/projects/... && git status -s"`).
+- **The 25th Forbidden Trap (Remote Service Internal API & Skill Probing)**: Strictly forbidden asking `Allow listing Hermes skills?` and firing remote SSH commands (`ssh ... "docker exec ... python3 -c '... httpx.get(\"http://127.0.0.1:8090/api/v1/skills\") ...'"`).
+- **The 26th Forbidden Trap (Remote Container Build Output & .next Directory Probing)**: Strictly forbidden asking `Allow inspecting container .next directory?` and firing remote SSH commands (`ssh ... "docker exec molavi-pro-web ls -la /app/.next"`).
+- **The 27th Forbidden Trap (Ad-hoc SCP Component & File Copying to Server)**: Strictly forbidden asking `Allow copying components to server?`, `Allow copying page.tsx and robots.ts to server?`, or `Allow copying robots.ts to server?` and firing ad-hoc `scp` uploads mid-task.
+- **Autonomous Resolution Mandates ("خودش تصمیم بگیره")**: Mandated autonomous SSH connectivity fallbacks, static container and local git separation, local registry skill discovery, local `.next` build generation/verification, and strict git-commit/deploy script workflows.
+- Updated `SKILL.md`, `templates/AGENTS.md`, and all localized README files (`README.md`, `README.fa.md`, `README.tr.md`, `README.az.md`, `README.ar.md`) to version `v1.18.0`.
+
 ## [1.17.0] - 2026-10-10
 
 ### Added
