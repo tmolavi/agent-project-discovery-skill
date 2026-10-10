@@ -44,10 +44,16 @@ Do **NOT** ask questions such as:
 - Autonomously verify model routers, dispatch logic, and payload generation using local mocks (`httpx.MockTransport`, `respx`, `unittest.mock`) without asking for human permission.
 - Autonomously verify speech synthesis, audio streaming, and TTS services (`TTSService`) using local async mocks (`unittest.mock.AsyncMock`) and dummy audio chunk bytes without asking permission or triggering remote SSH benchmarks.
 
-**Only ask questions when:**
-1. A genuine blocker exists where information cannot be found in the repository.
+**Handling Unpredicted States & Deferring Questions ("در حالت‌های پیش‌بینی‌نشده ادامه بده و همه رو آخرش یه جا بپرس"):**
+- **Never Halt Mid-Run**: If an unexpected state, ambiguous parameter, or edge case arises, DO NOT freeze execution.
+- **Proceed With All Doable Work**: Implement safe reversible fallbacks, and proceed with all independent subtasks, code changes, and tests.
+- **Accumulate Questions**: Queue any non-critical doubts or unpredicted decisions into a pending batch.
+- **Consolidated Batch at the End**: Ask all accumulated questions together in a single consolidated turn at the end of the run ("همه رو یه جا بپرسه").
+
+**Only ask questions immediately when:**
+1. A genuine destructive blocker exists where information cannot be found in the repository and execution cannot safely proceed.
 2. The user requested an ambiguous destructive operation (e.g., database wipe, deprecating public APIs).
-3. An architectural decision has multiple valid, non-obvious trade-offs requiring human business judgment.
+3. An architectural decision has multiple mutually exclusive trade-offs with no safe fallback.
 
 ---
 
@@ -58,6 +64,7 @@ Do **NOT** ask questions such as:
 - **Backward Compatibility**: Preserve existing function signatures, API schemas, database schemas, and CLI options.
 - **Zero Hallucinated Dependencies**: Do not introduce new third-party dependencies without verifying existing alternatives in the lockfile.
 - **Zero Timid Test Prompts ("Decide By Yourself")**: NEVER prompt the user with interactive confirmation questions to test an endpoint, inspect router decorators, test central model dispatch, test TTS synthesis speed, or run code. Decide autonomously to inspect and test locally with mocks or test suites.
+- **Unpredicted States Momentum ("ادامه بده")**: Never freeze mid-task when encountering unexpected edge cases; use safe fallbacks, finish all other work, and batch any remaining questions for the end.
 - **Zero Remote Source Code & Route Probing**: NEVER run `ssh` or remote `docker exec` commands to read codebase files or grep router decorators (e.g. `python3 -c "open('/workspace/...')"`). Inspect all routes and models locally from the repository workspace.
 - **Zero Remote Voice / TTS Synthesis Benchmarking**: NEVER run remote SSH or container commands to benchmark audio/voice synthesis latency or execute live TTS synthesis (`TTSService.synthesize_chunk`) on remote servers unprompted.
 - **Zero Unsolicited Live Model/API Probing**: NEVER run live inference queries (`/api/models/generate`) or execute ad-hoc remote container commands (`ssh ... "docker exec ... python3 -c '...' "`) unprompted.

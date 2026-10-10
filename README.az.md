@@ -2,12 +2,12 @@
 ### `agent-project-discovery-skill`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/badge/release-v1.6.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
+[![Release](https://img.shields.io/badge/release-v1.7.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/tmolavi/agent-project-discovery-skill/pulls)
 
 > **"Süni intellekt agenti dəyişiklik etməzdən əvvəl layihəni dərindən anlamalıdır."**
 
-Bu layihə kodlaşdırma agentləri (Claude Code, Cursor, Google Antigravity, OpenAI Codex, GitHub Copilot və s.) üçün universal və istehsala hazır başlanğıc bacarığıdır (startup skill). Agentlərin layihəni başa düşmədən tələsik kod dəyişdirməsinin, mövcud arxitekturanı pozmasının, lazımsız suallar verməsinin, test, marşrut, model paylama (central dispatch) və ya TTS nitq sintezi yoxlanışı üçün icazə istəməsinin və sizi daima ekran qarşısında təsdiq düymələrinə basmağa məcbur etməsinin qarşısını alır.
+Bu layihə kodlaşdırma agentləri (Claude Code, Cursor, Google Antigravity, OpenAI Codex, GitHub Copilot və s.) üçün universal və istehsala hazır başlanğıc bacarığıdır (startup skill). Agentlərin layihəni başa düşmədən tələsik kod dəyişdirməsinin, mövcud arxitekturanı pozmasının, lazımsız suallar verməsinin, gözlənilməz hallarda dayanıb qalmasının, test, marşrut, model paylama (central dispatch) və ya TTS nitq sintezi yoxlanışı üçün icazə istəməsinin və sizi daima ekran qarşısında təsdiq düymələrinə basmağa məcbur etməsinin qarşısını alır.
 
 ---
 
@@ -28,6 +28,7 @@ Bu layihənin əsas məqsədi budur:
 Müasir süni intellekt mühitlərində (Google Antigravity, Claude Code, Cursor) daxili **Qum Qutusu (Sandbox) Təhlükəsizlik Sistemi** mövcuddur:
 1. **Qum Qutusu Daxilində Standart Əmrlər (Standard Sandbox)**: Layihə qovluğu daxilində faylların oxunması/yazılması, lokal git statusu (`git status`, `git diff`), lokal yığma (`npm run build`, `cargo check`) və testlər (`pytest`, `vitest`) **tam avtomatik, səssiz və heç bir təsdiq istəmədən** işləyir.
 2. **Təsdiq Pəncərəsi Tələb Edən Səbəblər**:
+   - **Gözlənilməz Hallarda Dayanıb Tək-Tək Sual Vermək**: Agentin digər işləri bitirib sualları sona saxlamaq əvəzinə işin ortasında davamlı donması.
    - **Rutin Test Təsdiqi Tələbi (`Allow testing /api/... ?`)**: Agentin müstəqil qərar vermək əvəzinə test icrası və ya SSH skripti üçün istifadəçidən icazə istəməsi.
    - **Mərkəzi Model Paylanması Onayı İstəmək (`Allow testing central model dispatch?`)**: Agentin model şlüzünü lokal mühitdə mock etmək əvəzinə canlı serverdə test etmək üçün icazə istəməsi.
    - **Səs və TTS Sintez Sürəti Yoxlanışı Üçün İcazə İstəmək (`Allow testing TTS synthesis speed? ssh ...`)**: Agentin nitq sintezini və ya səs emal sürətini lokal mühitdə mock etmək əvəzinə canlı serverdə test etmək üçün icazə istəməsi.
@@ -44,13 +45,14 @@ Müasir süni intellekt mühitlərində (Google Antigravity, Claude Code, Cursor
 
 ### 🛠️ Bu Bacarıq Problemləri Necə Həll Edir?
 
-1. **Müstəqil Test və Doğrulama Qərarı**: Agent "Test edimmi?" deyə soruşmur. Dəyişiklikləri lokal maketlər, vahid testləri və lokal loopback (`127.0.0.1`) ilə müstəqil yoxlamağı qərara alır və hesabat verir.
-2. **Yalnız Lokal və Dəqiq Doğrulama**: Kodlar canlı saytlara və ya uzaq serverlərə sorğu göndərməklə deyil, lokal testlər və daxili build ilə yoxlanılır.
-3. **Model və Paylama Mocking**: Mühakimə router-ləri və model şlüzləri uzaq serverə qoşulmadan lokal maketlərlə yoxlanılır.
-4. **Lokal TTS və Səs Sintezi Mocking**: Səs sintezi xidmətləri (`TTSService`) və audio axını gecikmələri uzaq serverdə canlı test edilmək əvəzinə lokal asinxron mock-lar (`AsyncMock`) ilə yoxlanılır.
-5. **Tək Fayllı Skript Metodu (Single-Runner Batching)**: İstifadəçi brauzer seanslarını (Chrome, Safari, cPanel, bulud konsolları, Colab) və ya uzaq verilənlər bazasını yoxlamağı tapşırdıqda, agent dağınıq sətirlər işlətmir; layihədə vahid köməkçi skript (Python və ya AppleScript) hazırlayır, onu bir dəfə icra edir və strukturlaşmış JSON nəticəsini oxuyur.
-6. **Statik Dağıtım Təhlili**: Portlar və konteynerlər canlı serverə bağlanmadan `docker-compose.yml` və `Dockerfile` fayllarından oxunur.
-7. **Layihə İzolasiyası**: Qovluqdan kənar heç bir qlobal fayla toxunulmur.
+1. **Gözlənilməz Hallarda Fasiləsiz İrəliləmə və Sualları Sona Saxlama ("Davam Et və Hamısını Sonda Birdəfəlik Soruş")**: Gözlənilməz xəta və ya qeyri-müəyyənliklə qarşılaşdıqda agent heç vaxt işi ortada dayandırmır; təhlükəsiz standart qərarı seçir, digər bütün işləri tamamlayır və bütün sualları tapşırığın sonunda vahid hesabatda birdəfəlik təqdim edir.
+2. **Müstəqil Test və Doğrulama Qərarı**: Agent "Test edimmi?" deyə soruşmur. Dəyişiklikləri lokal maketlər, vahid testləri və lokal loopback (`127.0.0.1`) ilə müstəqil yoxlamağı qərara alır və hesabat verir.
+3. **Yalnız Lokal və Dəqiq Doğrulama**: Kodlar canlı saytlara və ya uzaq serverlərə sorğu göndərməklə deyil, lokal testlər və daxili build ilə yoxlanılır.
+4. **Model və Paylama Mocking**: Mühakimə router-ləri və model şlüzləri uzaq serverə qoşulmadan lokal maketlərlə yoxlanılır.
+5. **Lokal TTS və Səs Sintezi Mocking**: Səs sintezi xidmətləri (`TTSService`) və audio axını gecikmələri uzaq serverdə canlı test edilmək əvəzinə lokal asinxron mock-lar (`AsyncMock`) ilə yoxlanılır.
+6. **Tək Fayllı Skript Metodu (Single-Runner Batching)**: İstifadəçi brauzer seanslarını (Chrome, Safari, cPanel, bulud konsolları, Colab) və ya uzaq verilənlər bazasını yoxlamağı tapşırdıqda, agent dağınıq sətirlər işlətmir; layihədə vahid köməkçi skript (Python və ya AppleScript) hazırlayır, onu bir dəfə icra edir və strukturlaşmış JSON nəticəsini oxuyur.
+7. **Statik Dağıtım Təhlili**: Portlar və konteynerlər canlı serverə bağlanmadan `docker-compose.yml` və `Dockerfile` fayllarından oxunur.
+8. **Layihə İzolasiyası**: Qovluqdan kənar heç bir qlobal fayla toxunulmur.
 
 ---
 

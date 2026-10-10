@@ -1,7 +1,7 @@
 ---
 name: agent-project-discovery-skill
 description: Universal startup and context discovery skill for AI coding agents to inspect, understand, and plan before modifying existing projects.
-version: 1.6.0
+version: 1.7.0
 license: MIT
 metadata:
   author: agent-project-discovery-skill contributors
@@ -26,7 +26,8 @@ When entering an existing codebase, an AI agent must behave like a senior softwa
 5. **Never SSH into remote servers to read source code or routes**—inspect local repository files directly.
 6. **Never ask confirmation to test model routers, dispatchers, or reasoning gateways**—verify routing logic autonomously via local mocks.
 7. **Never ask confirmation to test audio/TTS synthesis speed or voice latency**—benchmark and verify audio pipeline logic autonomously via local mocks.
-8. **Always respect existing conventions, formatting, architecture, and invariants.**
+8. **Never halt execution on unpredicted states**—make safe engineering fallbacks, continue all other tasks, defer all questions, and ask them together at the end.
+9. **Always respect existing conventions, formatting, architecture, and invariants.**
 
 ---
 
@@ -179,11 +180,21 @@ The agent must take full engineering ownership rather than interrupting the deve
 3. **Read Documentation**: Check docs, schemas, comments, and README.
 4. **Infer from Context**: If a pattern is repeated in 5 places, follow that pattern in the 6th place.
 
+#### Unpredicted States & Continuous Momentum Protocol ("در حالت‌های پیش‌بینی‌نشده ادامه بده"):
+When the agent encounters unpredicted circumstances, ambiguous specifications, unexpected errors, or missing parameters during execution:
+1. **Never Freeze or Halt Mid-Task**: The agent must NEVER halt execution or interrupt the user in the middle of a run.
+2. **Safe Fallback Assumptions**: Make a sensible, standard, and reversible engineering decision. Favor non-destructive, modular, and standard industry practices.
+3. **Continue All Doable Work**: Proceed with all other subtasks, modules, code edits, test suites, and documentation that can still make progress.
+4. **Initial Autonomy Handshake (Optional / Upfront)**: If interaction is desired or required, ask once at the very start of the session: *"Should I decide autonomously on unexpected situations or defer questions to the end?"* Never repeatedly interrupt with ad-hoc questions during execution.
+5. **Deferred Batch Questioning ("همه رو یه جا بپرسه")**: Enqueue all doubts, unpredicted decisions, or non-blocking questions into an internal backlog. Do NOT ask them one by one mid-run. Finish all other possible work first, and then present all accumulated questions together in a single consolidated list at the end of the task.
+
 #### Permitted Questions (ONLY Under These Conditions):
 You may **ONLY** prompt the user with a question if:
 1. **Information genuinely does not exist in the codebase**: E.g., access to external third-party sandbox credentials not listed in `.env.example`.
 2. **Destructive Choices**: The requested action would permanently delete data, drop tables, remove public APIs, or reset git state.
 3. **Architecture Fork**: Multiple mutually exclusive design options exist that carry significant architectural trade-offs requiring product or business approval.
+
+> *Note: Even when permitted questions arise, defer non-critical questions to the consolidated end-of-task report rather than halting mid-task.*
 
 ---
 
@@ -254,6 +265,9 @@ VALIDATION:
 
 DEPLOYMENT:
 - Working tree state and branch readiness
+
+DEFERRED QUESTIONS & UNPREDICTED DECISIONS:
+- [None — or consolidated list of all questions accumulated during execution to be answered at once]
 
 REMAINING:
 - Known limitations, follow-up items, or out-of-scope observations

@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.0] - 2026-10-10
+
+### Added
+- **Continuous Momentum on Unpredicted States ("در حالت‌های پیش‌بینی‌نشده ادامه بده")**: Mandated that agents must never freeze or halt execution mid-task when encountering unexpected circumstances, ambiguous options, or unpredicted errors. The agent must apply safe, reversible engineering defaults and continue progressing through all other doable tasks.
+- **Deferred Batch Questioning Protocol ("همه رو آخرش یه جا بپرسه")**: Enforced that all accumulated non-critical questions, ambiguous trade-offs, and edge-case choices must be deferred to the end of the run and presented together in a single consolidated list rather than interrupting the user one-by-one mid-stream.
+- **Initial Autonomy Handshake**: Allowed specifying autonomy upfront at the very start of a session instead of repeated mid-task questions.
+- Updated `SKILL.md`, `templates/AGENTS.md`, and all localized README files (`README.md`, `README.fa.md`, `README.tr.md`, `README.az.md`, `README.ar.md`).
+
 ## [1.6.0] - 2026-10-10
 
 ### Added
