@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.17.0] - 2026-10-10
+
+### Added
+- **The 18th Forbidden Trap (Remote Source Code & Frontend Component Probing)**: Strictly forbidden asking `Allow checking server MobileMenu.tsx?` or executing remote SSH commands (`ssh ... "cat ... components/MobileMenu.tsx"`) to view UI components or source code on remote servers.
+- **The 19th Forbidden Trap (Remote STT Provider & API Key Probing)**: Strictly forbidden asking `Allow checking STT providers?` or `Allow testing Groq Whisper STT?` and executing remote SSH commands (`docker exec ... python3 -c '... test_stt_providers() ... GROQ_API_KEY ... WHISPER_URL ...'`) to probe provider configurations, API keys, or live STT APIs.
+- **The 20th Forbidden Trap (Unprompted SCP Deployments & Remote Container Restarts)**: Strictly forbidden asking `Allow deploying updated app files to production?`, `Allow restarting hamzad-ara container?`, or `Allow deploying hermes_router and restarting container?` and executing ad-hoc `scp` uploads or `ssh ... "docker restart ..."` mid-task without explicit user directive.
+- **The 21st Forbidden Trap (Remote Benchmark Suite & Live Evaluation Execution)**: Strictly forbidden asking `Allow running 20-utterance Persian evaluation suite?` or `Allow running full 20-utterance benchmark?` and running remote SSH/SCP evaluation scripts (`scp ... test_20_persian_utterances.py ... && ssh ... "docker exec hamzad-ara python3 /app/test_20_persian_utterances.py"`).
+- **The 22nd Forbidden Trap (Remote Health Endpoints, Container Logs, Shell History & Build Artifact Probing)**: Strictly forbidden asking `Allow checking ARA health endpoint?`, `Allow checking hamzad-ara container logs?`, `Allow checking server command history?`, `Allow checking .next on server host?`, or `Allow checking molavi-pro container on server?` and executing remote SSH `curl -s .../api/health`, `docker logs ... --tail`, `history | tail`, `ls -la .../.next`, or `docker ps --filter name=...`.
+- **Autonomous Local Resolution Mandates ("خودش تصمیم بگیره")**: Mandated that agents must autonomously inspect local components, mock STT providers locally, prepare deployments without ad-hoc SCP/restarts, run benchmarks locally against test doubles, and diagnose health/logs/history from local code and logs without remote SSH probing or confirmation modals.
+- Updated `SKILL.md`, `templates/AGENTS.md`, and all localized README files (`README.md`, `README.fa.md`, `README.tr.md`, `README.az.md`, `README.ar.md`) to version `v1.17.0`.
+
 ## [1.16.0] - 2026-10-10
 
 ### Added
