@@ -2,7 +2,7 @@
 ### `agent-project-discovery-skill`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/badge/release-v1.24.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
+[![Release](https://img.shields.io/badge/release-v1.25.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/tmolavi/agent-project-discovery-skill/pulls)
 
 > **"يجب على وكيل الذكاء الاصطناعي أن يفهم المشروع بعمق قبل أن يُغيّر أي سطر برمجياً."**
@@ -52,6 +52,7 @@
    - **طلب الإذن لرفع أرشيف ملفات البناء عبر SCP (`Allow uploading build assets archive? scp ... /tmp/*.tar.gz ...`):** محاولة خاطئة من الوكيل لرفع أرشيفات مضغوطة عشوائياً عبر SCP بدلاً من التحقق المحلي وسكربت النشر الرسمي (`deploy.sh`).
    - **طلب الإذن لاستعلام مهارات الخدمات عبر الحاويات المجاورة (`Allow inspecting Hermes skills from hamzad-ara? ssh ... "docker exec ... http://staging-hermes:8090/api/v1/skills ..."`):** محاولة خاطئة من الوكيل لإرسال طلبات HTTP داخلية بين الحاويات عبر SSH بدلاً من فحص ملفات التسجيل المحلية ومحاكاتها.
    - **طلب الإذن لنشر الملفات داخل الحاوية وإعادة تشغيلها (`Allow deploying assets to container and restarting?`):** محاولة خاطئة من الوكيل لتشغيل سلاسل أوامر SSH المركبة (`tar && docker cp && docker restart && curl`) بدلاً من الالتزام بسكربت النشر الرسمي (`deploy.sh`).
+   - **طلب الإذن لسرد جميع مهارات هرمس (`Allow listing all Hermes skills?`):** محاولة خاطئة من الوكيل لتشغيل سكربت بايثون عبر SSH لطباعة أسماء المهارات بدلاً من قراءتها من سجلات المانيفست المحلية.
    - **طلب الإذن لفحص حاويات السيرفر وحالة الجيت البعيدة (`Allow checking server container and git status?`, `Allow checking server git branch and log?`, `Allow listing git branches on server?`, `Allow checking molavi-pro container on server?`):** محاولة خاطئة من الوكيل للاتصال بالخادم عبر SSH لتشغيل `docker ps`، أو `git status -s`، أو `git branch` و `git log` على السيرفر بدلاً من فحص ملفات المشروع وسجل الجيت محلياً.
    - **طلب الإذن لفحص المسارات والأكواد البعيدة (`Allow checking model router endpoints?`)**: محاولة خاطئة من الوكيل للاتصال بالخادم عبر SSH لقراءة ملفات الكود والمسارات بدلاً من قراءتها محلياً من ملفات المشروع.
    - **طلب الخروج من الساندبوكس (`BypassSandbox: true`)**: لما يحاول الوكيل الوصول المباشر للشبكة أو كامل القرص بدون وجود صلاحية مسجلة مسبقاً.
@@ -92,9 +93,10 @@
 24. **التحقق المحلي من البناء وحظر رفع الأرشيف بـ SCP:** يتم بناء ملفات التطبيق والتحقق منها محلياً، وتُحظر عمليات رفع الأرشيفات المضغوطة عبر SCP خارج نطاق سكربتات النشر المعتمدة.
 25. **الاستكشاف المحلي لخدمات النظام والمحاكاة بين الحاويات:** تُفحص مهارات الخدمات والمسارات الداخلية مباشرة من ملفات التسجيل المحلية (`hermes-skill-discovery-registry-v1.json`, `docker-compose.yml`) وتتم محاكاتها محلياً دون إرسال أوامر SSH بين الحاويات.
 26. **النشر الذري الشامل وحظر التعديل المباشر على الحاويات:** تتم عمليات النشر حصراً عبر سكربت النشر الرسمي (`deploy.sh`) بشكل ذري دون سلاسل أوامر استخراج ونسخ وإعادة تشغيل مجزأة.
-27. **سكربت التشغيل الموحد لأتمتة المتصفح والنظام (Single-Runner Batching)**: إذا طلب المستخدم فحص تبويبات المتصفح النشطة (مثل cPanel، سحابة، كولاب) أو فحص قاعدة بيانات، يقوم الوكيل بكتابة سكربت بايثون أو أبل سكربت كامل ومستقل، ويشغله **مرة واحدة فقط** ويقرأ النتيجة المهيكلة (JSON) بدون تكرار النوافذ المزعجة.
-28. **الفحص الساكن للنشر**: قراءة الحاويات والمنافذ من `docker-compose.yml` و `Dockerfile` بدلاً من إرسال أوامر SSH متكررة.
-29. **عزل المشروع بالكامل**: عدم المساس بأي ملفات عامة خارج مجلد العمل.
+27. **الاستكشاف الساكن لكتالوج المهارات:** تُستكشف قائمة مهارات الخدمات بالكامل مباشرة من ملفات التسجيل المحلية (`hermes-skill-discovery-registry-v1.json`) دون تشغيل سكربتات بعيدة.
+28. **سكربت التشغيل الموحد لأتمتة المتصفح والنظام (Single-Runner Batching)**: إذا طلب المستخدم فحص تبويبات المتصفح النشطة (مثل cPanel، سحابة، كولاب) أو فحص قاعدة بيانات، يقوم الوكيل بكتابة سكربت بايثون أو أبل سكربت كامل ومستقل، ويشغله **مرة واحدة فقط** ويقرأ النتيجة المهيكلة (JSON) بدون تكرار النوافذ المزعجة.
+29. **الفحص الساكن للنشر**: قراءة الحاويات والمنافذ من `docker-compose.yml` و `Dockerfile` بدلاً من إرسال أوامر SSH متكررة.
+30. **عزل المشروع بالكامل**: عدم المساس بأي ملفات عامة خارج مجلد العمل.
 
 ---
 

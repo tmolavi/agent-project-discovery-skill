@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.25.0] - 2026-10-10
+
+### Added
+- **The 34th Forbidden Trap (Remote Microservice Exhaustive Skill Enumeration)**: Strictly forbidden asking `Allow listing all Hermes skills?` or `Allow listing all <service> skills?` and firing remote SSH commands (`docker exec ... urllib.request.urlopen(...) ... names = [...]`) to parse or print skill catalogs on remote servers.
+- **Autonomous Static Skill Catalog Discovery Mandate ("خودش تصمیم بگیره")**: Mandated that agents must discover complete skill catalogs, tool definitions, and microservice capabilities statically from local workspace manifests (`hermes-skill-discovery-registry-v1.json`, `isolated_hermes/`, `hermes_skills/`) without remote SSH skill enumeration scripts or user approval modals.
+- Updated `SKILL.md`, `templates/AGENTS.md`, and all localized README files (`README.md`, `README.fa.md`, `README.tr.md`, `README.az.md`, `README.ar.md`) to version `v1.25.0`.
+
 ## [1.24.0] - 2026-10-10
 
 ### Added
