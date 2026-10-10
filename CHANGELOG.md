@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.31.0] - 2026-10-11
+
+### Added
+- **Strengthened Trap 37 (Live Container WebSocket & Wake-Word Pipeline Probing)**: Strictly forbidden asking `Allow testing live wake-word flow in container?` alongside `Allow testing wake-word flow inside production container?` and executing live WebSocket evaluation scripts over SSH.
+- Updated `SKILL.md`, `templates/AGENTS.md`, and all localized README files (`README.md`, `README.fa.md`, `README.tr.md`, `README.az.md`, `README.ar.md`) to version `v1.31.0`.
+
 ## [1.30.0] - 2026-10-11
 
 ### Added
