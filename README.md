@@ -1,7 +1,7 @@
 # agent-project-discovery-skill 🧭
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/badge/release-v1.11.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
+[![Release](https://img.shields.io/badge/release-v1.12.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/tmolavi/agent-project-discovery-skill/pulls)
 [![Supported Agents](https://img.shields.io/badge/Agents-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Antigravity%20%7C%20Copilot-blueviolet.svg)](#supported-ai-agents)
 
@@ -32,6 +32,7 @@ Today's AI coding assistants are capable, but their default initialization behav
 | **TTS / Speech Benchmarking Halts**: Halts asking *"Allow testing TTS synthesis speed?"* and triggers remote SSH. | **Autonomous Voice & TTS Mocking**: Validates speech synthesis services (`TTSService`) locally with mocked audio chunks and async mocks. |
 | **Remote Package Inspection Halts**: Halts asking *"Allow checking edge-tts version?"* and fires SSH to run `pip show`. | **Autonomous Dependency Manifest Discovery**: Inspects library versions statically from `requirements.txt`, `pyproject.toml`, or lockfiles without SSH. |
 | **Remote Package Upgrade Halts**: Halts asking *"Allow upgrading edge-tts?"* and fires SSH to run `pip install -U`. | **Autonomous Dependency Upgrades in Manifests**: Updates library constraints directly in local `requirements.txt`/`pyproject.toml`/`Dockerfile` and verifies locally without remote SSH mutations. |
+| **Remote Container Filesystem Probing**: Halts asking *"Allow checking container contents?"* and fires SSH to run `docker exec ... ls`. | **Autonomous Container Filesystem Discovery**: Inspects repository layout, `Dockerfile` WORKDIR/COPY, and `docker-compose.yml` volumes directly in the local workspace without remote container probing. |
 | **Server Container & Git Probing**: Halts asking *"Allow checking server container and git status?"* or *"Allow checking server git branch and log?"* and fires SSH. | **Autonomous Container & Git Discovery**: Discovers container setups statically from `docker-compose.yml`/`Dockerfile` and checks git status, branches, and commit logs locally in the workspace. |
 | **Unpredicted State Freezes**: Halts work mid-task or interrupts repeatedly over unpredicted edge cases. | **Continuous Momentum & Deferred Batching**: Proceeds through unexpected situations with safe fallbacks, finishes all other work, and batches all questions for the end ("همه رو یه جا بپرسه"). |
 | **Clobbering Diffs**: Overwrites uncommitted work or ignores ongoing work in the working tree. | **Git Awareness**: Inspects `git status`, current branch, recent commits, and protects existing user modifications. |
@@ -57,6 +58,7 @@ Modern AI coding assistants (Google Antigravity, Claude Code, Cursor) enforce a 
    - The agent prompts to ask **TTS / voice synthesis testing permission** (`Allow testing TTS synthesis speed? ssh ...`).
    - The agent prompts to ask **package inspection permission** (`Allow checking edge-tts version? ssh ... "pip show ..."`).
    - The agent prompts to ask **package upgrade permission** (`Allow upgrading edge-tts? ssh ... "pip install -U ..."`).
+   - The agent prompts to ask **container filesystem inspection permission** (`Allow checking container contents? ssh ... "docker exec molavi-pro-web ls -la /app"`).
    - The agent prompts to ask **server container or git state permission** (`Allow checking server container and git status?`, `Allow checking server git branch and log? ssh ... "git branch ... && git log ..."`).
    - The agent halts mid-task to ask **unpredicted edge case questions** one by one instead of deferring them.
    - The agent probes **live public URLs** or external domains (`curl -s https://example.com/...`).
@@ -67,11 +69,12 @@ Modern AI coding assistants (Google Antigravity, Claude Code, Cursor) enforce a 
    - The agent runs **fragmented, iterative AppleScript/OS one-liners** (`osascript -e '...'`) to inspect browser sessions.
 
 ### How This Skill Fixes It:
-- **Autonomous Decision Mandate ("Decide By Itself")**: The agent never asks *"Allow testing <endpoint>?"*, *"Allow checking model router endpoints?"*, *"Allow testing central model dispatch?"*, *"Allow testing TTS synthesis speed?"*, *"Allow checking edge-tts version?"*, *"Allow upgrading edge-tts?"*, *"Allow checking server container and git status?"*, or *"Allow checking server git branch and log?"*. It autonomously inspects local repository files and chooses local mocks, fixtures, and local test runners without human intervention.
+- **Autonomous Decision Mandate ("Decide By Itself")**: The agent never asks *"Allow testing <endpoint>?"*, *"Allow checking model router endpoints?"*, *"Allow testing central model dispatch?"*, *"Allow testing TTS synthesis speed?"*, *"Allow checking edge-tts version?"*, *"Allow upgrading edge-tts?"*, *"Allow checking container contents?"*, *"Allow checking server container and git status?"*, or *"Allow checking server git branch and log?"*. It autonomously inspects local repository files and chooses local mocks, fixtures, and local test runners without human intervention.
 - **Continuous Momentum on Unpredicted States & Deferred Batching**: When encountering unexpected states, ambiguous requirements, or missing parameters, the agent never halts mid-run. It applies safe reversible defaults, finishes all other doable work, and batches all questions to be presented together at the end ("همه رو یه جا بپرسه").
 - **Enforces Canonical Local Verification**: All code changes are verified through local builds (`npm run build`, `cargo check`, `go test`) and unit tests instead of hitting live production domains or remote servers.
 - **Zero Remote Code & Package Probing**: Discovers endpoints, routers, schemas, and package versions (`requirements.txt`, `poetry.lock`, `package.json`) from local workspace files directly without SSH.
 - **Autonomous Dependency Upgrades & Manifest Updates**: Updates library versions deterministically in local manifests (`requirements.txt`, `pyproject.toml`, `package.json`, `Dockerfile`) and verifies compatibility with local test runners without remote SSH `pip install -U` commands.
+- **Autonomous Container Filesystem Discovery**: Inspects container directory hierarchies, application paths (`/app`, `/var/www`), and volume mappings directly from the local workspace files, `Dockerfile`, and `docker-compose.yml` without remote SSH `docker exec ... ls` commands.
 - **Autonomous Container & Git Discovery**: Inspects container architectures and ports from local manifests (`docker-compose.yml`, `Dockerfile`) and checks git status, branches, and commit history locally without remote SSH probing.
 - **Autonomous Router & Dispatch Mocking**: Validates reasoning routers and model tier payloads using mocked transports locally.
 - **Autonomous Voice & TTS Mocking**: Validates speech synthesis speed, streaming chunks, and audio services (`TTSService`) locally with dummy audio bytes and async mocks instead of remote SSH benchmarks.

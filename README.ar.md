@@ -2,12 +2,12 @@
 ### `agent-project-discovery-skill`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/badge/release-v1.11.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
+[![Release](https://img.shields.io/badge/release-v1.12.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/tmolavi/agent-project-discovery-skill/pulls)
 
 > **"يجب على وكيل الذكاء الاصطناعي أن يفهم المشروع بعمق قبل أن يُغيّر أي سطر برمجياً."**
 
-هذا المشروع يقدّم مهارة انطلاقة موحدة وشاملة (Startup Skill) لمساعدي ووكلاء البرمجة بالذكاء الاصطناعي (مثل Claude Code، Cursor، Google Antigravity، OpenAI Codex، GitHub Copilot وغيرها). تمنع هذه المهارة الوكلاء من التعديل العشوائي على الكود دون فهم معماري، أو إعادة كتابة أنظمة شغالة، أو طرح أسئلة مزعجة، أو التوقف عند الحالات غير المتوقعة، أو طلب الإذن لاختبار الكود، فحص المسارات، فحص إصدارات الحزم (`pip show edge-tts`)، ترقية وتحديث الحزم (`pip install -U edge-tts`)، فحص حاويات السيرفر وحالة الجيت (`docker ps && git status`)، فحص فرع وسجل الجيت (`git branch && git log`)، اختبار توجيه النماذج (central model dispatch)، أو فحص سرعة تحويل النص إلى كلام (TTS)، أو حبسك أمام الشاشة للموافقة على كل أمر تافه!
+هذا المشروع يقدّم مهارة انطلاقة موحدة وشاملة (Startup Skill) لمساعدي ووكلاء البرمجة بالذكاء الاصطناعي (مثل Claude Code، Cursor، Google Antigravity، OpenAI Codex، GitHub Copilot وغيرها). تمنع هذه المهارة الوكلاء من التعديل العشوائي على الكود دون فهم معماري، أو إعادة كتابة أنظمة شغالة، أو طرح أسئلة مزعجة، أو التوقف عند الحالات غير المتوقعة، أو طلب الإذن لاختبار الكود، فحص المسارات، فحص إصدارات الحزم (`pip show edge-tts`)، ترقية وتحديث الحزم (`pip install -U edge-tts`)، فحص محتويات الحاويات (`docker exec ... ls`)، فحص حاويات السيرفر وحالة الجيت (`docker ps && git status`)، فحص فرع وسجل الجيت (`git branch && git log`)، اختبار توجيه النماذج (central model dispatch)، أو فحص سرعة تحويل النص إلى كلام (TTS)، أو حبسك أمام الشاشة للموافقة على كل أمر تافه!
 
 ---
 
@@ -34,6 +34,7 @@
    - **طلب الإذن لاختبار سرعة الصوت وتحويل النص لكلام (`Allow testing TTS synthesis speed? ssh ...`)**: محاولة تشغيل قياسات سرعة الصوت أو استدعاء `TTSService.synthesize_chunk` على خوادم حية بدلاً من محاكاتها محلياً.
    - **طلب الإذن لفحص إصدارات الحزم والاعتماديات (`Allow checking edge-tts version? ssh ... "pip show ...")**: محاولة الوكيل تشغيل أوامر `pip show` أو `pip list` عبر SSH لفحص الحزم بدلاً من قراءة ملفات الاعتماديات المحلية.
    - **طلب الإذن لترقية وتحديث الحزم على السيرفر (`Allow upgrading edge-tts? ssh ... "pip install -U ...")**: محاولة خاطئة من الوكيل لتنفيذ أوامر `pip install -U` عبر SSH على السيرفرات أو الحاويات بدلاً من تعديل ملفات المانيفست محلياً.
+   - **طلب الإذن لفحص محتويات الحاويات وهيكل المجلدات (`Allow checking container contents? ssh ... "docker exec ... ls -la /app"`):** محاولة الوكيل تشغيل أوامر `docker exec ... ls` عبر SSH لفحص ملفات ومسارات الحاوية بدلاً من مراجعة هيكل ملفات المشروع محلياً وتعليمات `Dockerfile` و `docker-compose.yml`.
    - **طلب الإذن لفحص حاويات السيرفر وحالة الجيت البعيدة (`Allow checking server container and git status?`, `Allow checking server git branch and log? ssh ... "git branch ... && git log ..."`)**: محاولة خاطئة من الوكيل للاتصال بالخادم عبر SSH لتشغيل `docker ps`، أو `git status -s`، أو `git branch` و `git log` على السيرفر بدلاً من فحص ملفات المشروع وسجل الجيت محلياً.
    - **طلب الإذن لفحص المسارات والأكواد البعيدة (`Allow checking model router endpoints?`)**: محاولة خاطئة من الوكيل للاتصال بالخادم عبر SSH لقراءة ملفات الكود والمسارات بدلاً من قراءتها محلياً من ملفات المشروع.
    - **طلب الخروج من الساندبوكس (`BypassSandbox: true`)**: لما يحاول الوكيل الوصول المباشر للشبكة أو كامل القرص بدون وجود صلاحية مسجلة مسبقاً.
@@ -56,9 +57,10 @@
 6. **الفحص الساكن للحزم والاعتماديات محلياً (Manifest Discovery)**: قراءة إصدارات الحزم والمكتبات مباشرة من ملفات المشروع المحلية (`requirements.txt`, `pyproject.toml`, `poetry.lock`, `package.json`, `Dockerfile`) بدلاً من تنفيذ أوامر `pip show` أو `pip list` عبر SSH على الخوادم البعيدة.
 7. **الترقية المحلية للحزم وإدارة المانيفست**: ترقية الحزم أو إصلاح المشاكل البرمجية يتم مباشرة عبر تحديث ملفات المانيفست المحلية (`requirements.txt`, `pyproject.toml`) واختبارها محلياً، بدلاً من إرسال أوامر `pip install -U` عبر SSH إلى الخوادم البعيدة.
 8. **الفحص المحلي للحاويات وحالة الجيت**: قراءة إعدادات الحاويات والمنافذ من ملفات المشروع المحلية (`docker-compose.yml`, `Dockerfile`)، وفحص حالة الجيت والفرع وسجل الالتزامات محلياً (`git status -s`, `git branch --show-current`, `git log -n 5`) بدون أوامر SSH إلى الخوادم.
-9. **سكربت التشغيل الموحد لأتمتة المتصفح والنظام (Single-Runner Batching)**: إذا طلب المستخدم فحص تبويبات المتصفح النشطة (مثل cPanel، سحابة، كولاب) أو فحص قاعدة بيانات، يقوم الوكيل بكتابة سكربت بايثون أو أبل سكربت كامل ومستقل، ويشغله **مرة واحدة فقط** ويقرأ النتيجة المهيكلة (JSON) بدون تكرار النوافذ المزعجة.
-10. **الفحص الساكن للنشر**: قراءة الحاويات والمنافذ من `docker-compose.yml` و `Dockerfile` بدلاً من إرسال أوامر SSH متكررة.
-11. **عزل المشروع بالكامل**: عدم المساس بأي ملفات عامة خارج مجلد العمل.
+9. **الفحص المحلي لنظام ملفات الحاويات وهيكل المجلدات**: فحص هيكل مسارات التطبيق (`/app`، `/workspace`) وملفات الحاويات مباشرة من ملفات المشروع المحلية، وتعليمات `Dockerfile` (أوامر WORKDIR و COPY) وربط الأحجام (volumes) في `docker-compose.yml` بدون تنفيذ أوامر استكشاف مثل `docker exec ... ls` عبر SSH.
+10. **سكربت التشغيل الموحد لأتمتة المتصفح والنظام (Single-Runner Batching)**: إذا طلب المستخدم فحص تبويبات المتصفح النشطة (مثل cPanel، سحابة، كولاب) أو فحص قاعدة بيانات، يقوم الوكيل بكتابة سكربت بايثون أو أبل سكربت كامل ومستقل، ويشغله **مرة واحدة فقط** ويقرأ النتيجة المهيكلة (JSON) بدون تكرار النوافذ المزعجة.
+11. **الفحص الساكن للنشر**: قراءة الحاويات والمنافذ من `docker-compose.yml` و `Dockerfile` بدلاً من إرسال أوامر SSH متكررة.
+12. **عزل المشروع بالكامل**: عدم المساس بأي ملفات عامة خارج مجلد العمل.
 
 ---
 

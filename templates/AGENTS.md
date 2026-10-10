@@ -36,6 +36,7 @@ Do **NOT** ask questions such as:
 - ❌ *"Allow testing TTS synthesis speed?"* (e.g., asking permission to benchmark speech synthesis latency or run remote `TTSService.synthesize_chunk` scripts).
 - ❌ *"Allow checking edge-tts version?"* (or asking permission to run `pip show`, `pip list`, `pip freeze` via SSH).
 - ❌ *"Allow upgrading edge-tts?"* (or asking permission to run `pip install -U`, `npm update`, `pip install --upgrade` via SSH).
+- ❌ *"Allow checking container contents?"* (or asking permission to run `docker exec ... ls`, `find`, `cat` via SSH).
 - ❌ *"Allow checking server container and git status?"* (e.g., asking permission to run `ssh ... "docker ps ... && git status -s"`).
 - ❌ *"Allow checking server git branch and log?"* (e.g., asking permission to run `ssh ... "git branch --show-current && git log ..."`).
 - ❌ *"Should I run this test on the remote server?"*
@@ -50,6 +51,7 @@ Do **NOT** ask questions such as:
 - Autonomously inspect installed package versions, CLI tools, and library requirements from local manifests (`requirements.txt`, `poetry.lock`, `pyproject.toml`, `package.json`, `Dockerfile`) without firing remote `pip show` commands or asking permission.
 - Autonomously manage dependency upgrades by updating local manifests (`requirements.txt`, `pyproject.toml`, `poetry.lock`, `package.json`, `Dockerfile`) and testing compatibility locally without firing remote SSH `pip install -U` commands or asking permission.
 - Autonomously discover container configurations, service definitions, and deployment port bindings from local files (`docker-compose.yml`, `Dockerfile`), and inspect git branch, commit history, and working tree status locally (`git status -s`, `git branch --show-current`, `git log`) without SSH probing or asking permission.
+- Autonomously discover container filesystem layouts and directory structures by inspecting local repository files, `Dockerfile` (WORKDIR, COPY directives), and `docker-compose.yml` (volume mounts) without executing remote container directory probing (`docker exec ... ls`) or asking permission.
 
 **Handling Unpredicted States & Deferring Questions ("در حالت‌های پیش‌بینی‌نشده ادامه بده و همه رو آخرش یه جا بپرس"):**
 - **Never Halt Mid-Run**: If an unexpected state, ambiguous parameter, or edge case arises, DO NOT freeze execution.
@@ -70,7 +72,8 @@ Do **NOT** ask questions such as:
 - **Pattern Matching**: Match the existing paradigm (error handling, logging, naming, formatting, type definitions).
 - **Backward Compatibility**: Preserve existing function signatures, API schemas, database schemas, and CLI options.
 - **Zero Hallucinated Dependencies**: Do not introduce new third-party dependencies without verifying existing alternatives in the lockfile.
-- **Zero Timid Test Prompts ("Decide By Yourself")**: NEVER prompt the user with interactive confirmation questions to test an endpoint, inspect router decorators, test central model dispatch, test TTS synthesis speed, check package versions, upgrade packages, check server container, git branch, or git log, or run code (e.g. `Allow testing /api/models/generate?`, `Allow checking edge-tts version?`, `Allow upgrading edge-tts?`, `Allow checking server container and git status?`, `Allow checking server git branch and log?`). Decide autonomously to inspect and test locally with mocks or test suites.
+- **Zero Timid Test Prompts ("Decide By Yourself")**: NEVER prompt the user with interactive confirmation questions to test an endpoint, inspect router decorators, test central model dispatch, test TTS synthesis speed, check package versions, upgrade packages, check container contents, or check server container, git branch, or git log (e.g. `Allow testing /api/models/generate?`, `Allow checking edge-tts version?`, `Allow upgrading edge-tts?`, `Allow checking container contents?`, `Allow checking server container and git status?`, `Allow checking server git branch and log?`). Decide autonomously to inspect and test locally with mocks or test suites.
+- **Zero Remote Container Filesystem Probing via SSH**: NEVER run `ssh` or remote container commands (`docker exec ... ls -la /app`, `find /app`, `cat /app/...`) to inspect container directory trees. Inspect repository files and folder hierarchies directly in the local workspace.
 - **Zero Remote Package Upgrades via SSH**: NEVER run `ssh` or remote container commands (`pip install -U`, `pip install --upgrade`, `npm update`, `apt-get upgrade`) to mutate running packages on remote hosts. Update dependencies deterministically in local manifests and verify locally.
 - **Zero Remote Container & Git Probing via SSH**: NEVER run compound `ssh` commands (`docker ps`, `git branch`, `git log`, `git status -s` on remote hosts) to check server status or remote checkouts. Understand deployment statically from local files and inspect git status, branches, and commit logs locally in the workspace.
 - **Zero Remote Package & Dependency Probing**: NEVER run `ssh` or remote container commands (`pip show`, `pip list`, `pip freeze`, `npm list`) to inspect installed packages on external servers. Inspect all dependencies statically from local repository manifests.

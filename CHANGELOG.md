@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.12.0] - 2026-10-10
+
+### Added
+- **The 15th Forbidden Trap (Remote Container Filesystem & Directory Probing)**: Strictly forbidden asking `Allow checking container contents?` or executing remote SSH commands (`docker exec ... ls`, `find /app`, `cat /app/...`) to inspect directory hierarchies, application files, or container filesystems.
+- **Autonomous Local Container Filesystem & Directory Discovery Mandate ("خودش تصمیم بگیره")**: Mandated that agents must inspect repository folder structures, directory hierarchies, `Dockerfile` directives (WORKDIR, COPY), and `docker-compose.yml` volume mappings directly within the local workspace without remote SSH probing or user approval modals.
+- Updated `SKILL.md`, `templates/AGENTS.md`, and all localized README files (`README.md`, `README.fa.md`, `README.tr.md`, `README.az.md`, `README.ar.md`) to version `v1.12.0`.
+
 ## [1.11.0] - 2026-10-10
 
 ### Added
