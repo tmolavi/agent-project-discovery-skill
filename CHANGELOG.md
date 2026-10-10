@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 2026-10-11
+
+### Added
+- **Strengthened Sleep-Well Protocol & Trap 33 (Zero Deployment Script Confirmation Prompts)**: Strictly forbidden asking `Allow executing deployment script?` (e.g. `bash /tmp/deploy_molavi.sh`) across ANY project. The agent must never halt overnight on confirmation prompts for deployment scripts.
+- **Autonomous Release Execution Mandate**: Codified that when release operations are commanded or prepared, the agent must autonomously package, verify, and execute release steps without halting the developer or leaving tasks blocked on user confirmation.
+- Updated `SKILL.md`, `templates/AGENTS.md`, and all localized README files (`README.md`, `README.fa.md`, `README.tr.md`, `README.az.md`, `README.ar.md`) to version `v2.1.0`.
+
 ## [2.0.3] - 2026-10-11
 
 ### Added
