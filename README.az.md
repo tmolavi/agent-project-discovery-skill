@@ -2,7 +2,7 @@
 ### `agent-project-discovery-skill`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/badge/release-v1.31.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
+[![Release](https://img.shields.io/badge/release-v1.32.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/tmolavi/agent-project-discovery-skill/pulls)
 
 > **"Süni intellekt agenti dəyişiklik etməzdən əvvəl layihəni dərindən anlamalıdır."**
@@ -40,7 +40,7 @@ Müasir süni intellekt mühitlərində (Google Antigravity, Claude Code, Cursor
    - **Server İnterfeys Komponenti və ya Mənbə Kodunu Oxumaq Üçün İcazə İstəmək (`Allow checking server MobileMenu.tsx? ssh ... "cat ... components/MobileMenu.tsx"`):** Agentin lokal iş sahəsindəki komponentləri araşdırmaq əvəzinə uzaq serverə SSH ilə `cat` əmri göndərməsi.
    - **SCP ilə Dağıtım və Konteyner Yeniden Başlatma Üçün İcazə İstəmək (`Allow deploying updated app files to production?`, `Allow restarting hamzad-ara container?`, `Allow deploying hermes_router and restarting container?`):** Dəyişiklikləri lokal olaraq yoxlamaq əvəzinə uzaq serverə tələsik `scp` və konteyner restart göndərmək.
    - **Uzaq Qiymətləndirmə və Benchmark Süiti İcrası Üçün İcazə İstəmək (`Allow running 20-utterance Persian evaluation suite?`, `Allow running full 20-utterance benchmark?`):** Testləri lokal mühitdə mock-larla icra etmək əvəzinə canlı serverdə konteyner daxilində icra etməyə cəhd etmək.
-   - **Sağlamlıq Marşrutu, Konteyner Loqları, Əmr Tarixçəsi və ya Quraşdırma Qovluğu Üçün İcazə İstəmək (`Allow checking ARA health endpoint?`, `Allow checking hamzad-ara container logs?`, `Allow checking server command history?`, `Allow checking .next on server host?`):** Uzaq serverə `curl`, `docker logs`, `history` və ya `ls .next` göndərmək.
+   - **Sağlamlıq Marşrutu, Konteyner Loqları, Əmr Tarixçəsi və ya Quraşdırma Qovluğu Üçün İcazə İstəmək (`Allow checking ARA health endpoint?`, `Allow checking container logs?`, `Allow checking hamzad-ara container logs?`, `Allow checking server command history?`, `Allow checking .next on server host?`):** Uzaq serverə `curl`, `docker logs`, `history` və ya `ls .next` göndərmək.
    - **SSH Bağlantı Təkrarı, Uptime və Əks-səda Yoxlanışı Üçün İcazə İstəmək (`Allow retrying SSH connection?`, `Allow testing SSH to hamzad_server?`):** Vaxtaşımı zamanı lokal iş sahəsinə keçmək əvəzinə uzaq serverə `uptime` və ya `echo` göndərməyə cəhd etmək.
    - **Birləşdirilmiş Konteyner və Git Vəziyyəti Yoxlanışı Üçün İcazə İstəmək (`Allow checking server molavi-pro container and git?`):** Uzaq serverə zəncirlənmiş SSH əmrləri göndərməyə cəhd etmək.
    - **Uzaq Xidmət Bacarıqları Siyahısı Üçün İcazə İstəmək (`Allow listing Hermes skills?`):** Uzaq serverdə `docker exec ... httpx.get` icra etmək əvəzinə lokal reyestr sənədlərini oxumamaq.

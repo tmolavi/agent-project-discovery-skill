@@ -2,7 +2,7 @@
 ### `agent-project-discovery-skill`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/badge/release-v1.31.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
+[![Release](https://img.shields.io/badge/release-v1.32.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/tmolavi/agent-project-discovery-skill/pulls)
 
 > **"يجب على وكيل الذكاء الاصطناعي أن يفهم المشروع بعمق قبل أن يُغيّر أي سطر برمجياً."**
@@ -40,7 +40,7 @@
    - **طلب الإذن لاستعراض مكونات الواجهة أو الكود المصدري على السيرفر (`Allow checking server MobileMenu.tsx? ssh ... "cat ... components/MobileMenu.tsx"`):** محاولة الوكيل تشغيل أوامر `cat` عبر SSH لقراءة ملفات الواجهة من الخادم بدلاً من مراجعتها من المشروع المحلي.
    - **طلب الإذن للنشر العشوائي عبر SCP أو إعادة تشغيل الحاويات (`Allow deploying updated app files to production?`, `Allow restarting hamzad-ara container?`, `Allow deploying hermes_router and restarting container?`):** محاولة الوكيل إرسال ملفات عبر SCP وإعادة تشغيل الحاويات في منتصف المهمة بدلاً من إنجاز العمل محلياً.
    - **طلب الإذن لتشغيل حزم التقييم والاختبارات المعيارية (`Allow running 20-utterance Persian evaluation suite?`, `Allow running full 20-utterance benchmark?`):** محاولة الوكيل رفع سكربتات الاختبار وتشغيلها داخل حاويات الإنتاج عبر SSH بدلاً من تشغيلها محلياً ببيانات وهمية.
-   - **طلب الإذن لفحص نقاط الصحة، سجلات الحاويات، أو تاريخ الأوامر (`Allow checking ARA health endpoint?`, `Allow checking hamzad-ara container logs?`, `Allow checking server command history?`, `Allow checking .next on server host?`):** محاولة تشغيل `curl`, `docker logs`, `history` أو `ls .next` عبر SSH بدلاً من فحصها محلياً.
+   - **طلب الإذن لفحص نقاط الصحة، سجلات الحاويات، أو تاريخ الأوامر (`Allow checking ARA health endpoint?`, `Allow checking container logs?`, `Allow checking hamzad-ara container logs?`, `Allow checking server command history?`, `Allow checking .next on server host?`):** محاولة تشغيل `curl`, `docker logs`, `history` أو `ls .next` عبر SSH بدلاً من فحصها محلياً.
    - **طلب الإذن لإعادة محاولة اتصال SSH واختبار الجاهزية والصدى (`Allow retrying SSH connection?`, `Allow testing SSH to hamzad_server?`):** محاولة تشغيل `uptime` أو `echo` عبر SSH بدلاً من التراجع للتحقق المحلي عند انقطاع الاتصال.
    - **طلب الإذن للفحص المركب للحاويات وحالة الجيت بالسيرفر (`Allow checking server molavi-pro container and git?`):** محاولة تشغيل سلاسل SSH معقدة بدلاً من الفصل والاستكشاف الساكن.
    - **طلب الإذن لاستعراض مهارات الخدمات ونقاطها الداخلية (`Allow listing Hermes skills?`):** تشغيل `docker exec ... httpx.get` على السيرفر بدلاً من قراءة وثائق وسجلات المهارات محلياً.
