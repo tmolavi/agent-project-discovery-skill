@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.13.0] - 2026-10-10
+
+### Added
+- **Expanded Forbidden Trap 13 (Remote Server Git Branch Listing)**: Strictly forbidden asking `Allow listing git branches on server?` or executing compound remote SSH commands (e.g. `ssh ... "cd /opt/... && git branch -a"`, `git branch -r`) to list or probe git branches on remote deployment hosts.
+- **Autonomous Local Git Branch Inspection Mandate ("خودش تصمیم بگیره")**: Mandated that agents must autonomously inspect git branches (`git branch`, `git branch -a`, `git branch -r`) directly within the local workspace repository without remote SSH probing or user approval modals.
+- Updated `SKILL.md`, `templates/AGENTS.md`, and all localized README files (`README.md`, `README.fa.md`, `README.tr.md`, `README.az.md`, `README.ar.md`) to version `v1.13.0`.
+
 ## [1.12.0] - 2026-10-10
 
 ### Added
