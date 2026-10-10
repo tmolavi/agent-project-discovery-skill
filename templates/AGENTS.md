@@ -34,6 +34,7 @@ Do **NOT** ask questions such as:
 - ❌ *"Allow checking model router endpoints?"* (e.g., asking permission to SSH and parse router decorators or code files).
 - ❌ *"Allow testing central model dispatch?"* (e.g., asking permission to test reasoning routers or gateways via SSH).
 - ❌ *"Allow testing TTS synthesis speed?"* (e.g., asking permission to benchmark speech synthesis latency or run remote `TTSService.synthesize_chunk` scripts).
+- ❌ *"Allow checking edge-tts version?"* (or asking permission to run `pip show`, `pip list`, `pip freeze` via SSH).
 - ❌ *"Should I run this test on the remote server?"*
 
 **Instead — Decide Autonomously ("خودش تصمیم بگیره"):**
@@ -43,6 +44,7 @@ Do **NOT** ask questions such as:
 - Read existing unit/integration tests for usage patterns.
 - Autonomously verify model routers, dispatch logic, and payload generation using local mocks (`httpx.MockTransport`, `respx`, `unittest.mock`) without asking for human permission.
 - Autonomously verify speech synthesis, audio streaming, and TTS services (`TTSService`) using local async mocks (`unittest.mock.AsyncMock`) and dummy audio chunk bytes without asking permission or triggering remote SSH benchmarks.
+- Autonomously inspect installed package versions, CLI tools, and library requirements from local manifests (`requirements.txt`, `poetry.lock`, `pyproject.toml`, `package.json`, `Dockerfile`) without firing remote `pip show` commands or asking permission.
 
 **Handling Unpredicted States & Deferring Questions ("در حالت‌های پیش‌بینی‌نشده ادامه بده و همه رو آخرش یه جا بپرس"):**
 - **Never Halt Mid-Run**: If an unexpected state, ambiguous parameter, or edge case arises, DO NOT freeze execution.
@@ -63,7 +65,8 @@ Do **NOT** ask questions such as:
 - **Pattern Matching**: Match the existing paradigm (error handling, logging, naming, formatting, type definitions).
 - **Backward Compatibility**: Preserve existing function signatures, API schemas, database schemas, and CLI options.
 - **Zero Hallucinated Dependencies**: Do not introduce new third-party dependencies without verifying existing alternatives in the lockfile.
-- **Zero Timid Test Prompts ("Decide By Yourself")**: NEVER prompt the user with interactive confirmation questions to test an endpoint, inspect router decorators, test central model dispatch, test TTS synthesis speed, or run code. Decide autonomously to inspect and test locally with mocks or test suites.
+- **Zero Timid Test Prompts ("Decide By Yourself")**: NEVER prompt the user with interactive confirmation questions to test an endpoint, inspect router decorators, test central model dispatch, test TTS synthesis speed, check package versions, or run code. Decide autonomously to inspect and test locally with mocks or test suites.
+- **Zero Remote Package & Dependency Probing**: NEVER run `ssh` or remote container commands (`pip show`, `pip list`, `pip freeze`, `npm list`) to inspect installed packages on external servers. Inspect all dependencies statically from local repository manifests.
 - **Unpredicted States Momentum ("ادامه بده")**: Never freeze mid-task when encountering unexpected edge cases; use safe fallbacks, finish all other work, and batch any remaining questions for the end.
 - **Zero Remote Source Code & Route Probing**: NEVER run `ssh` or remote `docker exec` commands to read codebase files or grep router decorators (e.g. `python3 -c "open('/workspace/...')"`). Inspect all routes and models locally from the repository workspace.
 - **Zero Remote Voice / TTS Synthesis Benchmarking**: NEVER run remote SSH or container commands to benchmark audio/voice synthesis latency or execute live TTS synthesis (`TTSService.synthesize_chunk`) on remote servers unprompted.

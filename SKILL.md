@@ -1,7 +1,7 @@
 ---
 name: agent-project-discovery-skill
 description: Universal startup and context discovery skill for AI coding agents to inspect, understand, and plan before modifying existing projects.
-version: 1.7.0
+version: 1.8.0
 license: MIT
 metadata:
   author: agent-project-discovery-skill contributors
@@ -27,7 +27,8 @@ When entering an existing codebase, an AI agent must behave like a senior softwa
 6. **Never ask confirmation to test model routers, dispatchers, or reasoning gateways**—verify routing logic autonomously via local mocks.
 7. **Never ask confirmation to test audio/TTS synthesis speed or voice latency**—benchmark and verify audio pipeline logic autonomously via local mocks.
 8. **Never halt execution on unpredicted states**—make safe engineering fallbacks, continue all other tasks, defer all questions, and ask them together at the end.
-9. **Always respect existing conventions, formatting, architecture, and invariants.**
+9. **Never SSH into remote servers to check package versions (e.g. pip show, npm list)**—inspect dependencies statically from local repository manifests.
+10. **Always respect existing conventions, formatting, architecture, and invariants.**
 
 ---
 
@@ -66,7 +67,7 @@ When entering an existing codebase, an AI agent must behave like a senior softwa
 > 4. Executes long, complex chained shell pipelines (`cmd1 && cmd2 | grep ... | awk ...`) that defeat prefix-based permission matching.
 > 5. Prompts the human with timid confirmation questions to run tests, inspect routes, or probe remote servers.
 >
-> **The 11 Forbidden Modal-Triggering Traps (NEVER Do These Unprompted):**
+> **The 12 Forbidden Modal-Triggering Traps (NEVER Do These Unprompted):**
 > - 🚫 **Trap 1: Live Public URL Probing**: NEVER fire `curl`, `wget`, or HTTP requests against live public domains (e.g. `curl -s https://molavi.pro/fa`) to test code changes. Verify code locally using build outputs (`next build`, `npm run build`, `cargo check`), unit/integration test suites, or local loopback servers (`http://127.0.0.1:<port>`).
 > - 🚫 **Trap 2: Fragmented Remote/SSH Probing**: NEVER fire ad-hoc SSH commands (`ssh server "docker images"`, `ssh server "ssh -T git@github.com"`, `ssh server "echo ..."`) during discovery. Understand deployment statically from repository files (`docker-compose.yml`, `Dockerfile`, `.env.example`, CI/CD workflows).
 > - 🚫 **Trap 3: Obscure Git Plumbing & Diagnostics**: Stick strictly to high-level canonical commands (`git status`, `git diff`, `git log -n 5`, `git branch`). NEVER run obscure low-level plumbing commands (e.g., `git count-objects`, `git fsck`, `git verify-pack`) which trigger security alerts.
@@ -88,6 +89,11 @@ When entering an existing codebase, an AI agent must behave like a senior softwa
 >   - Audio synthesis speed, streaming chunks, byte lengths, and TTS/STT service logic (`TTSService`) must be validated autonomously using local unit tests with mocked audio synthesis services (`unittest.mock.AsyncMock`, simulated audio chunk streams/bytes, dummy WAV/PCM headers) or local test fixtures.
 >   - Never trigger remote SSH benchmark execution or ask approval for TTS latency testing.
 >   - If TTS or voice performance testing is needed without explicit user instruction to run on remote hardware, verify the pipeline locally with deterministic mocks.
+> - 🚫 **Trap 12: Remote Package & Dependency Inspection ("Allow checking edge-tts version?", "pip show")**: NEVER stall the developer by asking permission questions or confirmation prompts to check library versions, package metadata, or installed dependencies on remote containers (e.g. `Allow checking edge-tts version? ssh root@server "docker exec ... pip show edge-tts"`). **The agent must decide autonomously ("خودش تصمیم بگیره")**:
+>   - Dependency manifests, package versions, and lockfiles (`requirements.txt`, `pyproject.toml`, `poetry.lock`, `package.json`, `Dockerfile`) exist in the local workspace repository.
+>   - Always inspect library versions statically from repository files, or verify locally via local virtualenv or mocks.
+>   - Never fire remote `pip show`, `pip list`, `pip freeze`, `npm list`, or `gem list` commands via SSH to remote servers.
+>   - Never ask permission to inspect package versions—inspect them locally and silently.
 >
 > **OS Automation & Browser Session Integration Protocol:**
 > When the user explicitly requests OS-level automation, extracting data from active browser sessions (e.g. Google Chrome, Safari, cPanel, Cloud Consoles, Colab, or Figma via AppleScript/CDP), or remote database inspection:
@@ -155,6 +161,8 @@ AI agents lose user trust when they ask trivial, helpless, or timid permission-s
 - ❌ *"Allow checking model router endpoints?"* (e.g., `Allow checking model router endpoints? ssh ... "docker exec ... python3 -c 'with open(...) ...'"`).
 - ❌ *"Allow testing central model dispatch?"* (e.g., `Allow testing central model dispatch? ssh ... "docker exec ... python3 -c '... test_meeting_reasoning() ...'"`).
 - ❌ *"Allow testing TTS synthesis speed?"* (e.g., `Allow testing TTS synthesis speed? ssh ... "docker exec ... python3 -c '... TTSService.synthesize_chunk(...) ...'"`).
+- ❌ *"Allow checking edge-tts version?"* or *"Allow checking <package> version?"* (e.g., `Allow checking edge-tts version? ssh ... "docker exec ... pip show edge-tts"`).
+- ❌ *"Allow running pip show / pip list / package inspection on remote server?"*
 - ❌ *"Allow testing voice generation / audio synthesis / STT latency?"*
 - ❌ *"Allow checking <routes / endpoints / source files / schemas> via SSH?"*
 - ❌ *"Should I test this on the server or run this SSH command?"*
@@ -169,10 +177,11 @@ The agent must take full engineering ownership rather than interrupting the deve
 2. **Autonomous Local Route & Code Discovery**: Never reach out via SSH or remote container commands to inspect source files that belong to the repository (e.g. `app/api/routers/models.py`). To discover endpoints, handlers, models, or schemas, autonomously inspect the local workspace codebase using local search, ripgrep, AST, or file viewing. Never ask permission to inspect routes or code.
 3. **Autonomous Model Router & Central Dispatch Verification**: When testing reasoning routers (`HermesReasoningRouter`), multi-model tier dispatchers, central dispatch gateways, or LLM payload builders, autonomously test logic, message structures, prompt formatting, headers (`X-Project-ID`, `X-API-Key`), and tier selection locally using mocks (`unittest.mock`, `httpx.MockTransport`, `respx`). Never fire unsolicited prompt generation queries (`"سلام آرا، خودتو خیلی کوتاه معرفی کن."`) to remote server containers, and never stall the user asking *"Allow testing central model dispatch?"*.
 4. **Autonomous Voice & TTS Synthesis Verification**: When validating text-to-speech services (`TTSService`), audio chunk streaming (`synthesize_chunk`), audio latency, or voice pipelines, autonomously test logic, byte streaming, error handling, and synthesis parameters locally using mocked async functions (`unittest.mock.AsyncMock`) and dummy audio byte payloads (e.g. `b"RIFF..."` or simulated chunk streams). Never fire live synthesis benchmarks (`"سلام. من آرا هستم..."`) or remote SSH container commands (`ssh ... "docker exec ... TTSService.synthesize_chunk(...)"`) to remote servers, and never stall the user asking *"Allow testing TTS synthesis speed?"*.
-5. **Autonomous Remote Handling**:
+5. **Autonomous Package & Dependency Discovery**: When checking installed libraries, package versions (such as `edge-tts`, `httpx`, `fastapi`), or dependencies, autonomously inspect local workspace manifests (`requirements.txt`, `pyproject.toml`, `poetry.lock`, `package.json`, `Dockerfile`) or use local environment tools. Never fire remote container inspection commands (`pip show`, `pip list`, `docker exec ... pip show ...`) over SSH, and never stall the user asking *"Allow checking edge-tts version?"*.
+6. **Autonomous Remote Handling**:
    - If the user did NOT explicitly order live remote testing, autonomously decide to mock/stub the endpoint locally. Never pop prompts asking to probe live servers.
    - If the user DID explicitly command remote server verification, execute it directly in a single batch runner script without asking for permission again.
-6. **State Decisions in the Report**: Do not block on human confirmation. Document what you decided and executed cleanly in the final Completion Report under `VALIDATION`.
+7. **State Decisions in the Report**: Do not block on human confirmation. Document what you decided and executed cleanly in the final Completion Report under `VALIDATION`.
 
 #### The Autonomous Resolution Process:
 1. **Search First**: Use grep, file name matchers, AST symbol lookup, or ripgrep.
@@ -211,7 +220,8 @@ The agent must act as a custodian of the existing codebase:
 - **Batched Automation**: When interacting with OS utilities, browser tabs, or external servers, write a single runner script instead of firing fragmented, multi-step shell calls.
 
 #### Strict Anti-Patterns (Avoid):
-- 🚫 **Timid Test, Dispatch & TTS Permission Seeking**: Asking the developer for permission before running tests, checking router endpoints, testing model dispatch, or testing TTS synthesis speed (e.g., `Allow testing /api/models/generate?`, `Allow checking model router endpoints?`, `Allow testing central model dispatch?`, `Allow testing TTS synthesis speed?`). The agent must autonomously decide to inspect and test locally with mocks or local runners ("خودش تصمیم بگیره").
+- 🚫 **Timid Test, Dispatch, TTS & Package Permission Seeking**: Asking the developer for permission before running tests, checking router endpoints, testing model dispatch, testing TTS synthesis speed, or checking package versions (e.g., `Allow testing /api/models/generate?`, `Allow checking model router endpoints?`, `Allow testing central model dispatch?`, `Allow testing TTS synthesis speed?`, `Allow checking edge-tts version?`). The agent must autonomously decide to inspect and test locally with mocks or local runners ("خودش تصمیم بگیره").
+- 🚫 **Remote Package & Dependency Inspection via SSH**: Running `ssh` or remote container commands (`docker exec ... pip show ...`, `pip list`, `pip freeze`) to check installed libraries or package versions. Inspect all dependencies locally from repository manifests (`requirements.txt`, `poetry.lock`, `pyproject.toml`, `Dockerfile`).
 - 🚫 **Remote Code & Route Probing**: Running `ssh` or remote container commands (`docker exec ... python3 -c "open('/workspace/...')"` ) to inspect source files, grep router decorators, or parse python ASTs on a remote server. Inspect all routes and models locally from the repository.
 - 🚫 **Unsolicited Voice / TTS Synthesis Remote Benchmarking**: Running remote SSH or container commands to benchmark audio/voice synthesis latency or execute live TTS synthesis (`TTSService.synthesize_chunk`) on remote servers without explicit instruction.
 - 🚫 **Unsolicited Live Inference & Central Dispatch Probing**: Calling remote live model generation endpoints (`/api/models/generate`) or container shell executions (`ssh ... "docker exec ... python3 -c '... test_meeting_reasoning() ...' "`) on remote servers without explicit instruction.

@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.0] - 2026-10-10
+
+### Added
+- **The 12th Forbidden Trap (Remote Package & Dependency Inspection)**: Strictly forbidden asking `Allow checking edge-tts version?` or executing remote SSH commands (`pip show`, `pip list`, `pip freeze`) to inspect installed packages or library versions on remote environments.
+- **Autonomous Local Manifest Discovery Mandate ("خودش تصمیم بگیره")**: Mandated that agents must inspect package versions, dependencies, and requirements statically from local repository manifests (`requirements.txt`, `pyproject.toml`, `poetry.lock`, `package.json`, `Dockerfile`) without asking permission or triggering SSH confirmation modals.
+- Updated `SKILL.md`, `templates/AGENTS.md`, and all localized README files (`README.md`, `README.fa.md`, `README.tr.md`, `README.az.md`, `README.ar.md`) to version `v1.8.0`.
+
 ## [1.7.0] - 2026-10-10
 
 ### Added
