@@ -2,12 +2,12 @@
 ### `agent-project-discovery-skill`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/badge/release-v1.3.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
+[![Release](https://img.shields.io/badge/release-v1.4.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/tmolavi/agent-project-discovery-skill/pulls)
 
 > **"يجب على وكيل الذكاء الاصطناعي أن يفهم المشروع بعمق قبل أن يُغيّر أي سطر برمجياً."**
 
-هذا المشروع يقدّم مهارة انطلاقة موحدة وشاملة (Startup Skill) لمساعدي ووكلاء البرمجة بالذكاء الاصطناعي (مثل Claude Code، Cursor، Google Antigravity، OpenAI Codex، GitHub Copilot وغيرها). تمنع هذه المهارة الوكلاء من التعديل العشوائي على الكود دون فهم معماري، أو إعادة كتابة أنظمة شغالة، أو طرح أسئلة مزعجة، أو طلب الإذن لاختبار الكود، أو حبسك أمام الشاشة للموافقة على كل أمر تافه!
+هذا المشروع يقدّم مهارة انطلاقة موحدة وشاملة (Startup Skill) لمساعدي ووكلاء البرمجة بالذكاء الاصطناعي (مثل Claude Code، Cursor، Google Antigravity، OpenAI Codex، GitHub Copilot وغيرها). تمنع هذه المهارة الوكلاء من التعديل العشوائي على الكود دون فهم معماري، أو إعادة كتابة أنظمة شغالة، أو طرح أسئلة مزعجة، أو طلب الإذن لاختبار الكود أو فحص المسارات، أو حبسك أمام الشاشة للموافقة على كل أمر تافه!
 
 ---
 
@@ -29,6 +29,7 @@
 1. **الأوامر الداخلية بالساندبوكس (Standard Sandbox)**: قراءة وتعديل الملفات داخل المشروع، فحص `git status` و `git diff`، البناء المحلي (`npm run build`, `cargo check`) والاختبارات (`pytest`, `vitest`) تشتغل **بشكل صامت وتلقائي 100% بدون أي طلب تأكيد**.
 2. **الأسباب اللي تفتح نوافذ التأكيد فجأة وتوقّف الشغل**:
    - **طلب الإذن لاختبار النقاط النهائية (`Allow testing /api/... ?`)**: لما يوقف الوكيل الشغل عشان يسأل المستخدم هل يسمح باختبار نقطة برمجية أو تشغيل أمر SSH بدلاً من أن يقرر بنفسه.
+   - **طلب الإذن لفحص المسارات والأكواد البعيدة (`Allow checking model router endpoints?`)**: محاولة خاطئة من الوكيل للاتصال بالخادم عبر SSH لقراءة ملفات الكود والمسارات بدلاً من قراءتها محلياً من ملفات المشروع.
    - **طلب الخروج من الساندبوكس (`BypassSandbox: true`)**: لما يحاول الوكيل الوصول المباشر للشبكة أو كامل القرص بدون وجود صلاحية مسجلة مسبقاً.
    - **فحص الروابط الحية على الإنترنت (`curl https://...`)**: إرسال طلبات HTTP لمواقع حية للتأكد من الكود بدلاً من فحصه محلياً.
    - **أوامر الخوادم العشوائية (`ssh`, `scp`, `docker images` على السيرفر)**: محاولة الاتصال بالخادم الحي بدون طلب صريح.

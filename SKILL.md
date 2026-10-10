@@ -1,7 +1,7 @@
 ---
 name: agent-project-discovery-skill
 description: Universal startup and context discovery skill for AI coding agents to inspect, understand, and plan before modifying existing projects.
-version: 1.3.0
+version: 1.4.0
 license: MIT
 metadata:
   author: agent-project-discovery-skill contributors
@@ -23,7 +23,8 @@ When entering an existing codebase, an AI agent must behave like a senior softwa
 2. **Never begin rewriting or modifying files** before completing a structured discovery phase.
 3. **Never ask frivolous questions** that can be answered by reading the codebase or documentation.
 4. **Never ask timid permission questions for routine testing or verification**—decide and verify autonomously ("خودش تصمیم بگیره").
-5. **Always respect existing conventions, formatting, architecture, and invariants.**
+5. **Never SSH into remote servers to read source code or routes**—inspect local repository files directly.
+6. **Always respect existing conventions, formatting, architecture, and invariants.**
 
 ---
 
@@ -60,8 +61,9 @@ When entering an existing codebase, an AI agent must behave like a senior softwa
 > 2. Probes external network endpoints or live public domains.
 > 3. Tries to access or mutate files outside the active workspace (such as `~/.gemini/config/config.json` or system configs).
 > 4. Executes long, complex chained shell pipelines (`cmd1 && cmd2 | grep ... | awk ...`) that defeat prefix-based permission matching.
+> 5. Prompts the human with timid confirmation questions to run tests, inspect routes, or probe remote servers.
 >
-> **The 9 Forbidden Modal-Triggering Traps (NEVER Do These Unprompted):**
+> **The 10 Forbidden Modal-Triggering Traps (NEVER Do These Unprompted):**
 > - 🚫 **Trap 1: Live Public URL Probing**: NEVER fire `curl`, `wget`, or HTTP requests against live public domains (e.g. `curl -s https://molavi.pro/fa`) to test code changes. Verify code locally using build outputs (`next build`, `npm run build`, `cargo check`), unit/integration test suites, or local loopback servers (`http://127.0.0.1:<port>`).
 > - 🚫 **Trap 2: Fragmented Remote/SSH Probing**: NEVER fire ad-hoc SSH commands (`ssh server "docker images"`, `ssh server "ssh -T git@github.com"`, `ssh server "echo ..."`) during discovery. Understand deployment statically from repository files (`docker-compose.yml`, `Dockerfile`, `.env.example`, CI/CD workflows).
 > - 🚫 **Trap 3: Obscure Git Plumbing & Diagnostics**: Stick strictly to high-level canonical commands (`git status`, `git diff`, `git log -n 5`, `git branch`). NEVER run obscure low-level plumbing commands (e.g., `git count-objects`, `git fsck`, `git verify-pack`) which trigger security alerts.
@@ -74,6 +76,10 @@ When entering an existing codebase, an AI agent must behave like a senior softwa
 >   - Always verify via local unit tests, test doubles, mocks, or local loopback servers without asking.
 >   - If live remote testing is not explicitly ordered by the user, decide autonomously to mock it locally and proceed.
 >   - If live testing was explicitly ordered, execute it directly in batch without halting to ask permission.
+> - 🚫 **Trap 10: Remote Code & Route Inspection ("Allow checking model router endpoints?")**: NEVER use SSH or remote `docker exec` commands to read source code, inspect router endpoints, grep files, or parse ASTs on a remote server (e.g. `Allow checking model router endpoints? ssh root@server "docker exec ... python3 -c 'with open(...) ... print(m.group(0))'"`). **The agent must decide autonomously ("خودش تصمیم بگیره")**:
+>   - All source code, router decorators (`@router.get`, `@router.post`), schemas, and models exist in the local workspace repository.
+>   - Always inspect routes and code locally using workspace tools (`view_file`, regex/grep, AST).
+>   - Never ask permission to inspect routes, models, schemas, or source code—inspect them locally and silently.
 >
 > **OS Automation & Browser Session Integration Protocol:**
 > When the user explicitly requests OS-level automation, extracting data from active browser sessions (e.g. Google Chrome, Safari, cPanel, Cloud Consoles, Colab, or Figma via AppleScript/CDP), or remote database inspection:
@@ -138,6 +144,8 @@ AI agents lose user trust when they ask trivial, helpless, or timid permission-s
 - ❌ *"How should I run the project?"*
 - ❌ *"What does function XYZ do?"*
 - ❌ *"Allow testing <endpoint>?"* (e.g., `Allow testing /api/models/generate?` followed by SSH/docker snippets).
+- ❌ *"Allow checking model router endpoints?"* (e.g., `Allow checking model router endpoints? ssh ... "docker exec ... python3 -c 'with open(...) ...'"`).
+- ❌ *"Allow checking <routes / endpoints / source files / schemas> via SSH?"*
 - ❌ *"Should I test this on the server or run this SSH command?"*
 - ❌ *"Can I execute this snippet to verify the live model/API?"*
 
@@ -147,10 +155,11 @@ The agent must take full engineering ownership rather than interrupting the deve
    - **Primary**: Local unit/integration tests with mocks, test doubles, and fixtures.
    - **Secondary**: Local builds (`npm run build`, `cargo check`, `go test`) and typechecks.
    - **Tertiary**: Local loopback server (`http://127.0.0.1:<port>`) if an internal service is already running.
-2. **Autonomous Remote Handling**:
+2. **Autonomous Local Route & Code Discovery**: Never reach out via SSH or remote container commands to inspect source files that belong to the repository (e.g. `app/api/routers/models.py`). To discover endpoints, handlers, models, or schemas, autonomously inspect the local workspace codebase using local search, ripgrep, AST, or file viewing. Never ask permission to inspect routes or code.
+3. **Autonomous Remote Handling**:
    - If the user did NOT explicitly order live remote testing, autonomously decide to mock/stub the endpoint locally. Never pop prompts asking to probe live servers.
    - If the user DID explicitly command remote server verification, execute it directly in a single batch runner script without asking for permission again.
-3. **State Decisions in the Report**: Do not block on human confirmation. Document what you decided and executed cleanly in the final Completion Report under `VALIDATION`.
+4. **State Decisions in the Report**: Do not block on human confirmation. Document what you decided and executed cleanly in the final Completion Report under `VALIDATION`.
 
 #### The Autonomous Resolution Process:
 1. **Search First**: Use grep, file name matchers, AST symbol lookup, or ripgrep.
@@ -179,7 +188,8 @@ The agent must act as a custodian of the existing codebase:
 - **Batched Automation**: When interacting with OS utilities, browser tabs, or external servers, write a single runner script instead of firing fragmented, multi-step shell calls.
 
 #### Strict Anti-Patterns (Avoid):
-- 🚫 **Timid Test Permission Seeking**: Asking the developer for permission before running tests or checking endpoints (e.g., `Allow testing /api/models/generate?`). The agent must autonomously decide to test locally with mocks or local runners ("خودش تصمیم بگیره").
+- 🚫 **Timid Test & Inspection Permission Seeking**: Asking the developer for permission before running tests, checking router endpoints, or inspecting files (e.g., `Allow testing /api/models/generate?`, `Allow checking model router endpoints?`). The agent must autonomously decide to inspect and test locally with mocks or local runners ("خودش تصمیم بگیره").
+- 🚫 **Remote Code & Route Probing**: Running `ssh` or remote container commands (`docker exec ... python3 -c "open('/workspace/...')"` ) to inspect source files, grep router decorators, or parse python ASTs on a remote server. Inspect all routes and models locally from the repository.
 - 🚫 **Unsolicited Live Inference & Remote Probing**: Calling remote live model generation endpoints (`/api/models/generate`) or container shell executions (`ssh ... "docker exec ... python3 -c '...' "`) on remote servers without explicit instruction.
 - 🚫 **Unsolicited Remote/SSH Probing**: NEVER run `ssh`, `scp`, `rsync`, remote `docker images`, `docker ps`, `docker inspect`, or remote `kubectl` commands during discovery. Understand deployment statically by reading `docker-compose.yml`, `Dockerfile`, and CI workflows.
 - 🚫 **Remote Port Probing & Endpoint Polling**: NEVER run remote port checks or endpoint pings via SSH (e.g., `ssh ... "curl -s -I http://127.0.0.1:..."`). Determine ports and URLs statically from configs.

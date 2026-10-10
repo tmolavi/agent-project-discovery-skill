@@ -2,12 +2,12 @@
 ### `agent-project-discovery-skill`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/badge/release-v1.3.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
+[![Release](https://img.shields.io/badge/release-v1.4.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/tmolavi/agent-project-discovery-skill/pulls)
 
 > **"Süni intellekt agenti dəyişiklik etməzdən əvvəl layihəni dərindən anlamalıdır."**
 
-Bu layihə kodlaşdırma agentləri (Claude Code, Cursor, Google Antigravity, OpenAI Codex, GitHub Copilot və s.) üçün universal və istehsala hazır başlanğıc bacarığıdır (startup skill). Agentlərin layihəni başa düşmədən tələsik kod dəyişdirməsinin, mövcud arxitekturanı pozmasının, lazımsız suallar verməsinin, test icazəsi istəməsinin və sizi daima ekran qarşısında təsdiq düymələrinə basmağa məcbur etməsinin qarşısını alır.
+Bu layihə kodlaşdırma agentləri (Claude Code, Cursor, Google Antigravity, OpenAI Codex, GitHub Copilot və s.) üçün universal və istehsala hazır başlanğıc bacarığıdır (startup skill). Agentlərin layihəni başa düşmədən tələsik kod dəyişdirməsinin, mövcud arxitekturanı pozmasının, lazımsız suallar verməsinin, test və ya marşrut yoxlanışı üçün icazə istəməsinin və sizi daima ekran qarşısında təsdiq düymələrinə basmağa məcbur etməsinin qarşısını alır.
 
 ---
 
@@ -29,6 +29,7 @@ Müasir süni intellekt mühitlərində (Google Antigravity, Claude Code, Cursor
 1. **Qum Qutusu Daxilində Standart Əmrlər (Standard Sandbox)**: Layihə qovluğu daxilində faylların oxunması/yazılması, lokal git statusu (`git status`, `git diff`), lokal yığma (`npm run build`, `cargo check`) və testlər (`pytest`, `vitest`) **tam avtomatik, səssiz və heç bir təsdiq istəmədən** işləyir.
 2. **Təsdiq Pəncərəsi Tələb Edən Səbəblər**:
    - **Rutin Test Təsdiqi Tələbi (`Allow testing /api/... ?`)**: Agentin müstəqil qərar vermək əvəzinə test icrası və ya SSH skripti üçün istifadəçidən icazə istəməsi.
+   - **Marşrut və Kod Yoxlanışı Üçün İcazə İstəmək (`Allow checking model router endpoints?`)**: Agentin lokal faylları oxumaq əvəzinə uzaq serverə SSH ilə qoşulub kod fayllarını oxumağa cəhd etməsi.
    - **Qum Qutusundan Çıxış Tələbi (`BypassSandbox: true`)**: Agentin xam şəbəkəyə və ya diskə çıxış istəməsi və uyğun prefiks icazəsinin olmaması.
    - **Canlı İctimai Saytları Yoxlamaq (`curl https://...`)**: Kodun işləməsini yoxlamaq üçün canlı veb-saytlara HTTP sorğuları atmaq.
    - **Lüzumsuz Uzaq Server Əmrləri (`ssh`, `scp`, `docker images`)**: Konfiqurasiya fayllarını oxumaq əvəzinə canlı serverə və ya GitHub-a SSH ilə bağlanmağa cəhd etmək.
