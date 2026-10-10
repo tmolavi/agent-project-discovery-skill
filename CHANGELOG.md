@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.11.0] - 2026-10-10
+
+### Added
+- **The 14th Forbidden Trap (Remote Package Upgrades & Container Mutation)**: Strictly forbidden asking `Allow upgrading edge-tts?` or executing remote SSH commands (`pip install -U ...`, `npm install -g ...`, `apt-get upgrade`) to mutate installed packages or upgrade libraries on remote servers or live containers.
+- **Autonomous Local Dependency Upgrade Mandate ("خودش تصمیم بگیره")**: Mandated that agents must manage and upgrade packages deterministically by editing local workspace manifests (`requirements.txt`, `pyproject.toml`, `poetry.lock`, `package.json`, `Dockerfile`) and testing compatibility with local test runners without remote SSH mutation or user approval modals.
+- Updated `SKILL.md`, `templates/AGENTS.md`, and all localized README files (`README.md`, `README.fa.md`, `README.tr.md`, `README.az.md`, `README.ar.md`) to version `v1.11.0`.
+
 ## [1.10.0] - 2026-10-10
 
 ### Added
