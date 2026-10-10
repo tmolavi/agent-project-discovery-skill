@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.30.0] - 2026-10-11
+
+### Added
+- **The 37th Forbidden Trap (Production WebSocket & Wake-Word Pipeline Probing)**: Strictly forbidden asking `Allow testing wake-word flow inside production container?` and executing live WebSocket test scripts (`websockets.connect("ws://127.0.0.1:3050/ws/meeting...")`, logging in, dispatching speech chunks, and waiting for `wake_detected`) inside remote production containers over SSH.
+- **Autonomous WebSocket & Wake-Word Mocking Mandate ("خودش تصمیم بگیره")**: Mandated that agents must validate WebSocket protocols, authentication flows, speech chunks, and wake-word events locally using `starlette.testclient.TestClient` and mock fixtures without live production container probing or modal approval requests.
+- **Engineering Standard Added**: Added `Zero Remote WebSocket & Wake-Word Pipeline Probing via SSH` to `templates/AGENTS.md`.
+- Updated `SKILL.md`, `templates/AGENTS.md`, and all localized README files (`README.md`, `README.fa.md`, `README.tr.md`, `README.az.md`, `README.ar.md`) to version `v1.30.0`.
+
 ## [1.29.0] - 2026-10-11
 
 ### Added

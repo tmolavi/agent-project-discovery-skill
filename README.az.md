@@ -2,7 +2,7 @@
 ### `agent-project-discovery-skill`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/badge/release-v1.29.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
+[![Release](https://img.shields.io/badge/release-v1.30.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/tmolavi/agent-project-discovery-skill/pulls)
 
 > **"Süni intellekt agenti dəyişiklik etməzdən əvvəl layihəni dərindən anlamalıdır."**
@@ -89,11 +89,12 @@ Müasir süni intellekt mühitlərində (Google Antigravity, Claude Code, Cursor
 27. **Statik Bacarıq Kataloqu Kəşfi:** Mikroservis bacarıqları birbaşa lokal reyestr sənədlərindən (`hermes-skill-discovery-registry-v1.json`) oxunur; uzaq serverdə skript icra edilmir.
 28. **Statik API Marşrutları və Sxem Kəşfi:** API marşrutları və sxemləri birbaşa lokal mənbə kodlarından araşdırılır; serverdəki `/docs` və ya `/openapi.json` ünvanlarına SSH sorğuları göndərilmir.
 29. **Statik Başlıq və Meta Məlumat Yoxlanışı:** Səhifə başlıqları və HTML teqləri ictimai URL sorğuları (`curl`) əvəzinə birbaşa lokal mənbə fayllarından (`layout.tsx`, `index.html`) araşdırılır.
-30. **Mikroservis Marşrutlarının Lokal Kəşfi və Mock Edilməsi:** Mikroservis yolları və sağlamlıq marşrutları birbaşa lokal koddan araşdırılır və uzaq SSH zondlama dövrələri əvəzinə lokal mock müştəriləri ilə test edilir.
-31. **Git Əsaslı Buraxılış və Çoxfayllı SCP / SSH Cat Qadağası:** Dəyişikliklər git commit kimi saxlanılır və paylanma parçalı SCP və ya `ssh cat >` əvəzinə rəsmi buraxılış skripti (`deploy.sh`) ilə aparılır.
-32. **Tək Fayllı Skript Metodu (Single-Runner Batching)**: İstifadəçi brauzer seanslarını (Chrome, Safari, cPanel, bulud konsolları, Colab) və ya uzaq verilənlər bazasını yoxlamağı tapşırdıqda, agent dağınıq sətirlər işlətmir; layihədə vahid köməkçi skript (Python və ya AppleScript) hazırlayır, onu bir dəfə icra edir və strukturlaşmış JSON nəticəsini oxuyur.
-33. **Statik Dağıtım Təhlili**: Portlar və konteynerlər canlı serverə bağlanmadan `docker-compose.yml` və `Dockerfile` fayllarından oxunur.
-34. **Layihə İzolasiyası**: Qovluqdan kənar heç bir qlobal fayla toxunulmur.
+30. **Lokal WebSocket və Oyanma Sözü Testi:** WebSocket axınları və oyanma sözü hadisələri (`wake_detected`) canlı konteyner əvəzinə birbaşa lokal test vasitələri ilə yoxlanılır.
+31. **Mikroservis Marşrutlarının Lokal Kəşfi və Mock Edilməsi:** Mikroservis yolları və sağlamlıq marşrutları birbaşa lokal koddan araşdırılır və uzaq SSH zondlama dövrələri əvəzinə lokal mock müştəriləri ilə test edilir.
+32. **Git Əsaslı Buraxılış və Çoxfayllı SCP / SSH Cat Qadağası:** Dəyişikliklər git commit kimi saxlanılır və paylanma parçalı SCP və ya `ssh cat >` əvəzinə rəsmi buraxılış skripti (`deploy.sh`) ilə aparılır.
+33. **Tək Fayllı Skript Metodu (Single-Runner Batching)**: İstifadəçi brauzer seanslarını (Chrome, Safari, cPanel, bulud konsolları, Colab) və ya uzaq verilənlər bazasını yoxlamağı tapşırdıqda, agent dağınıq sətirlər işlətmir; layihədə vahid köməkçi skript (Python və ya AppleScript) hazırlayır, onu bir dəfə icra edir və strukturlaşmış JSON nəticəsini oxuyur.
+34. **Statik Dağıtım Təhlili**: Portlar və konteynerlər canlı serverə bağlanmadan `docker-compose.yml` və `Dockerfile` fayllarından oxunur.
+35. **Layihə İzolasiyası**: Qovluqdan kənar heç bir qlobal fayla toxunulmur.
 
 ---
 
