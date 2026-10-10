@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.24.0] - 2026-10-10
+
+### Added
+- **The 33rd Forbidden Trap (Ad-hoc Live Container Asset Deployment & In-Place Mutation)**: Strictly forbidden asking `Allow deploying assets to container and restarting?` or `Allow deploying <assets> to container and restarting?` and firing chained SSH commands (`tar -xzf ... && docker cp ... && docker restart ... && curl ...`) to hot-patch running containers or restart services mid-task.
+- **Autonomous Atomic Deployment Mandate ("خودش تصمیم بگیره")**: Mandated that agents must restrict production releases strictly to canonical deployment scripts (`deploy.sh`) executed atomically without intermediate confirmation prompts for unpacking, copying files into containers, restarting, or curling health endpoints.
+- Updated `SKILL.md`, `templates/AGENTS.md`, and all localized README files (`README.md`, `README.fa.md`, `README.tr.md`, `README.az.md`, `README.ar.md`) to version `v1.24.0`.
+
 ## [1.23.0] - 2026-10-10
 
 ### Added
