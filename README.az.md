@@ -2,12 +2,12 @@
 ### `agent-project-discovery-skill`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/badge/release-v1.15.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
+[![Release](https://img.shields.io/badge/release-v1.16.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/tmolavi/agent-project-discovery-skill/pulls)
 
 > **"Süni intellekt agenti dəyişiklik etməzdən əvvəl layihəni dərindən anlamalıdır."**
 
-Bu layihə kodlaşdırma agentləri (Claude Code, Cursor, Google Antigravity, OpenAI Codex, GitHub Copilot və s.) üçün universal və istehsala hazır başlanğıc bacarığıdır (startup skill). Agentlərin layihəni başa düşmədən tələsik kod dəyişdirməsinin, mövcud arxitekturanı pozmasının, lazımsız suallar verməsinin, gözlənilməz hallarda dayanıb qalmasının, test, marşrut, paket versiyası (`pip show edge-tts`), paket yüksəltmə (`pip install -U edge-tts`), serverdə docker-compose.yml və ya konfiqurasiya fayllarını oxumaq (`cat ... docker-compose.yml`), konteyner tərkibi (`docker exec ... ls`), server git budaqlarını sıralama (`git branch -a`), server konteyner və git vəziyyəti (`docker ps && git status`), git budaq və commit tarixçəsi (`git branch && git log`), model paylama (central dispatch) və ya yenilənmiş Edge-TTS və TTS nitq sintezi yoxlanışı (`Allow testing updated Edge-TTS?`, `Allow testing TTS synthesis speed?`) üçün icazə istəməsinin və sizi daima ekran qarşısında təsdiq düymələrinə basmağa məcbur etməsinin qarşısını alır.
+Bu layihə kodlaşdırma agentləri (Claude Code, Cursor, Google Antigravity, OpenAI Codex, GitHub Copilot və s.) üçün universal və istehsala hazır başlanğıc bacarığıdır (startup skill). Agentlərin layihəni başa düşmədən tələsik kod dəyişdirməsinin, mövcud arxitekturanı pozmasının, lazımsız suallar verməsinin, gözlənilməz hallarda dayanıb qalmasının, test, marşrut, paket versiyası (`pip show edge-tts`), paket yüksəltmə (`pip install -U edge-tts`), serverdə docker-compose.yml və ya konfiqurasiya fayllarını oxumaq (`cat ... docker-compose.yml`), konteyner tərkibi (`docker exec ... ls`), server git budaqlarını sıralama (`git branch -a`), server konteyner və git vəziyyəti (`docker ps && git status`), git budaq və commit tarixçəsi (`git branch && git log`), model paylama (central dispatch), yenilənmiş Edge-TTS və TTS nitq sintezi yoxlanışı (`Allow testing updated Edge-TTS?`, `Allow testing TTS synthesis speed?`) və ya STT nitqin mətnə çevrilməsi yoxlanışı (`Allow testing STT pipeline?`) üçün icazə istəməsinin və sizi daima ekran qarşısında təsdiq düymələrinə basmağa məcbur etməsinin qarşısını alır.
 
 ---
 
@@ -32,6 +32,7 @@ Müasir süni intellekt mühitlərində (Google Antigravity, Claude Code, Cursor
    - **Rutin Test Təsdiqi Tələbi (`Allow testing /api/... ?`)**: Agentin müstəqil qərar vermək əvəzinə test icrası və ya SSH skripti üçün istifadəçidən icazə istəməsi.
    - **Mərkəzi Model Paylanması Onayı İstəmək (`Allow testing central model dispatch?`)**: Agentin model şlüzünü lokal mühitdə mock etmək əvəzinə canlı serverdə test etmək üçün icazə istəməsi.
    - **Səs, TTS Sintez Sürəti və ya Yenilənmiş Edge-TTS Yoxlanışı Üçün İcazə İstəmək (`Allow testing TTS synthesis speed?`, `Allow testing updated Edge-TTS? ssh ...`)**: Agentin nitq sintezini, yenilənmiş Edge-TTS kitabxanasını və ya səs emal sürətini lokal mühitdə mock etmək əvəzinə canlı serverdə test etmək üçün icazə istəməsi.
+   - **STT və Nitqin Mətnə Çevrilməsi Testi Üçün İcazə İstəmək (`Allow testing STT pipeline? ssh ... "docker exec ... STTService.transcribe_audio_bytes ..."`):** Agentin audio transkripsiyası və STT xidmətlərini lokal mühitdə mock etmək əvəzinə canlı serverdə test etmək üçün icazə istəməsi.
    - **Paket və Asılılıq Versiyası Yoxlanışı Üçün İcazə İstəmək (`Allow checking edge-tts version? ssh ... "pip show ...")**: Agentin lokal asılılıq bəyannamələrini oxumaq əvəzinə uzaq mühitə SSH ilə `pip show` və ya `pip list` əmrləri göndərməsi.
    - **Paket Yüksəltmə və Dəyişdirmə Üçün İcazə İstəmək (`Allow upgrading edge-tts? ssh ... "pip install -U ...")**: Agentin lokal manifest fayllarını yeniləmək əvəzinə uzaq serverə SSH ilə `pip install -U` əmri icra etməyə cəhd etməsi.
    - **Server docker-compose.yml və Dağıtım Konfiqurasiyası Faylını Oxumaq Üçün İcazə İstəmək (`Allow viewing server docker-compose.yml? ssh ... "cat ... docker-compose.yml"`):** Agentin lokal iş mühitindəki `docker-compose.yml` və konfiqurasiya fayllarını birbaşa oxumaq əvəzinə uzaq serverə SSH ilə `cat` əmri icra etməyə cəhd etməsi.
@@ -60,9 +61,10 @@ Müasir süni intellekt mühitlərində (Google Antigravity, Claude Code, Cursor
 8. **Lokal Konteyner və Git Vəziyyəti Təhlili**: Konteyner konfiqurasiyaları və portlar lokal manifest fayllarından (`docker-compose.yml`, `Dockerfile`), git budaq, bütün budaqlar (`git branch -a`), commit tarixçəsi və dəyişiklik vəziyyəti isə birbaşa lokal iş qovluğundan (`git status -s`, `git branch --show-current`, `git log -n 5`) oxunur; uzaq serverə SSH sorğusu göndərilmir.
 9. **Lokal Konteyner Fayl Sistemi və Qovluq Təhlili**: Konteyner fayl sistemi iyerarxiyası və tətbiq yolları (`/app`, `/workspace`), uzaq serverdə `docker exec ... ls` əmrləri icra edilmədən birbaşa lokal iş sahəsi faylları, `Dockerfile` (WORKDIR, COPY direktivləri) və `docker-compose.yml` həcm (volume) təyinatları vasitəsilə araşdırılır.
 10. **Lokal Dağıtım və docker-compose Manifest Təhlili**: `docker-compose.yml`, servis tərifləri, `Dockerfile` və mühit konfiqurasiyaları uzaq serverə SSH ilə `cat` və ya `less` göndərilmədən birbaşa lokal iş sahəsindən araşdırılır.
-11. **Tək Fayllı Skript Metodu (Single-Runner Batching)**: İstifadəçi brauzer seanslarını (Chrome, Safari, cPanel, bulud konsolları, Colab) və ya uzaq verilənlər bazasını yoxlamağı tapşırdıqda, agent dağınıq sətirlər işlətmir; layihədə vahid köməkçi skript (Python və ya AppleScript) hazırlayır, onu bir dəfə icra edir və strukturlaşmış JSON nəticəsini oxuyur.
-12. **Statik Dağıtım Təhlili**: Portlar və konteynerlər canlı serverə bağlanmadan `docker-compose.yml` və `Dockerfile` fayllarından oxunur.
-13. **Layihə İzolasiyası**: Qovluqdan kənar heç bir qlobal fayla toxunulmur.
+11. **Lokal STT və Nitqin Mətnə Çevrilməsi Mocking**: Nitqin mətnə çevrilməsi xidmətləri (`STTService`), `transcribe_audio_bytes` funksiyası və səs transkripsiyası uzaq serverdə canlı test edilmək əvəzinə lokal asinxron mock-lar (`AsyncMock`) və süni audio baytları ilə yoxlanılır.
+12. **Tək Fayllı Skript Metodu (Single-Runner Batching)**: İstifadəçi brauzer seanslarını (Chrome, Safari, cPanel, bulud konsolları, Colab) və ya uzaq verilənlər bazasını yoxlamağı tapşırdıqda, agent dağınıq sətirlər işlətmir; layihədə vahid köməkçi skript (Python və ya AppleScript) hazırlayır, onu bir dəfə icra edir və strukturlaşmış JSON nəticəsini oxuyur.
+13. **Statik Dağıtım Təhlili**: Portlar və konteynerlər canlı serverə bağlanmadan `docker-compose.yml` və `Dockerfile` fayllarından oxunur.
+14. **Layihə İzolasiyası**: Qovluqdan kənar heç bir qlobal fayla toxunulmur.
 
 ---
 

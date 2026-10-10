@@ -2,12 +2,12 @@
 ### `agent-project-discovery-skill`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/badge/release-v1.15.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
+[![Release](https://img.shields.io/badge/release-v1.16.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/tmolavi/agent-project-discovery-skill/pulls)
 
 > **"يجب على وكيل الذكاء الاصطناعي أن يفهم المشروع بعمق قبل أن يُغيّر أي سطر برمجياً."**
 
-هذا المشروع يقدّم مهارة انطلاقة موحدة وشاملة (Startup Skill) لمساعدي ووكلاء البرمجة بالذكاء الاصطناعي (مثل Claude Code، Cursor، Google Antigravity، OpenAI Codex، GitHub Copilot وغيرها). تمنع هذه المهارة الوكلاء من التعديل العشوائي على الكود دون فهم معماري، أو إعادة كتابة أنظمة شغالة، أو طرح أسئلة مزعجة، أو التوقف عند الحالات غير المتوقعة، أو طلب الإذن لاختبار الكود، فحص المسارات، فحص إصدارات الحزم (`pip show edge-tts`)، ترقية وتحديث الحزم (`pip install -U edge-tts`)، قراءة واستعراض ملفات docker-compose.yml أو التكوين على السيرفر (`cat ... docker-compose.yml`)، فحص محتويات الحاويات (`docker exec ... ls`)، فحص وسرد فروع الجيت على السيرفر (`git branch -a`)، فحص حاويات السيرفر وحالة الجيت (`docker ps && git status`)، فحص فرع وسجل الجيت (`git branch && git log`)، اختبار توجيه النماذج (central model dispatch)، أو فحص مكتبة Edge-TTS المحدثة وسرعة تحويل النص إلى كلام (`Allow testing updated Edge-TTS?`, `Allow testing TTS synthesis speed?`)، أو حبسك أمام الشاشة للموافقة على كل أمر تافه!
+هذا المشروع يقدّم مهارة انطلاقة موحدة وشاملة (Startup Skill) لمساعدي ووكلاء البرمجة بالذكاء الاصطناعي (مثل Claude Code، Cursor، Google Antigravity، OpenAI Codex، GitHub Copilot وغيرها). تمنع هذه المهارة الوكلاء من التعديل العشوائي على الكود دون فهم معماري، أو إعادة كتابة أنظمة شغالة، أو طرح أسئلة مزعجة، أو التوقف عند الحالات غير المتوقعة، أو طلب الإذن لاختبار الكود، فحص المسارات، فحص إصدارات الحزم (`pip show edge-tts`)، ترقية وتحديث الحزم (`pip install -U edge-tts`)، قراءة واستعراض ملفات docker-compose.yml أو التكوين على السيرفر (`cat ... docker-compose.yml`)، فحص محتويات الحاويات (`docker exec ... ls`)، فحص وسرد فروع الجيت على السيرفر (`git branch -a`)، فحص حاويات السيرفر وحالة الجيت (`docker ps && git status`)، فحص فرع وسجل الجيت (`git branch && git log`)، اختبار توجيه النماذج (central model dispatch)، فحص مكتبة Edge-TTS المحدثة وسرعة تحويل النص إلى كلام (`Allow testing updated Edge-TTS?`, `Allow testing TTS synthesis speed?`)، أو اختبار خط معالجة تحويل الصوت إلى نص STT (`Allow testing STT pipeline?`)، أو حبسك أمام الشاشة للموافقة على كل أمر تافه!
 
 ---
 
@@ -32,6 +32,7 @@
    - **طلب الإذن لاختبار النقاط النهائية (`Allow testing /api/... ?`)**: لما يوقف الوكيل الشغل عشان يسأل المستخدم هل يسمح باختبار نقطة برمجية أو تشغيل أمر SSH بدلاً من أن يقرر بنفسه.
    - **طلب الإذن لاختبار توجيه النماذج (`Allow testing central model dispatch?`)**: محاولة فحص بوابات النماذج الحية عبر SSH بدلاً من محاكاتها محلياً.
    - **طلب الإذن لاختبار سرعة الصوت، تحويل النص لكلام، أو فحص مكتبة Edge-TTS المحدثة (`Allow testing TTS synthesis speed?`, `Allow testing updated Edge-TTS? ssh ...`)**: محاولة تشغيل قياسات سرعة الصوت، التحقق من Edge-TTS، أو استدعاء `TTSService.synthesize_chunk` على خوادم حية بدلاً من محاكاتها محلياً.
+   - **طلب الإذن لاختبار خط أنابيب تحويل الصوت إلى نص STT على السيرفر (`Allow testing STT pipeline? ssh ... "docker exec ... STTService.transcribe_audio_bytes ..."`):** محاولة الوكيل تشغيل اختبارات رونویسی صوت واستدعاء `STTService.transcribe_audio_bytes` على خوادم حية بدلاً من محاكاتها واختبارها محلياً.
    - **طلب الإذن لفحص إصدارات الحزم والاعتماديات (`Allow checking edge-tts version? ssh ... "pip show ...")**: محاولة الوكيل تشغيل أوامر `pip show` أو `pip list` عبر SSH لفحص الحزم بدلاً من قراءة ملفات الاعتماديات المحلية.
    - **طلب الإذن لترقية وتحديث الحزم على السيرفر (`Allow upgrading edge-tts? ssh ... "pip install -U ...")**: محاولة خاطئة من الوكيل لتنفيذ أوامر `pip install -U` عبر SSH على السيرفرات أو الحاويات بدلاً من تعديل ملفات المانيفست محلياً.
    - **طلب الإذن لاستعراض ملف docker-compose.yml أو تكوينات النشر على السيرفر (`Allow viewing server docker-compose.yml? ssh ... "cat ... docker-compose.yml"`):** محاولة الوكيل تشغيل أوامر `cat` أو `less` عبر SSH لقراءة ملف `docker-compose.yml` أو تكوينات النشر على الخادم بدلاً من قراءتها مباشرة من ملفات المشروع المحلية.
@@ -60,9 +61,10 @@
 8. **الفحص المحلي للحاويات وحالة الجيت**: قراءة إعدادات الحاويات والمنافذ من ملفات المشروع المحلية (`docker-compose.yml`, `Dockerfile`)، وفحص حالة الجيت والفرع وكامل الفروع (`git branch -a`) وسجل الالتزامات محلياً (`git status -s`, `git branch --show-current`, `git log -n 5`) بدون أوامر SSH إلى الخوادم.
 9. **الفحص المحلي لنظام ملفات الحاويات وهيكل المجلدات**: فحص هيكل مسارات التطبيق (`/app`، `/workspace`) وملفات الحاويات مباشرة من ملفات المشروع المحلية، وتعليمات `Dockerfile` (أوامر WORKDIR و COPY) وربط الأحجام (volumes) في `docker-compose.yml` بدون تنفيذ أوامر استكشاف مثل `docker exec ... ls` عبر SSH.
 10. **الفحص المحلي لمانيفست النشر و docker-compose**: مراجعة ملف `docker-compose.yml` وتعريفات الخدمات و `Dockerfile` وتكوينات البيئة مباشرة من مجلد العمل المحلي بدون إرسال أوامر `cat` أو `less` عبر SSH إلى الخوادم البعيدة.
-11. **سكربت التشغيل الموحد لأتمتة المتصفح والنظام (Single-Runner Batching)**: إذا طلب المستخدم فحص تبويبات المتصفح النشطة (مثل cPanel، سحابة، كولاب) أو فحص قاعدة بيانات، يقوم الوكيل بكتابة سكربت بايثون أو أبل سكربت كامل ومستقل، ويشغله **مرة واحدة فقط** ويقرأ النتيجة المهيكلة (JSON) بدون تكرار النوافذ المزعجة.
-12. **الفحص الساكن للنشر**: قراءة الحاويات والمنافذ من `docker-compose.yml` و `Dockerfile` بدلاً من إرسال أوامر SSH متكررة.
-13. **عزل المشروع بالكامل**: عدم المساس بأي ملفات عامة خارج مجلد العمل.
+11. **محاكاة خدمات تحويل الصوت إلى نص (STT) ومعالجة الملفات الصوتية**: اختبار خدمات استخراج النصوص من الصوت (`STTService`)، ودالة `transcribe_audio_bytes`، وفك تشفير الصوتيات محلياً باستخدام محاكيات غير متزامنة (`AsyncMock`) وبيانات صوتية وهمية بدلاً من تشغيل اختبارات رونویسی على الخوادم البعيدة.
+12. **سكربت التشغيل الموحد لأتمتة المتصفح والنظام (Single-Runner Batching)**: إذا طلب المستخدم فحص تبويبات المتصفح النشطة (مثل cPanel، سحابة، كولاب) أو فحص قاعدة بيانات، يقوم الوكيل بكتابة سكربت بايثون أو أبل سكربت كامل ومستقل، ويشغله **مرة واحدة فقط** ويقرأ النتيجة المهيكلة (JSON) بدون تكرار النوافذ المزعجة.
+13. **الفحص الساكن للنشر**: قراءة الحاويات والمنافذ من `docker-compose.yml` و `Dockerfile` بدلاً من إرسال أوامر SSH متكررة.
+14. **عزل المشروع بالكامل**: عدم المساس بأي ملفات عامة خارج مجلد العمل.
 
 ---
 

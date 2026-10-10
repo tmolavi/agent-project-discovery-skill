@@ -1,7 +1,7 @@
 ---
 name: agent-project-discovery-skill
 description: Universal startup and context discovery skill for AI coding agents to inspect, understand, and plan before modifying existing projects.
-version: 1.15.0
+version: 1.16.0
 license: MIT
 metadata:
   author: agent-project-discovery-skill contributors
@@ -32,7 +32,8 @@ When entering an existing codebase, an AI agent must behave like a senior softwa
 11. **Never SSH into remote servers to upgrade or mutate packages (e.g. pip install -U, npm update)**—upgrade dependencies deterministically by updating local workspace manifests and verifying locally.
 12. **Never SSH into remote servers to inspect container filesystems or directory contents (e.g. docker exec ... ls -la /app)**—inspect repository directories locally and determine paths via Dockerfile/compose mappings.
 13. **Never SSH into remote servers to view or read deployment configurations or compose files (e.g. cat ... docker-compose.yml, nginx.conf)**—inspect and read deployment configurations and compose manifests directly in the local workspace.
-14. **Always respect existing conventions, formatting, architecture, and invariants.**
+14. **Never SSH into remote servers to test Speech-to-Text (STT) or audio transcription pipelines (e.g. STTService.transcribe_audio_bytes)**—validate transcription logic and audio pipelines autonomously via local mocks.
+15. **Always respect existing conventions, formatting, architecture, and invariants.**
 
 ---
 
@@ -71,7 +72,7 @@ When entering an existing codebase, an AI agent must behave like a senior softwa
 > 4. Executes long, complex chained shell pipelines (`cmd1 && cmd2 | grep ... | awk ...`) that defeat prefix-based permission matching.
 > 5. Prompts the human with timid confirmation questions to run tests, inspect routes, or probe remote servers.
 >
-> **The 16 Forbidden Modal-Triggering Traps (NEVER Do These Unprompted):**
+> **The 17 Forbidden Modal-Triggering Traps (NEVER Do These Unprompted):**
 > - 🚫 **Trap 1: Live Public URL Probing**: NEVER fire `curl`, `wget`, or HTTP requests against live public domains (e.g. `curl -s https://molavi.pro/fa`) to test code changes. Verify code locally using build outputs (`next build`, `npm run build`, `cargo check`), unit/integration test suites, or local loopback servers (`http://127.0.0.1:<port>`).
 > - 🚫 **Trap 2: Fragmented Remote/SSH Probing**: NEVER fire ad-hoc SSH commands (`ssh server "docker images"`, `ssh server "ssh -T git@github.com"`, `ssh server "echo ..."`) during discovery. Understand deployment statically from repository files (`docker-compose.yml`, `Dockerfile`, `.env.example`, CI/CD workflows).
 > - 🚫 **Trap 3: Obscure Git Plumbing & Diagnostics**: Stick strictly to high-level canonical commands (`git status`, `git diff`, `git log -n 5`, `git branch`). NEVER run obscure low-level plumbing commands (e.g., `git count-objects`, `git fsck`, `git verify-pack`) which trigger security alerts.
@@ -119,6 +120,11 @@ When entering an existing codebase, an AI agent must behave like a senior softwa
 >   - Always inspect `docker-compose.yml`, environment configurations, and deployment setups locally using workspace tools (`view_file`, local text reading).
 >   - Never fire remote SSH `cat`, `head`, `tail`, `grep`, or `less` commands to read deployment configuration files on remote servers.
 >   - Never ask permission to view deployment manifests or compose files—inspect them locally and silently.
+> - 🚫 **Trap 17: Remote Speech-to-Text (STT) & Audio Transcription Pipeline Probing ("Allow testing STT pipeline?", "docker exec ... STTService.transcribe_audio_bytes")**: NEVER stall the developer by asking permission questions or confirmation prompts to test speech-to-text (STT) transcription, audio decoding, or end-to-end voice pipelines on remote servers (e.g. `Allow testing STT pipeline?`, `ssh -o StrictHostKeyChecking=no -o ConnectTimeout=30 root@178.208.187.187 "docker exec hamzad-ara python3 -c '... STTService.transcribe_audio_bytes(...) ...'"`). **The agent must decide autonomously ("خودش تصمیم بگیره")**:
+>   - Audio transcription logic (`STTService`), transcription speed, audio decoding, and response transcripts must be validated autonomously using local unit tests with mocked STT services (`unittest.mock.AsyncMock`, simulated transcript strings, dummy audio bytes) or local test fixtures.
+>   - Never fire remote SSH execution or ask approval to test STT pipelines or live transcription services.
+>   - If STT or transcription pipeline testing is needed without explicit user instruction to run on remote hardware, verify the service logic locally with deterministic mocks.
+>
 >
 > **OS Automation & Browser Session Integration Protocol:**
 > When the user explicitly requests OS-level automation, extracting data from active browser sessions (e.g. Google Chrome, Safari, cPanel, Cloud Consoles, Colab, or Figma via AppleScript/CDP), or remote database inspection:
@@ -186,6 +192,7 @@ AI agents lose user trust when they ask trivial, helpless, or timid permission-s
 - ❌ *"Allow checking model router endpoints?"* (e.g., `Allow checking model router endpoints? ssh ... "docker exec ... python3 -c 'with open(...) ...'"`).
 - ❌ *"Allow testing central model dispatch?"* (e.g., `Allow testing central model dispatch? ssh ... "docker exec ... python3 -c '... test_meeting_reasoning() ...'"`).
 - ❌ *"Allow testing TTS synthesis speed?"* or *"Allow testing updated Edge-TTS?"* (e.g., `Allow testing TTS synthesis speed? ssh ... "docker exec ... python3 -c '... TTSService.synthesize_chunk(...) ...'"`, or `Allow testing updated Edge-TTS? ssh -o StrictHostKeyChecking=no -o ConnectTimeout=30 root@178.208.187.187 "docker exec hamzad-ara python3 -c '... TTSService.synthesize_chunk(...) ...'"`).
+- ❌ *"Allow testing STT pipeline?"* (e.g., `Allow testing STT pipeline? ssh -o StrictHostKeyChecking=no -o ConnectTimeout=30 root@178.208.187.187 "docker exec hamzad-ara python3 -c '... from app.stt_service import STTService ... transcript = await STTService.transcribe_audio_bytes(...) ...'"`).
 - ❌ *"Allow checking edge-tts version?"* or *"Allow checking <package> version?"* (e.g., `Allow checking edge-tts version? ssh ... "docker exec ... pip show edge-tts"`).
 - ❌ *"Allow upgrading edge-tts?"* or *"Allow upgrading <package>?"* (e.g., `Allow upgrading edge-tts? ssh -o StrictHostKeyChecking=no -o ConnectTimeout=30 root@178.208.187.187 "docker exec hamzad-ara pip install -U edge-tts"`).
 - ❌ *"Allow checking container contents?"* (e.g., `Allow checking container contents? ssh -o ConnectTimeout=10 hamzad_server "docker exec molavi-pro-web ls -la /app"`).
@@ -198,6 +205,7 @@ AI agents lose user trust when they ask trivial, helpless, or timid permission-s
 - ❌ *"Allow running docker exec ... ls / find / container filesystem exploration on server?"*
 - ❌ *"Allow running docker ps / remote git status / branch / log inspection on server?"*
 - ❌ *"Allow running cat /opt/.../docker-compose.yml or reading deployment manifests on server via SSH?"*
+- ❌ *"Allow running docker exec ... STTService.transcribe_audio_bytes or testing transcription pipelines on remote server?"*
 - ❌ *"Allow testing voice generation / audio synthesis / STT latency?"*
 - ❌ *"Allow checking <routes / endpoints / source files / schemas> via SSH?"*
 - ❌ *"Should I test this on the server or run this SSH command?"*
@@ -217,10 +225,11 @@ The agent must take full engineering ownership rather than interrupting the deve
 7. **Autonomous Container & Git State Discovery**: When checking container configurations, service health, or deployment status, autonomously inspect local manifests (`docker-compose.yml`, `Dockerfile`, deploy scripts). For git branch, branch listings, commit history, and working tree status, inspect the local repository tree (`git status -s`, `git branch --show-current`, `git branch -a`, `git log`). Never fire remote SSH compound commands (`docker ps`, remote `git branch`, remote `git log`, remote `git status`) and never stall the user asking *"Allow checking server container and git status?"*, *"Allow checking server git branch and log?"*, or *"Allow listing git branches on server?"*.
 8. **Autonomous Container Filesystem & Directory Discovery**: When checking application files, directory layouts, or container contents (such as `/app`, `/var/www`, `/workspace`), autonomously inspect the local repository directory structure and review `Dockerfile` (WORKDIR, COPY directives) and `docker-compose.yml` volume mappings. Never execute remote container filesystem exploration commands (`docker exec ... ls`, `find`, `dir`) over SSH, and never stall the user asking *"Allow checking container contents?"*.
 9. **Autonomous Deployment Manifest & Configuration Discovery**: When checking deployment configurations, service definitions, environment variables, port mappings, or compose files (`docker-compose.yml`, `Dockerfile`, `nginx.conf`, `Caddyfile`), autonomously inspect the local repository manifests directly using workspace tools (`view_file`, local search). Never fire remote SSH `cat`, `head`, `less`, or read commands (e.g. `ssh ... "cat /opt/projects/.../docker-compose.yml"`), and never stall the user asking *"Allow viewing server docker-compose.yml?"*.
-10. **Autonomous Remote Handling**:
+10. **Autonomous Speech-to-Text (STT) & Audio Transcription Verification**: When validating speech-to-text services (`STTService`), transcription functions (`transcribe_audio_bytes`), audio chunk decoding, or speech transcription pipelines, autonomously test logic, audio format handling, error handling, and transcription outputs locally using mocked async functions (`unittest.mock.AsyncMock`) and dummy audio byte payloads (e.g. `b"RIFF..."` or simulated chunk streams). Never fire live audio transcription queries or remote SSH container commands (`ssh ... "docker exec ... STTService.transcribe_audio_bytes(...)"`) to remote servers, and never stall the user asking *"Allow testing STT pipeline?"*.
+11. **Autonomous Remote Handling**:
     - If the user did NOT explicitly order live remote testing, autonomously decide to mock/stub the endpoint locally. Never pop prompts asking to probe live servers.
     - If the user DID explicitly command remote server verification, execute it directly in a single batch runner script without asking for permission again.
-11. **State Decisions in the Report**: Do not block on human confirmation. Document what you decided and executed cleanly in the final Completion Report under `VALIDATION`.
+12. **State Decisions in the Report**: Do not block on human confirmation. Document what you decided and executed cleanly in the final Completion Report under `VALIDATION`.
 
 #### The Autonomous Resolution Process:
 1. **Search First**: Use grep, file name matchers, AST symbol lookup, or ripgrep.
@@ -259,7 +268,8 @@ The agent must act as a custodian of the existing codebase:
 - **Batched Automation**: When interacting with OS utilities, browser tabs, or external servers, write a single runner script instead of firing fragmented, multi-step shell calls.
 
 #### Strict Anti-Patterns (Avoid):
-- 🚫 **Timid Test, Dispatch, TTS, Package, Container & Git Permission Seeking**: Asking the developer for permission before running tests, checking router endpoints, testing model dispatch, testing TTS synthesis speed, testing updated Edge-TTS, checking package versions, upgrading packages, checking container contents, viewing server docker-compose.yml, or checking server container, git branch, or git log (e.g., `Allow testing /api/models/generate?`, `Allow checking model router endpoints?`, `Allow testing central model dispatch?`, `Allow testing TTS synthesis speed?`, `Allow testing updated Edge-TTS?`, `Allow checking edge-tts version?`, `Allow upgrading edge-tts?`, `Allow checking container contents?`, `Allow viewing server docker-compose.yml?`, `Allow checking server container and git status?`, `Allow checking server git branch and log?`, `Allow listing git branches on server?`). The agent must autonomously decide to inspect and test locally with mocks or local runners ("خودش تصمیم بگیره").
+- 🚫 **Timid Test, Dispatch, TTS, STT, Package, Container & Git Permission Seeking**: Asking the developer for permission before running tests, checking router endpoints, testing model dispatch, testing TTS synthesis speed, testing updated Edge-TTS, testing STT pipeline, checking package versions, upgrading packages, checking container contents, viewing server docker-compose.yml, or checking server container, git branch, or git log (e.g., `Allow testing /api/models/generate?`, `Allow checking model router endpoints?`, `Allow testing central model dispatch?`, `Allow testing TTS synthesis speed?`, `Allow testing updated Edge-TTS?`, `Allow testing STT pipeline?`, `Allow checking edge-tts version?`, `Allow upgrading edge-tts?`, `Allow checking container contents?`, `Allow viewing server docker-compose.yml?`, `Allow checking server container and git status?`, `Allow checking server git branch and log?`, `Allow listing git branches on server?`). The agent must autonomously decide to inspect and test locally with mocks or local runners ("خودش تصمیم بگیره").
+- 🚫 **Remote Speech-to-Text (STT) Pipeline Probing via SSH**: Running remote SSH or container commands to test speech transcription pipelines or execute live STT transcription (`STTService.transcribe_audio_bytes`) on remote servers without explicit instruction. Validate all STT services and audio transcription pipelines locally with mocks.
 - 🚫 **Remote Deployment Configuration & Compose Probing via SSH**: Running `ssh` commands (`cat /opt/.../docker-compose.yml`, `head`, `tail`, `less`, `grep`) to read deployment configurations, compose manifests, or server configs on remote hosts. Inspect all deployment manifests and compose files directly in the local workspace repository.
 - 🚫 **Remote Container Filesystem Probing via SSH**: Running `ssh` or remote container commands (`docker exec ... ls -la /app`, `find /app`, `cat /app/...`) to inspect container directory trees. Inspect repository files and folder hierarchies directly in the local workspace.
 - 🚫 **Remote Package Upgrades & Container Mutation via SSH**: Running `ssh` or remote container commands (`docker exec ... pip install -U ...`, `npm install -g`, `pip install --upgrade`, `apt update`) to mutate running containers or remote servers. Manage all package upgrades deterministically through local workspace manifests.

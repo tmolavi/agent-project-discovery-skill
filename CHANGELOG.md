@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.16.0] - 2026-10-10
+
+### Added
+- **The 17th Forbidden Trap (Remote Speech-to-Text (STT) & Audio Transcription Pipeline Probing)**: Strictly forbidden asking `Allow testing STT pipeline?` or executing remote SSH commands (`docker exec ... python3 -c '... STTService.transcribe_audio_bytes(...) ...'`) to benchmark speech-to-text transcription, decode audio chunks, or probe live audio transcription pipelines on remote servers.
+- **Autonomous Local Speech-to-Text (STT) Verification Mandate ("خودش تصمیم بگیره")**: Mandated that agents must autonomously validate speech-to-text services (`STTService`), transcription functions (`transcribe_audio_bytes`), audio chunk decoding, and transcript formatting locally using mocked async functions (`unittest.mock.AsyncMock`) and dummy audio byte payloads without remote SSH execution or user approval modals.
+- Updated `SKILL.md`, `templates/AGENTS.md`, and all localized README files (`README.md`, `README.fa.md`, `README.tr.md`, `README.az.md`, `README.ar.md`) to version `v1.16.0`.
+
 ## [1.15.0] - 2026-10-10
 
 ### Added
