@@ -1,7 +1,7 @@
 # agent-project-discovery-skill 🧭
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/badge/release-v1.5.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
+[![Release](https://img.shields.io/badge/release-v1.6.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/tmolavi/agent-project-discovery-skill/pulls)
 [![Supported Agents](https://img.shields.io/badge/Agents-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Antigravity%20%7C%20Copilot-blueviolet.svg)](#supported-ai-agents)
 
@@ -29,6 +29,7 @@ Today's AI coding assistants are capable, but their default initialization behav
 | **Timid Test Approvals**: Halts to ask *"Allow testing /api/...?"* or seeks permission before verifying code. | **Autonomous Decision Mandate**: Decides and verifies autonomously ("خودش تصمیم بگیره") using local mocks and unit tests without nagging. |
 | **Remote Route/Code Probing**: Halts to ask *"Allow checking model router endpoints?"* and fires SSH to read files. | **Autonomous Local Code Discovery**: Inspects router files, schemas, and endpoints directly in the local workspace. |
 | **Model Dispatch / Reasoning Halts**: Halts asking *"Allow testing central model dispatch?"* and triggers remote SSH. | **Autonomous Router Mocking**: Tests reasoning routers, payload structures, and dispatch tiers locally with mock transports. |
+| **TTS / Speech Benchmarking Halts**: Halts asking *"Allow testing TTS synthesis speed?"* and triggers remote SSH. | **Autonomous Voice & TTS Mocking**: Validates speech synthesis services (`TTSService`) locally with mocked audio chunks and async mocks. |
 | **Clobbering Diffs**: Overwrites uncommitted work or ignores ongoing work in the working tree. | **Git Awareness**: Inspects `git status`, current branch, recent commits, and protects existing user modifications. |
 | **Architectural Churn**: Rewrites working patterns, duplicates existing utilities, or installs redundant libraries. | **Pattern Adherence**: Matches existing conventions, preserves backward compatibility, and produces minimal diffs. |
 | **No Accountability**: Leaves ambiguous completion messages without test results. | **Deterministic Protocols**: Mandates structured First Response (`Understanding`, `Current State`, `Plan`, `Blocking Questions`) and Completion Reports (`STATUS`, `CHANGES`, `VALIDATION`, `DEPLOYMENT`, `REMAINING`). |
@@ -49,6 +50,7 @@ Modern AI coding assistants (Google Antigravity, Claude Code, Cursor) enforce a 
    - The agent prompts to ask **routine verification permission** (`Allow testing /api/models/generate? ssh root@server "docker exec ..."`).
    - The agent prompts to ask **route inspection permission** (`Allow checking model router endpoints? ssh ...`).
    - The agent prompts to ask **central model dispatch testing permission** (`Allow testing central model dispatch? ssh ...`).
+   - The agent prompts to ask **TTS / voice synthesis testing permission** (`Allow testing TTS synthesis speed? ssh ...`).
    - The agent probes **live public URLs** or external domains (`curl -s https://example.com/...`).
    - The agent runs **unsolicited remote server commands** (`ssh server "docker images"` or `ssh server "ssh -T git@github.com"`).
    - The agent executes **obscure Git plumbing** (`git count-objects`, `git fsck`).
@@ -57,10 +59,11 @@ Modern AI coding assistants (Google Antigravity, Claude Code, Cursor) enforce a 
    - The agent runs **fragmented, iterative AppleScript/OS one-liners** (`osascript -e '...'`) to inspect browser sessions.
 
 ### How This Skill Fixes It:
-- **Autonomous Decision Mandate ("Decide By Itself")**: The agent never asks *"Allow testing <endpoint>?"*, *"Allow checking model router endpoints?"*, or *"Allow testing central model dispatch?"*. It autonomously inspects local repository files and chooses local mocks, fixtures, and local test runners without human intervention.
+- **Autonomous Decision Mandate ("Decide By Itself")**: The agent never asks *"Allow testing <endpoint>?"*, *"Allow checking model router endpoints?"*, *"Allow testing central model dispatch?"*, or *"Allow testing TTS synthesis speed?"*. It autonomously inspects local repository files and chooses local mocks, fixtures, and local test runners without human intervention.
 - **Enforces Canonical Local Verification**: All code changes are verified through local builds (`npm run build`, `cargo check`, `go test`) and unit tests instead of hitting live production domains or remote servers.
 - **Zero Remote Code Probing**: Discovers endpoints, routers, decorators, and schemas from local workspace files directly without SSH.
 - **Autonomous Router & Dispatch Mocking**: Validates reasoning routers and model tier payloads using mocked transports locally.
+- **Autonomous Voice & TTS Mocking**: Validates speech synthesis speed, streaming chunks, and audio services (`TTSService`) locally with dummy audio bytes and async mocks instead of remote SSH benchmarks.
 - **Batched Single-Runner Pattern for OS & Browser Automation**: If interacting with an active browser session (Chrome, Safari, cPanel, Colab, Figma via AppleScript/CDP) or remote database is required, the agent writes a single self-contained script (e.g. in workspace or scratch), runs it once, and parses structured JSON output.
 - **Zero Global Config Tampering**: Agents never touch files outside the workspace root.
 

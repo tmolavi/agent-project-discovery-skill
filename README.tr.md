@@ -2,12 +2,12 @@
 ### `agent-project-discovery-skill`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/badge/release-v1.5.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
+[![Release](https://img.shields.io/badge/release-v1.6.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/tmolavi/agent-project-discovery-skill/pulls)
 
 > **"Bir yapay zeka ajanı, değişiklik yapmadan önce projeyi derinlemesine anlamalıdır."**
 
-Bu پروژه, kodlama yapan yapay zeka ajanları (Claude Code, Cursor, Google Antigravity, OpenAI Codex, GitHub Copilot vb.) için evrensel, üretime hazır bir başlangıç becerisidir (startup skill). Ajanların projeyi anlamadan aceleyle kod değiştirmesini, çalışan sistemleri baştan yazmasını, gereksiz sorular sormasını, test, rota veya model dağıtım (central dispatch) kontrolü için izin istemesini ve sizi sürekli ekran başında onay butonlarına basmak zorunda bırakmasını engeller.
+Bu proje, kodlama yapan yapay zeka ajanları (Claude Code, Cursor, Google Antigravity, OpenAI Codex, GitHub Copilot vb.) için evrensel, üretime hazır bir başlangıç becerisidir (startup skill). Ajanların projeyi anlamadan aceleyle kod değiştirmesini, çalışan sistemleri baştan yazmasını, gereksiz sorular sormasını, test, rota, model dağıtım (central dispatch) veya TTS ses sentezi kontrolü için izin istemesini ve sizi sürekli ekran başında onay butonlarına basmak zorunda bırakmasını engeller.
 
 ---
 
@@ -30,6 +30,7 @@ Modern yapay zeka kodlama araçlarında (Google Antigravity, Claude Code, Cursor
 2. **Onay Penceresi Tetikleyen Durumlar**:
    - **Rutin Test Onayı İsteme (`Allow testing /api/... ?`)**: Ajanın bağımsız karar vermek yerine test çalıştırmak veya SSH betiği çalıştırmak için kullanıcıyı durdurup onay beklemesi.
    - **Model Yönlendirme ve Dağıtım Onayı İsteme (`Allow testing central model dispatch?`)**: Ajanın model ağ geçidini yerel ortamda mock'lamak yerine canlı sunucuda test etmek için onay sorması.
+   - **Ses ve TTS Sentez Hızı Testi Onayı İsteme (`Allow testing TTS synthesis speed? ssh ...`)**: Ajanın konuşma sentezi veya ses işleme hızını yerel ortamda mock'lamak yerine uzak sunucuda canlı test etmek için onay sorması.
    - **Rota ve Kod Kontrolü İçin İzin İsteme (`Allow checking model router endpoints?`)**: Ajanın yerel dosyaları okumak yerine uzak sunucuya SSH atıp rota dosyalarını parse etmeye çalışması.
    - **Kum Havuzunu Aşma Talebi (`BypassSandbox: true`)**: Ajanın ham ağ erişimi veya disk geneline erişim talep etmesi ve buna uygun izin kuralının tanımlı olmaması.
    - **Canlı Genel URL'leri Sorgulamak (`curl https://...`)**: Kod doğrulaması için canlı internet sitelerine HTTP istekleri atılması.
@@ -45,9 +46,11 @@ Modern yapay zeka kodlama araçlarında (Google Antigravity, Claude Code, Cursor
 
 1. **Bağımsız Test ve Doğrulama Kararı**: Ajan "Uç noktayı test edeyim mi?" diye sormaz. Değişiklikleri yerel mock'lar, birim testleri ve yerel döngü (`127.0.0.1`) ile kendisi doğrulamaya karar verir ve raporlar.
 2. **Yalnızca Yerel ve Belirleyici Doğrulama**: Kodlar canlı genel sitelere veya uzak sunuculara istek atılarak değil; yerel testler ve derleme çıktıları üzerinden doğrulanır.
-3. **Tek Dosyalı Otomasyon (Single-Runner Batching)**: Kullanıcı tarayıcı oturumlarını (Chrome, Safari, cPanel, bulut panelleri, Colab) veya uzak veritabanlarını incelemeyi istediğinde, ajan parçalı komutlar çalıştırmak yerine tek bir yardımcı betik (Python veya AppleScript) yazar, bunu tek seferde çalıştırır ve yapılandırılmış JSON çıktısını işler.
-4. **Statik Dağıtım Analizi**: Konteynerler ve portlar canlı sunucuya bağlanmadan, `docker-compose.yml` ve `Dockerfile` dosyalarından okunur.
-5. **Proje İzolasyonu**: Çalışma alanı dışındaki hiçbir dosya değiştirilmez.
+3. **Model ve Dağıtım Mocking**: Akıl yürütme router'ları ve model dağıtım katmanları uzak sunucuya bağlanmadan yerel mock'lar ile test edilir.
+4. **Yerel TTS ve Ses Sentezi Mocking**: Ses sentez servisleri (`TTSService`) ve ses akışı gecikmeleri uzak sunucuda canlı test edilmek yerine yerel asenkron mock'lar (`AsyncMock`) ile doğrulanır.
+5. **Tek Dosyalı Otomasyon (Single-Runner Batching)**: Kullanıcı tarayıcı oturumlarını (Chrome, Safari, cPanel, bulut panelleri, Colab) veya uzak veritabanlarını incelemeyi istediğinde, ajan parçalı komutlar çalıştırmak yerine tek bir yardımcı betik (Python veya AppleScript) yazar, bunu tek seferde çalıştırır ve yapılandırılmış JSON çıktısını işler.
+6. **Statik Dağıtım Analizi**: Konteynerler ve portlar canlı sunucuya bağlanmadan, `docker-compose.yml` ve `Dockerfile` dosyalarından okunur.
+7. **Proje İzolasyonu**: Çalışma alanı dışındaki hiçbir dosya değiştirilmez.
 
 ---
 

@@ -33,6 +33,7 @@ Do **NOT** ask questions such as:
 - ❌ *"Allow testing <endpoint>?"* (e.g., `Allow testing /api/models/generate?` or asking permission to run SSH/docker test snippets).
 - ❌ *"Allow checking model router endpoints?"* (e.g., asking permission to SSH and parse router decorators or code files).
 - ❌ *"Allow testing central model dispatch?"* (e.g., asking permission to test reasoning routers or gateways via SSH).
+- ❌ *"Allow testing TTS synthesis speed?"* (e.g., asking permission to benchmark speech synthesis latency or run remote `TTSService.synthesize_chunk` scripts).
 - ❌ *"Should I run this test on the remote server?"*
 
 **Instead — Decide Autonomously ("خودش تصمیم بگیره"):**
@@ -41,6 +42,7 @@ Do **NOT** ask questions such as:
 - Infer conventions from existing implementations and commit history.
 - Read existing unit/integration tests for usage patterns.
 - Autonomously verify model routers, dispatch logic, and payload generation using local mocks (`httpx.MockTransport`, `respx`, `unittest.mock`) without asking for human permission.
+- Autonomously verify speech synthesis, audio streaming, and TTS services (`TTSService`) using local async mocks (`unittest.mock.AsyncMock`) and dummy audio chunk bytes without asking permission or triggering remote SSH benchmarks.
 
 **Only ask questions when:**
 1. A genuine blocker exists where information cannot be found in the repository.
@@ -55,8 +57,9 @@ Do **NOT** ask questions such as:
 - **Pattern Matching**: Match the existing paradigm (error handling, logging, naming, formatting, type definitions).
 - **Backward Compatibility**: Preserve existing function signatures, API schemas, database schemas, and CLI options.
 - **Zero Hallucinated Dependencies**: Do not introduce new third-party dependencies without verifying existing alternatives in the lockfile.
-- **Zero Timid Test Prompts ("Decide By Yourself")**: NEVER prompt the user with interactive confirmation questions to test an endpoint, inspect router decorators, test central model dispatch, or run code. Decide autonomously to inspect and test locally with mocks or test suites.
+- **Zero Timid Test Prompts ("Decide By Yourself")**: NEVER prompt the user with interactive confirmation questions to test an endpoint, inspect router decorators, test central model dispatch, test TTS synthesis speed, or run code. Decide autonomously to inspect and test locally with mocks or test suites.
 - **Zero Remote Source Code & Route Probing**: NEVER run `ssh` or remote `docker exec` commands to read codebase files or grep router decorators (e.g. `python3 -c "open('/workspace/...')"`). Inspect all routes and models locally from the repository workspace.
+- **Zero Remote Voice / TTS Synthesis Benchmarking**: NEVER run remote SSH or container commands to benchmark audio/voice synthesis latency or execute live TTS synthesis (`TTSService.synthesize_chunk`) on remote servers unprompted.
 - **Zero Unsolicited Live Model/API Probing**: NEVER run live inference queries (`/api/models/generate`) or execute ad-hoc remote container commands (`ssh ... "docker exec ... python3 -c '...' "`) unprompted.
 - **Zero Unsolicited Remote/SSH Probing**: NEVER run `ssh`, `scp`, `rsync`, or remote `docker` commands (`docker ps`, `docker images`, `docker inspect`) on external servers during discovery or development. Understand deployment statically by reading `Dockerfile`, `compose.yaml`, and CI configs.
 - **Zero Remote Port Probing**: NEVER run port checks or endpoint pings via SSH (e.g. `ssh server "curl ..."`). Determine port mappings statically from `docker-compose.yml`, `Dockerfile`, and service configs.

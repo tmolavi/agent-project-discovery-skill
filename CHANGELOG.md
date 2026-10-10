@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.0] - 2026-10-10
+
+### Added
+- **The 11th Forbidden Trap (Remote Voice / TTS Synthesis & Speed Benchmarking)**: Strictly forbidden asking `Allow testing TTS synthesis speed?` or running ad-hoc remote SSH scripts testing speech synthesis latency, chunk streaming, or audio generation pipelines (e.g. `TTSService.synthesize_chunk`).
+- **Autonomous Voice & TTS Mocking Mandate ("خودش تصمیم بگیره")**: Agents must autonomously decide verification approaches using local async mocking (`unittest.mock.AsyncMock`) and dummy audio byte payloads (e.g. `b"RIFF..."` or simulated chunk streams), rather than halting execution or triggering remote confirmation modals.
+- Updated `SKILL.md`, `templates/AGENTS.md`, and all localized README files (`README.md`, `README.fa.md`, `README.tr.md`, `README.az.md`, `README.ar.md`) with explicit TTS synthesis speed rules.
+
 ## [1.5.0] - 2026-10-10
 
 ### Added
