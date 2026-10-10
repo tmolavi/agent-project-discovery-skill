@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2026-10-11
+
+### Major Architecture Milestone: Universal Autonomous Decision Engine Across All Projects
+- **Universal Project Generalization Mandate ("خودش تصمیم بگیره در هر پروژه‌ای")**: Formally codified that all rules, question bans, and modal-triggering traps apply universally across **EVERY** repository, project, container, server, and tech stack. The specific command strings, server names, and container names in the documentation are classified as illustrative concrete examples of general forbidden patterns.
+- **General Prohibitions Established**:
+  1. **Zero Remote SSH/Docker Probing**: Universally forbidden across all projects to run remote SSH/docker commands to inspect files, routes, logs, containers, runtimes, images, or packages.
+  2. **Zero Remote Deployment Mutation & Ad-hoc Transfers**: Universally forbidden across all projects to execute ad-hoc SCP transfers, SSH cat redirects, or remote container restarts mid-task.
+  3. **Zero Public Domain Probing**: Universally forbidden across all projects to probe live production domains or public URLs.
+  4. **Universal Autonomous Decision Mandate**: In any project, the agent must decide and execute autonomously using local codebase files, local build tools, and local test doubles/mocks without interrupting the developer.
+- Updated `SKILL.md`, `templates/AGENTS.md`, and all localized README files (`README.md`, `README.fa.md`, `README.tr.md`, `README.az.md`, `README.ar.md`) to version `v2.0.0`.
+
 ## [1.32.0] - 2026-10-11
 
 ### Added

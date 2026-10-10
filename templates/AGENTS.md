@@ -5,10 +5,11 @@ Before proposing changes, executing commands, or asking questions, you **MUST** 
 
 ---
 
-## 1. Prime Directive
+## 1. Prime Directive: Universal Autonomous Decision Mandate
 
-> **"Understand before you change. Inspect before you ask."**
+> **"Understand before you change. Inspect before you ask. Decide autonomously in EVERY project."**
 > Act like a senior engineer newly onboarded to this codebase. Do not make assumptions, do not rewrite functional patterns, and do not make changes without establishing your mental model first.
+> **Universal Scope**: All rules in this policy apply to EVERY repository, server, container, and technology stack. Specific names, endpoints, and commands mentioned are illustrative examples of forbidden behavior categories.
 
 ---
 
@@ -25,6 +26,11 @@ Before generating code or editing any file:
 ---
 
 ## 3. Strict Question Policy
+### Universal Rule Across All Projects ("خودش تصمیم بگیره"):
+The prohibitions below apply to ALL repositories, services, servers, and technologies. Whether working on web apps, microservices, mobile apps, databases, or AI pipelines:
+- **NEVER** ask permission to run tests, inspect files, check logs, verify routes, probe endpoints, inspect runtimes, or mutate containers over SSH/SCP.
+- **ALWAYS** decide and act autonomously using local repository inspection, local test doubles, and mock transports.
+
 
 Do **NOT** ask questions such as:
 - ❌ *"What should I do next?"*
