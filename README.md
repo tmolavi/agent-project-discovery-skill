@@ -1,7 +1,7 @@
 # agent-project-discovery-skill 🧭
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/badge/release-v2.1.1-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
+[![Release](https://img.shields.io/badge/release-v2.1.2-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/tmolavi/agent-project-discovery-skill/pulls)
 [![Supported Agents](https://img.shields.io/badge/Agents-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Antigravity%20%7C%20Copilot-blueviolet.svg)](#supported-ai-agents)
 
@@ -58,6 +58,7 @@ Today's AI coding assistants are capable, but their default initialization behav
 | **Exhaustive Skill Enumeration**: Halts asking *"Allow listing all Hermes skills?"* and fires SSH cross-container Python parsing scripts. | **Autonomous Static Skill Discovery**: Inspects complete skill catalogs statically from `hermes-skill-discovery-registry-v1.json` without remote SSH scripts. |
 | **Public URL Title Probing**: Halts asking *"Allow verifying title on public URL?", "Allow checking health endpoint on production?", "Allow verifying deployed app.js features?", "Allow verifying deployed style.css features?"* and fires `curl -sk https://... | grep`. | **Autonomous Source Title Verification**: Inspects page titles and metadata directly in local layout/page components without live public URL probing. |
 | **Remote API Docs & OpenAPI Probing**: Halts asking *"Allow checking Hermes API endpoints?"* and fires SSH probes to `/docs` and `/openapi.json`. | **Autonomous API Schema Discovery**: Inspects route definitions and OpenAPI schemas statically from local codebase files without remote SSH probes. |
+| **Live Integration & Flow Test Halts**: Halts asking *"Allow running live test?"* and triggers ad-hoc scripts (`.venv/bin/python3 test_live_wake_flow.py`). | **Autonomous Test & Mock Execution**: Validates integration flows locally using mocks and test doubles, or executes automated test suites directly without modal prompts ("Allow running live test?"). |
 | **Remote WebSocket & Wake-Word Probing**: Halts asking *"Allow testing wake-word flow inside production container?", "Allow testing live wake-word flow in container?"* and fires live WebSocket scripts over SSH. | **Autonomous Local WebSocket Mocking**: Validates WebSocket meetings, authentication, and wake-word triggers (`wake_detected`) locally using test clients and async fixtures. |
 | **Microservice Route Sweeping & Probing**: Halts asking *"Allow probing staging-hermes endpoints?"* and fires SSH loops over paths (`/`, `/api/v1`, `/health`, `/api/v1/models`). | **Autonomous Endpoint & Mock Verification**: Inspects endpoints statically in router files and tests routes locally using mock HTTP transports without remote SSH probing loops. |
 | **Ad-hoc Multi-File SCP Sync & SSH Cat**: Halts asking *"Allow syncing updated ARA files..."*, *"Allow copying updated files..."*, or *"Allow transferring stt_service.py via SSH cat?"*. | **Autonomous Git & Canonical Releases**: Commits all code locally and executes deployments strictly via planned release scripts (`deploy.sh`) without piecemeal SCP copies or SSH cat piping. |
@@ -73,7 +74,9 @@ Today's AI coding assistants are capable, but their default initialization behav
 ## 🌙 The "Sleep-Well" Principle: True Overnight Autonomy
 
 The ultimate design goal of this skill is simple:
-> **"Assign a task, close your laptop, go to sleep, and review clean completed code in the morning without waking up to stalled confirmation prompts."**
+> **"Assign a task, keep your machine running, go to sleep, and review clean completed code in the morning without waking up to stalled confirmation prompts."**
+>
+> *(Note: On laptops, ensure system sleep or lid-close suspension is disabled or kept awake with tools like caffeinate, while this skill ensures the agent never freezes on interactive approval dialogs).*
 
 ### Why Do AI Agents Prompt for Approvals?
 Modern AI coding assistants (Google Antigravity, Claude Code, Cursor) enforce a **Sandbox Security Boundary**:

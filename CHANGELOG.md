@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.2] - 2026-10-11
+
+### Added
+- **Trap 38 & Sleep-Well Protocol (Zero Live Flow Test Confirmation Prompts)**: Strictly forbidden asking `Allow running live test?` (e.g. `/Users/taghimolavi/hamzad/hamzad-core/.venv/bin/python3 test_live_wake_flow.py`) across ANY project. Agents must never halt unattended workflows to seek permission before running test scripts or integration flows.
+- **Autonomous Live Flow & Integration Test Execution Mandate**: Codified that live pipelines, wake-word event flows, and backend service logic must be validated locally using unit test suites, test doubles, and mock transports (`httpx.MockTransport`, `unittest.mock.AsyncMock`), or executed autonomously without interactive confirmation prompts.
+- **Sleep-Well Principle Clarification**: Refined the unattended overnight execution guidance to clarify laptop sleep and lid-close suspension considerations (keeping machines awake) while ensuring zero interactive modal stops.
+- Updated `SKILL.md`, `templates/AGENTS.md`, and all localized README files (`README.md`, `README.fa.md`, `README.tr.md`, `README.az.md`, `README.ar.md`) to version `v2.1.2`.
+
 ## [2.1.1] - 2026-10-11
 
 ### Added
