@@ -2,7 +2,7 @@
 ### `agent-project-discovery-skill`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/badge/release-v1.28.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
+[![Release](https://img.shields.io/badge/release-v1.29.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/tmolavi/agent-project-discovery-skill/pulls)
 
 > **"يجب على وكيل الذكاء الاصطناعي أن يفهم المشروع بعمق قبل أن يُغيّر أي سطر برمجياً."**
@@ -51,7 +51,7 @@
    - **طلب الإذن لسرد الحاويات النشطة على السيرفر (`Allow listing containers on hamzad_server? ssh ... "docker ps --format ..."`):** محاولة خاطئة من الوكيل لتشغيل `docker ps` عبر SSH بدلاً من مراجعة الخدمات والمنافذ في مانيفست المشروع المحلي (`docker-compose.yml`, `Dockerfile`).
    - **طلب الإذن لرفع أرشيف ملفات البناء عبر SCP (`Allow uploading build assets archive? scp ... /tmp/*.tar.gz ...`):** محاولة خاطئة من الوكيل لرفع أرشيفات مضغوطة عشوائياً عبر SCP بدلاً من التحقق المحلي وسكربت النشر الرسمي (`deploy.sh`).
    - **طلب الإذن لاستعلام مهارات الخدمات عبر الحاويات المجاورة (`Allow inspecting Hermes skills from hamzad-ara? ssh ... "docker exec ... http://staging-hermes:8090/api/v1/skills ..."`):** محاولة خاطئة من الوكيل لإرسال طلبات HTTP داخلية بين الحاويات عبر SSH بدلاً من فحص ملفات التسجيل المحلية ومحاكاتها.
-   - **طلب الإذن لنشر الملفات داخل الحاوية وإعادة تشغيلها (`Allow deploying assets to container and restarting?`):** محاولة خاطئة من الوكيل لتشغيل سلاسل أوامر SSH المركبة (`tar && docker cp && docker restart && curl`) بدلاً من الالتزام بسكربت النشر الرسمي (`deploy.sh`).
+   - **طلب الإذن لنشر الملفات داخل الحاوية وإعادة تشغيلها (`Allow deploying assets to container and restarting?`, `Allow deploying assets to hamzad_server?`):** محاولة خاطئة من الوكيل لتشغيل سلاسل أوامر SSH المركبة (`tar && docker cp && docker restart && curl`) بدلاً من الالتزام بسكربت النشر الرسمي (`deploy.sh`).
    - **طلب الإذن لسرد جميع مهارات هرمس (`Allow listing all Hermes skills?`):** محاولة خاطئة من الوكيل لتشغيل سكربت بايثون عبر SSH لطباعة أسماء المهارات بدلاً من قراءتها من سجلات المانيفست المحلية.
    - **طلب الإذن لفحص مسارات Hermes API أو docs أو openapi.json (`Allow checking Hermes API endpoints?`):** محاولة خاطئة من الوكيل للاستعلام عن التوثيق أو ملف openapi.json عبر SSH بدلاً من فحص المسارات محلياً في الكود.
    - **طلب الإذن لفحص حاويات السيرفر وحالة الجيت البعيدة (`Allow checking server container and git status?`, `Allow checking server git branch and log?`, `Allow listing git branches on server?`, `Allow checking molavi-pro container on server?`):** محاولة خاطئة من الوكيل للاتصال بالخادم عبر SSH لتشغيل `docker ps`، أو `git status -s`، أو `git branch` و `git log` على السيرفر بدلاً من فحص ملفات المشروع وسجل الجيت محلياً.
@@ -93,7 +93,7 @@
 23. **الاستكشاف المحلي لتوزيع الحاويات والمنافذ:** تُستكشف أسماء الحاويات والخدمات والمنافذ مباشرة من ملفات المانيفست المحلية (`docker-compose.yml`, `Dockerfile`) دون إرسال أوامر `docker ps --format ...` عبر SSH.
 24. **التحقق المحلي من البناء وحظر رفع الأرشيف بـ SCP:** يتم بناء ملفات التطبيق والتحقق منها محلياً، وتُحظر عمليات رفع الأرشيفات المضغوطة عبر SCP خارج نطاق سكربتات النشر المعتمدة.
 25. **الاستكشاف المحلي لخدمات النظام والمحاكاة بين الحاويات:** تُفحص مهارات الخدمات والمسارات الداخلية مباشرة من ملفات التسجيل المحلية (`hermes-skill-discovery-registry-v1.json`, `docker-compose.yml`) وتتم محاكاتها محلياً دون إرسال أوامر SSH بين الحاويات.
-26. **النشر الذري الشامل وحظر التعديل المباشر على الحاويات:** تتم عمليات النشر حصراً عبر سكربت النشر الرسمي (`deploy.sh`) بشكل ذري دون سلاسل أوامر استخراج ونسخ وإعادة تشغيل مجزأة.
+26. **النشر الذري الشامل وحظر التعديل المباشر على الحاويات:** تتم عمليات النشر حصراً عبر سكربت النشر الرسمي (`deploy.sh`) بشكل ذري دون سلاسل أوامر مجزأة أو تشغيل سكربتات نشر مؤقتة (`/tmp/deploy_molavi.sh`) تطلب موافقة المستخدم.
 27. **الاستكشاف الساكن لكتالوج المهارات:** تُستكشف قائمة مهارات الخدمات بالكامل مباشرة من ملفات التسجيل المحلية (`hermes-skill-discovery-registry-v1.json`) دون تشغيل سكربتات بعيدة.
 28. **الاستكشاف الساكن لمسارات ومخططات API:** تُفحص مسارات وعقود واجهات البرمجة مباشرة من الأكواد المحلية دون إرسال أوامر SSH لفحص `/docs` أو `/openapi.json`.
 30. **الاستكشاف والمحاكاة المحلية لنقاط نهاية الخدمات المصغرة:** تُفحص مسارات الخدمات المصغرة ونقاط التحقق محلياً وتُختبر عبر محاكيات محلية دون إرسال سلاسل استعلامات SSH إلى الخوادم البعيدة.

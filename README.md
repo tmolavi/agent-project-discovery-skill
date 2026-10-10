@@ -1,7 +1,7 @@
 # agent-project-discovery-skill 🧭
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/badge/release-v1.28.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
+[![Release](https://img.shields.io/badge/release-v1.29.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/tmolavi/agent-project-discovery-skill/pulls)
 [![Supported Agents](https://img.shields.io/badge/Agents-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Antigravity%20%7C%20Copilot-blueviolet.svg)](#supported-ai-agents)
 
@@ -49,7 +49,7 @@ Today's AI coding assistants are capable, but their default initialization behav
 | **Remote Container Listing Probing**: Halts asking *"Allow listing containers on hamzad_server?"* and fires SSH `docker ps --format ...`. | **Autonomous Container Topology Discovery**: Determines service names, container names, and port bindings statically from `docker-compose.yml` and `Dockerfile` without SSH. |
 | **Ad-hoc SCP Build Asset Uploading**: Halts asking *"Allow uploading build assets archive?"* and fires `scp ... /tmp/*.tar.gz ...`. | **Autonomous Release Workflows**: Verifies build assets locally and restricts deployments to canonical release pipelines (`deploy.sh`) without ad-hoc SCP tarball uploads. |
 | **Cross-Container Service Probing**: Halts asking *"Allow inspecting Hermes skills from hamzad-ara?"* and fires SSH cross-container HTTP requests. | **Autonomous Cross-Container Discovery**: Discovers service mesh topology and skill registries statically from local manifests and mocks inter-container endpoints locally. |
-| **Ad-hoc Container Hot-Patching**: Halts asking *"Allow deploying assets to container and restarting?"* and fires compound SSH `tar && docker cp && docker restart`. | **Autonomous Atomic Releases**: Manages deployments strictly via canonical release scripts (`deploy.sh`) without piecemeal hot-patching or modal prompts. |
+| **Ad-hoc Container Hot-Patching & Deploy Scripts**: Halts asking *"Allow deploying assets to container and restarting?"* or *"Allow deploying assets to hamzad_server?"* (`/tmp/deploy_molavi.sh`). and fires compound SSH `tar && docker cp && docker restart`. | **Autonomous Atomic Releases**: Manages deployments strictly via canonical release scripts (`deploy.sh`) without piecemeal hot-patching or modal prompts. |
 | **Exhaustive Skill Enumeration**: Halts asking *"Allow listing all Hermes skills?"* and fires SSH cross-container Python parsing scripts. | **Autonomous Static Skill Discovery**: Inspects complete skill catalogs statically from `hermes-skill-discovery-registry-v1.json` without remote SSH scripts. |
 | **Public URL Title Probing**: Halts asking *"Allow verifying title on public URL?"* and fires `curl -sk https://... | grep`. | **Autonomous Source Title Verification**: Inspects page titles and metadata directly in local layout/page components without live public URL probing. |
 | **Remote API Docs & OpenAPI Probing**: Halts asking *"Allow checking Hermes API endpoints?"* and fires SSH probes to `/docs` and `/openapi.json`. | **Autonomous API Schema Discovery**: Inspects route definitions and OpenAPI schemas statically from local codebase files without remote SSH probes. |
@@ -97,7 +97,7 @@ Modern AI coding assistants (Google Antigravity, Claude Code, Cursor) enforce a 
    - The agent prompts to ask **container listing permission** (`Allow listing containers on hamzad_server? ssh ... "docker ps --format ..."`).
    - The agent prompts to ask **build asset archive upload permission** (`Allow uploading build assets archive? scp ... /tmp/*.tar.gz ...`).
    - The agent prompts to ask **cross-container service inspection permission** (`Allow inspecting Hermes skills from hamzad-ara? ssh ... "docker exec ... http://staging-hermes:8090/api/v1/skills ..."`).
-   - The agent prompts to ask **container asset deployment and restart permission** (`Allow deploying assets to container and restarting? ssh ... "tar -xzf ... && docker cp ... && docker restart ..."`).
+   - The agent prompts to ask **container asset deployment and restart permission** (`Allow deploying assets to container and restarting?`, `Allow deploying assets to hamzad_server? /tmp/deploy_molavi.sh` ssh ... "tar -xzf ... && docker cp ... && docker restart ..."`).
    - The agent prompts to ask **exhaustive skill listing permission** (`Allow listing all Hermes skills? ssh ... "docker exec ... http://staging-hermes:8090/api/v1/skills ..."`).
    - The agent prompts to ask **API endpoint or OpenAPI checking permission** (`Allow checking Hermes API endpoints? ssh ... "docker exec ... /docs ... /openapi.json ..."`).
    - The agent prompts to ask **server container or git state permission** (`Allow checking server container and git status?`, `Allow checking server git branch and log?`, `Allow listing git branches on server?`, `Allow checking molavi-pro container on server?`).
@@ -132,7 +132,7 @@ Modern AI coding assistants (Google Antigravity, Claude Code, Cursor) enforce a 
 - **Autonomous Container Topology Discovery**: Inspects service names, container names, and port allocations statically from local manifests (`docker-compose.yml`, `Dockerfile`) without firing remote SSH `docker ps` commands.
 - **Autonomous Release Workflow**: Verifies build assets locally and restricts deployments to canonical release scripts (`deploy.sh`) without ad-hoc SCP archive uploads.
 - **Autonomous Cross-Container Service Discovery**: Inspects service mesh capabilities, skill registries, and internal APIs statically from local manifests (`docker-compose.yml`, `hermes-skill-discovery-registry-v1.json`) without firing remote SSH cross-container probes.
-- **Autonomous Atomic Deployment Handling**: Manages container assets and release pipelines through canonical scripts (`deploy.sh`) without ad-hoc compound SSH container hot-patching.
+- **Autonomous Atomic Deployment Handling**: Manages container assets and release pipelines through canonical scripts (`deploy.sh`) without ad-hoc compound SSH container hot-patching or prompt-triggering temporary deploy scripts (`/tmp/deploy_molavi.sh`).
 - **Autonomous Static Skill Catalog Discovery**: Inspects complete skill catalogs and tool definitions statically from `hermes-skill-discovery-registry-v1.json` without remote SSH scripts.
 - **Autonomous Title & Metadata Verification**: Inspects titles and HTML metadata statically from local layout/page source files without firing `curl` requests against live public domains.
 - **Autonomous API Schema Discovery**: Inspects API route definitions and schemas statically from local repository controllers without remote SSH `/docs` or `/openapi.json` probes.
