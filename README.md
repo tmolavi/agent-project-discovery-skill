@@ -1,7 +1,7 @@
 # agent-project-discovery-skill 🧭
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/badge/release-v1.2.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
+[![Release](https://img.shields.io/badge/release-v1.3.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/tmolavi/agent-project-discovery-skill/pulls)
 [![Supported Agents](https://img.shields.io/badge/Agents-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Antigravity%20%7C%20Copilot-blueviolet.svg)](#supported-ai-agents)
 
@@ -26,6 +26,7 @@ Today's AI coding assistants are capable, but their default initialization behav
 |---|---|
 | **Eager Editing**: Jumps straight into editing random files without knowing the tech stack or monorepo boundaries. | **Structured Discovery**: Explores repository structure, dependencies, configs, test setups, and documentation first. |
 | **Frivolous Questions**: Interrupts developers asking *"Where is X?"* or *"What should I do?"* | **Search First, Ask Later**: Resolves questions autonomously via codebase grep, docs, and git history. |
+| **Timid Test Approvals**: Halts to ask *"Allow testing /api/...?"* or seeks permission before verifying code. | **Autonomous Decision Mandate**: Decides and verifies autonomously ("خودش تصمیم بگیره") using local mocks and unit tests without nagging. |
 | **Clobbering Diffs**: Overwrites uncommitted work or ignores ongoing work in the working tree. | **Git Awareness**: Inspects `git status`, current branch, recent commits, and protects existing user modifications. |
 | **Architectural Churn**: Rewrites working patterns, duplicates existing utilities, or installs redundant libraries. | **Pattern Adherence**: Matches existing conventions, preserves backward compatibility, and produces minimal diffs. |
 | **No Accountability**: Leaves ambiguous completion messages without test results. | **Deterministic Protocols**: Mandates structured First Response (`Understanding`, `Current State`, `Plan`, `Blocking Questions`) and Completion Reports (`STATUS`, `CHANGES`, `VALIDATION`, `DEPLOYMENT`, `REMAINING`). |
@@ -43,6 +44,7 @@ Modern AI coding assistants (Google Antigravity, Claude Code, Cursor) enforce a 
 1. **Standard Sandboxed Commands**: Local file edits, git status/diff, local test runners (`pytest`, `vitest`), and builds execute silently with zero approval prompts.
 2. **Approval Prompts Triggered When**:
    - The agent requests **Unsandboxed Execution** (`BypassSandbox: true`) to gain raw network or full filesystem access without pre-configured permission grants.
+   - The agent prompts to ask **routine verification permission** (`Allow testing /api/models/generate? ssh root@server "docker exec ..."`).
    - The agent probes **live public URLs** or external domains (`curl -s https://example.com/...`).
    - The agent runs **unsolicited remote server commands** (`ssh server "docker images"` or `ssh server "ssh -T git@github.com"`).
    - The agent executes **obscure Git plumbing** (`git count-objects`, `git fsck`).
@@ -51,7 +53,8 @@ Modern AI coding assistants (Google Antigravity, Claude Code, Cursor) enforce a 
    - The agent runs **fragmented, iterative AppleScript/OS one-liners** (`osascript -e '...'`) to inspect browser sessions.
 
 ### How This Skill Fixes It:
-- **Enforces Canonical Local Verification**: All code changes are verified through local builds (`npm run build`, `cargo check`, `go test`) and unit tests instead of hitting live production domains.
+- **Autonomous Decision Mandate ("Decide By Itself")**: The agent never asks *"Allow testing <endpoint>?"*. It autonomously chooses local mocks, fixtures, and local test runners to verify changes without human intervention.
+- **Enforces Canonical Local Verification**: All code changes are verified through local builds (`npm run build`, `cargo check`, `go test`) and unit tests instead of hitting live production domains or remote servers.
 - **Batched Single-Runner Pattern for OS & Browser Automation**: If interacting with an active browser session (Chrome, Safari, cPanel, Colab, Figma via AppleScript/CDP) or remote database is required, the agent writes a single self-contained script (e.g. in workspace or scratch), runs it once, and parses structured JSON output.
 - **Zero Global Config Tampering**: Agents never touch files outside the workspace root.
 

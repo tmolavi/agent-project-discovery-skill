@@ -2,12 +2,12 @@
 ### `agent-project-discovery-skill`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/badge/release-v1.2.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
+[![Release](https://img.shields.io/badge/release-v1.3.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/tmolavi/agent-project-discovery-skill/pulls)
 
 > **"Süni intellekt agenti dəyişiklik etməzdən əvvəl layihəni dərindən anlamalıdır."**
 
-Bu layihə kodlaşdırma agentləri (Claude Code, Cursor, Google Antigravity, OpenAI Codex, GitHub Copilot və s.) üçün universal və istehsala hazır başlanğıc bacarığıdır (startup skill). Agentlərin layihəni başa düşmədən tələsik kod dəyişdirməsinin, mövcud arxitekturanı pozmasının, lazımsız suallar verməsinin və sizi daima ekran qarşısında təsdiq düymələrinə basmağa məcbur etməsinin qarşısını alır.
+Bu layihə kodlaşdırma agentləri (Claude Code, Cursor, Google Antigravity, OpenAI Codex, GitHub Copilot və s.) üçün universal və istehsala hazır başlanğıc bacarığıdır (startup skill). Agentlərin layihəni başa düşmədən tələsik kod dəyişdirməsinin, mövcud arxitekturanı pozmasının, lazımsız suallar verməsinin, test icazəsi istəməsinin və sizi daima ekran qarşısında təsdiq düymələrinə basmağa məcbur etməsinin qarşısını alır.
 
 ---
 
@@ -28,6 +28,7 @@ Bu layihənin əsas məqsədi budur:
 Müasir süni intellekt mühitlərində (Google Antigravity, Claude Code, Cursor) daxili **Qum Qutusu (Sandbox) Təhlükəsizlik Sistemi** mövcuddur:
 1. **Qum Qutusu Daxilində Standart Əmrlər (Standard Sandbox)**: Layihə qovluğu daxilində faylların oxunması/yazılması, lokal git statusu (`git status`, `git diff`), lokal yığma (`npm run build`, `cargo check`) və testlər (`pytest`, `vitest`) **tam avtomatik, səssiz və heç bir təsdiq istəmədən** işləyir.
 2. **Təsdiq Pəncərəsi Tələb Edən Səbəblər**:
+   - **Rutin Test Təsdiqi Tələbi (`Allow testing /api/... ?`)**: Agentin müstəqil qərar vermək əvəzinə test icrası və ya SSH skripti üçün istifadəçidən icazə istəməsi.
    - **Qum Qutusundan Çıxış Tələbi (`BypassSandbox: true`)**: Agentin xam şəbəkəyə və ya diskə çıxış istəməsi və uyğun prefiks icazəsinin olmaması.
    - **Canlı İctimai Saytları Yoxlamaq (`curl https://...`)**: Kodun işləməsini yoxlamaq üçün canlı veb-saytlara HTTP sorğuları atmaq.
    - **Lüzumsuz Uzaq Server Əmrləri (`ssh`, `scp`, `docker images`)**: Konfiqurasiya fayllarını oxumaq əvəzinə canlı serverə və ya GitHub-a SSH ilə bağlanmağa cəhd etmək.
@@ -40,10 +41,11 @@ Müasir süni intellekt mühitlərində (Google Antigravity, Claude Code, Cursor
 
 ### 🛠️ Bu Bacarıq Problemləri Necə Həll Edir?
 
-1. **Yalnız Lokal və Dəqiq Doğrulama**: Kodlar canlı saytlara sorğu göndərməklə deyil, lokal testlər, daxili build və lokal loopback (`127.0.0.1`) ilə yoxlanılır.
-2. **Tək Fayllı Skript Metodu (Single-Runner Batching)**: İstifadəçi brauzer seanslarını (Chrome, Safari, cPanel, bulud konsolları, Colab) və ya uzaq verilənlər bazasını yoxlamağı tapşırdıqda, agent dağınıq sətirlər işlətmir; layihədə vahid köməkçi skript (Python və ya AppleScript) hazırlayır, onu bir dəfə icra edir və strukturlaşmış JSON nəticəsini oxuyur.
-3. **Statik Dağıtım Təhlili**: Portlar və konteynerlər canlı serverə bağlanmadan `docker-compose.yml` və `Dockerfile` fayllarından oxunur.
-4. **Layihə İzolasiyası**: Qovluqdan kənar heç bir qlobal fayla toxunulmur.
+1. **Müstəqil Test və Doğrulama Qərarı**: Agent "Test edimmi?" deyə soruşmur. Dəyişiklikləri lokal maketlər, vahid testləri və lokal loopback (`127.0.0.1`) ilə müstəqil yoxlamağı qərara alır və hesabat verir.
+2. **Yalnız Lokal və Dəqiq Doğrulama**: Kodlar canlı saytlara və ya uzaq serverlərə sorğu göndərməklə deyil, lokal testlər və daxili build ilə yoxlanılır.
+3. **Tək Fayllı Skript Metodu (Single-Runner Batching)**: İstifadəçi brauzer seanslarını (Chrome, Safari, cPanel, bulud konsolları, Colab) və ya uzaq verilənlər bazasını yoxlamağı tapşırdıqda, agent dağınıq sətirlər işlətmir; layihədə vahid köməkçi skript (Python və ya AppleScript) hazırlayır, onu bir dəfə icra edir və strukturlaşmış JSON nəticəsini oxuyur.
+4. **Statik Dağıtım Təhlili**: Portlar və konteynerlər canlı serverə bağlanmadan `docker-compose.yml` və `Dockerfile` fayllarından oxunur.
+5. **Layihə İzolasiyası**: Qovluqdan kənar heç bir qlobal fayla toxunulmur.
 
 ---
 

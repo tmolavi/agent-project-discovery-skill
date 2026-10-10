@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2026-10-10
+
+### Added
+- **Autonomous Testing Decision Protocol ("Decide By Itself" / خودش تصمیم بگیره)**: Explicitly prohibited agents from popping timid interactive permission prompts to test APIs or endpoints (such as `Allow testing /api/models/generate? ssh root@... "docker exec ..."`).
+- **The 9th Forbidden Trap (Timid Test Approvals & Live Endpoint Probing)**: Agents must autonomously decide verification strategy using local unit tests, mocks, test fixtures, or local loopbacks without stalling the user.
+- **Strict Anti-Pattern for Live Inference Probing**: Prohibited unsolicited execution of live model generation calls and remote container execution scripts during discovery and verification.
+- Updated `SKILL.md`, `templates/AGENTS.md`, and all primary documentation with the autonomous testing mandate.
+
 ## [1.2.0] - 2026-09-16
 
 ### Added

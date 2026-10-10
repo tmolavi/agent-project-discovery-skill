@@ -1,7 +1,7 @@
 ---
 name: agent-project-discovery-skill
 description: Universal startup and context discovery skill for AI coding agents to inspect, understand, and plan before modifying existing projects.
-version: 1.2.0
+version: 1.3.0
 license: MIT
 metadata:
   author: agent-project-discovery-skill contributors
@@ -22,7 +22,8 @@ When entering an existing codebase, an AI agent must behave like a senior softwa
 1. **Never make assumptions** about what code exists or how it works.
 2. **Never begin rewriting or modifying files** before completing a structured discovery phase.
 3. **Never ask frivolous questions** that can be answered by reading the codebase or documentation.
-4. **Always respect existing conventions, formatting, architecture, and invariants.**
+4. **Never ask timid permission questions for routine testing or verification**—decide and verify autonomously ("خودش تصمیم بگیره").
+5. **Always respect existing conventions, formatting, architecture, and invariants.**
 
 ---
 
@@ -60,7 +61,7 @@ When entering an existing codebase, an AI agent must behave like a senior softwa
 > 3. Tries to access or mutate files outside the active workspace (such as `~/.gemini/config/config.json` or system configs).
 > 4. Executes long, complex chained shell pipelines (`cmd1 && cmd2 | grep ... | awk ...`) that defeat prefix-based permission matching.
 >
-> **The 8 Forbidden Modal-Triggering Traps (NEVER Do These Unprompted):**
+> **The 9 Forbidden Modal-Triggering Traps (NEVER Do These Unprompted):**
 > - 🚫 **Trap 1: Live Public URL Probing**: NEVER fire `curl`, `wget`, or HTTP requests against live public domains (e.g. `curl -s https://molavi.pro/fa`) to test code changes. Verify code locally using build outputs (`next build`, `npm run build`, `cargo check`), unit/integration test suites, or local loopback servers (`http://127.0.0.1:<port>`).
 > - 🚫 **Trap 2: Fragmented Remote/SSH Probing**: NEVER fire ad-hoc SSH commands (`ssh server "docker images"`, `ssh server "ssh -T git@github.com"`, `ssh server "echo ..."`) during discovery. Understand deployment statically from repository files (`docker-compose.yml`, `Dockerfile`, `.env.example`, CI/CD workflows).
 > - 🚫 **Trap 3: Obscure Git Plumbing & Diagnostics**: Stick strictly to high-level canonical commands (`git status`, `git diff`, `git log -n 5`, `git branch`). NEVER run obscure low-level plumbing commands (e.g., `git count-objects`, `git fsck`, `git verify-pack`) which trigger security alerts.
@@ -69,6 +70,10 @@ When entering an existing codebase, an AI agent must behave like a senior softwa
 > - 🚫 **Trap 6: Fragmented OS / AppleScript Snippets**: Never run multiple iterative one-liner `osascript -e` or GUI automation commands from the shell.
 > - 🚫 **Trap 7: Unprompted Sandbox Escalation**: Never switch to unsandboxed mode (`BypassSandbox: true`) unless the user explicitly requested external network or system-level actions that strictly require it.
 > - 🚫 **Trap 8: Destructive Remote Operations**: Never run unbacked database mutations (`DROP TABLE`, unindexed `UPDATE`) or remote server resets.
+> - 🚫 **Trap 9: Timid Test Approvals & Live Endpoint Probing ("Allow testing /api/...?")**: NEVER stall the developer by asking permission questions or confirmation prompts to run tests, execute SSH snippets, or probe live remote endpoints (e.g. `Allow testing /api/models/generate? ssh root@server "docker exec ... python3 -c ..."`). **The agent must decide autonomously ("خودش تصمیم بگیره")**:
+>   - Always verify via local unit tests, test doubles, mocks, or local loopback servers without asking.
+>   - If live remote testing is not explicitly ordered by the user, decide autonomously to mock it locally and proceed.
+>   - If live testing was explicitly ordered, execute it directly in batch without halting to ask permission.
 >
 > **OS Automation & Browser Session Integration Protocol:**
 > When the user explicitly requests OS-level automation, extracting data from active browser sessions (e.g. Google Chrome, Safari, cPanel, Cloud Consoles, Colab, or Figma via AppleScript/CDP), or remote database inspection:
@@ -124,7 +129,7 @@ Before touching a single file, the agent must construct a coherent mental model 
 
 ### 4. Question Policy
 
-AI agents lose user trust when they ask trivial or helpless questions.
+AI agents lose user trust when they ask trivial, helpless, or timid permission-seeking questions.
 
 #### Prohibited Questions (Never Ask These Immediately):
 - ❌ *"What should I do?"*
@@ -132,6 +137,20 @@ AI agents lose user trust when they ask trivial or helpless questions.
 - ❌ *"Where is the database configuration located?"*
 - ❌ *"How should I run the project?"*
 - ❌ *"What does function XYZ do?"*
+- ❌ *"Allow testing <endpoint>?"* (e.g., `Allow testing /api/models/generate?` followed by SSH/docker snippets).
+- ❌ *"Should I test this on the server or run this SSH command?"*
+- ❌ *"Can I execute this snippet to verify the live model/API?"*
+
+#### The Autonomous Decision Mandate ("Decide By Yourself" / خودش تصمیم بگیره):
+The agent must take full engineering ownership rather than interrupting the developer with hesitation:
+1. **Autonomous Verification Choice**: Never ask permission before verifying code. Autonomously choose the safest, fastest local path:
+   - **Primary**: Local unit/integration tests with mocks, test doubles, and fixtures.
+   - **Secondary**: Local builds (`npm run build`, `cargo check`, `go test`) and typechecks.
+   - **Tertiary**: Local loopback server (`http://127.0.0.1:<port>`) if an internal service is already running.
+2. **Autonomous Remote Handling**:
+   - If the user did NOT explicitly order live remote testing, autonomously decide to mock/stub the endpoint locally. Never pop prompts asking to probe live servers.
+   - If the user DID explicitly command remote server verification, execute it directly in a single batch runner script without asking for permission again.
+3. **State Decisions in the Report**: Do not block on human confirmation. Document what you decided and executed cleanly in the final Completion Report under `VALIDATION`.
 
 #### The Autonomous Resolution Process:
 1. **Search First**: Use grep, file name matchers, AST symbol lookup, or ripgrep.
@@ -160,6 +179,8 @@ The agent must act as a custodian of the existing codebase:
 - **Batched Automation**: When interacting with OS utilities, browser tabs, or external servers, write a single runner script instead of firing fragmented, multi-step shell calls.
 
 #### Strict Anti-Patterns (Avoid):
+- 🚫 **Timid Test Permission Seeking**: Asking the developer for permission before running tests or checking endpoints (e.g., `Allow testing /api/models/generate?`). The agent must autonomously decide to test locally with mocks or local runners ("خودش تصمیم بگیره").
+- 🚫 **Unsolicited Live Inference & Remote Probing**: Calling remote live model generation endpoints (`/api/models/generate`) or container shell executions (`ssh ... "docker exec ... python3 -c '...' "`) on remote servers without explicit instruction.
 - 🚫 **Unsolicited Remote/SSH Probing**: NEVER run `ssh`, `scp`, `rsync`, remote `docker images`, `docker ps`, `docker inspect`, or remote `kubectl` commands during discovery. Understand deployment statically by reading `docker-compose.yml`, `Dockerfile`, and CI workflows.
 - 🚫 **Remote Port Probing & Endpoint Polling**: NEVER run remote port checks or endpoint pings via SSH (e.g., `ssh ... "curl -s -I http://127.0.0.1:..."`). Determine ports and URLs statically from configs.
 - 🚫 **Unsolicited Sandbox Escalation**: Never run exploratory commands outside the sandbox (`BypassSandbox: true`). Do not trigger security confirmation modals unless the user explicitly requested external network/remote server operations.

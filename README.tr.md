@@ -2,12 +2,12 @@
 ### `agent-project-discovery-skill`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/badge/release-v1.2.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
+[![Release](https://img.shields.io/badge/release-v1.3.0-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/tmolavi/agent-project-discovery-skill/pulls)
 
 > **"Bir yapay zeka ajanı, değişiklik yapmadan önce projeyi derinlemesine anlamalıdır."**
 
-Bu proje, kodlama yapan yapay zeka ajanları (Claude Code, Cursor, Google Antigravity, OpenAI Codex, GitHub Copilot vb.) için evrensel, üretime hazır bir başlangıç becerisidir (startup skill). Ajanların projeyi anlamadan aceleyle kod değiştirmesini, çalışan sistemleri baştan yazmasını, gereksiz sorular sormasını ve sizi sürekli ekran başında onay butonlarına basmak zorunda bırakmasını engeller.
+Bu پروژه, kodlama yapan yapay zeka ajanları (Claude Code, Cursor, Google Antigravity, OpenAI Codex, GitHub Copilot vb.) için evrensel, üretime hazır bir başlangıç becerisidir (startup skill). Ajanların projeyi anlamadan aceleyle kod değiştirmesini, çalışan sistemleri baştan yazmasını, gereksiz sorular sormasını, test için izin istemesini ve sizi sürekli ekran başında onay butonlarına basmak zorunda bırakmasını engeller.
 
 ---
 
@@ -28,6 +28,7 @@ Bu projenin en temel tasarım hedefi şudur:
 Modern yapay zeka kodlama araçlarında (Google Antigravity, Claude Code, Cursor) yerleşik bir **Güvenli Kum Havuzu (Sandbox)** mimarisi bulunur:
 1. **Kum Havuzu İçi Standart Komutlar (Standard Sandbox)**: Çalışma alanı içindeki dosya okuma/yazma işlemleri, yerel git durumları (`git status`, `git diff`), yerel derleme (`npm run build`, `cargo check`) ve yerel testler (`pytest`, `vitest`) **tamamen sessiz, otomatik ve kullanıcıdan onay istemeden** çalışır.
 2. **Onay Penceresi Tetikleyen Durumlar**:
+   - **Rutin Test Onayı İsteme (`Allow testing /api/... ?`)**: Ajanın bağımsız karar vermek yerine test çalıştırmak veya SSH betiği çalıştırmak için kullanıcıyı durdurup onay beklemesi.
    - **Kum Havuzunu Aşma Talebi (`BypassSandbox: true`)**: Ajanın ham ağ erişimi veya disk geneline erişim talep etmesi ve buna uygun izin kuralının tanımlı olmaması.
    - **Canlı Genel URL'leri Sorgulamak (`curl https://...`)**: Kod doğrulaması için canlı internet sitelerine HTTP istekleri atılması.
    - **Gereksiz Uzak Sunucu Sorguları (`ssh`, `scp`, uzak `docker images`)**: Konfigürasyon dosyalarını okumak yerine canlı sunuculara veya GitHub'a SSH ile bağlanmaya çalışılması.
@@ -40,10 +41,11 @@ Modern yapay zeka kodlama araçlarında (Google Antigravity, Claude Code, Cursor
 
 ### 🛠️ Bu Beceri Sorunları Nasıl Çözer?
 
-1. **Yalnızca Yerel ve Belirleyici Doğrulama**: Kodlar canlı genel sitelere istek atılarak değil; yerel testler, derleme çıktıları ve yerel döngü (`127.0.0.1`) üzerinden doğrulanır.
-2. **Tek Dosyalı Otomasyon (Single-Runner Batching)**: Kullanıcı tarayıcı oturumlarını (Chrome, Safari, cPanel, bulut panelleri, Colab) veya uzak veritabanlarını incelemeyi istediğinde, ajan parçalı komutlar çalıştırmak yerine tek bir yardımcı betik (Python veya AppleScript) yazar, bunu tek seferde çalıştırır ve yapılandırılmış JSON çıktısını işler.
-3. **Statik Dağıtım Analizi**: Konteynerler ve portlar canlı sunucuya bağlanmadan, `docker-compose.yml` ve `Dockerfile` dosyalarından okunur.
-4. **Proje İzolasyonu**: Çalışma alanı dışındaki hiçbir dosya değiştirilmez.
+1. **Bağımsız Test ve Doğrulama Kararı**: Ajan "Uç noktayı test edeyim mi?" diye sormaz. Değişiklikleri yerel mock'lar, birim testleri ve yerel döngü (`127.0.0.1`) ile kendisi doğrulamaya karar verir ve raporlar.
+2. **Yalnızca Yerel ve Belirleyici Doğrulama**: Kodlar canlı genel sitelere veya uzak sunuculara istek atılarak değil; yerel testler ve derleme çıktıları üzerinden doğrulanır.
+3. **Tek Dosyalı Otomasyon (Single-Runner Batching)**: Kullanıcı tarayıcı oturumlarını (Chrome, Safari, cPanel, bulut panelleri, Colab) veya uzak veritabanlarını incelemeyi istediğinde, ajan parçalı komutlar çalıştırmak yerine tek bir yardımcı betik (Python veya AppleScript) yazar, bunu tek seferde çalıştırır ve yapılandırılmış JSON çıktısını işler.
+4. **Statik Dağıtım Analizi**: Konteynerler ve portlar canlı sunucuya bağlanmadan, `docker-compose.yml` ve `Dockerfile` dosyalarından okunur.
+5. **Proje İzolasyonu**: Çalışma alanı dışındaki hiçbir dosya değiştirilmez.
 
 ---
 

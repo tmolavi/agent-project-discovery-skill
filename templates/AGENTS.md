@@ -30,11 +30,14 @@ Do **NOT** ask questions such as:
 - ❌ *"What should I do next?"*
 - ❌ *"Can you provide more files or show me where X is located?"*
 - ❌ *"How does the auth system work?"*
+- ❌ *"Allow testing <endpoint>?"* (e.g., `Allow testing /api/models/generate?` or asking permission to run SSH/docker test snippets).
+- ❌ *"Should I run this test on the remote server?"*
 
-**Instead:**
+**Instead — Decide Autonomously ("خودش تصمیم بگیره"):**
 - Search the codebase using grep, symbol search, or directory listing.
 - Infer conventions from existing implementations and commit history.
 - Read existing unit/integration tests for usage patterns.
+- Autonomously choose the safest local testing strategy (mocks, unit tests, local loopbacks) without asking for human permission.
 
 **Only ask questions when:**
 1. A genuine blocker exists where information cannot be found in the repository.
@@ -49,6 +52,8 @@ Do **NOT** ask questions such as:
 - **Pattern Matching**: Match the existing paradigm (error handling, logging, naming, formatting, type definitions).
 - **Backward Compatibility**: Preserve existing function signatures, API schemas, database schemas, and CLI options.
 - **Zero Hallucinated Dependencies**: Do not introduce new third-party dependencies without verifying existing alternatives in the lockfile.
+- **Zero Timid Test Prompts ("Decide By Yourself")**: NEVER prompt the user with interactive confirmation questions to test an endpoint or run code. Decide autonomously to test locally with mocks or test suites.
+- **Zero Unsolicited Live Model/API Probing**: NEVER run live inference queries (`/api/models/generate`) or execute ad-hoc remote container commands (`ssh ... "docker exec ... python3 -c '...' "`) unprompted.
 - **Zero Unsolicited Remote/SSH Probing**: NEVER run `ssh`, `scp`, `rsync`, or remote `docker` commands (`docker ps`, `docker images`, `docker inspect`) on external servers during discovery or development. Understand deployment statically by reading `Dockerfile`, `compose.yaml`, and CI configs.
 - **Zero Remote Port Probing**: NEVER run port checks or endpoint pings via SSH (e.g. `ssh server "curl ..."`). Determine port mappings statically from `docker-compose.yml`, `Dockerfile`, and service configs.
 - **Zero Remote Git SSH Probing**: NEVER run unsolicited remote Git/SSH authentication probes (e.g. `ssh server "ssh -T git@github.com"`).
