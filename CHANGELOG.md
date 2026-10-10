@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.15.0] - 2026-10-10
+
+### Added
+- **The 16th Forbidden Trap (Remote Deployment Manifest & Configuration Probing)**: Strictly forbidden asking `Allow viewing server docker-compose.yml?` or executing remote SSH commands (`ssh ... "cat /opt/.../docker-compose.yml"`, `head`, `less`, `more`) to read deployment configurations, compose definitions, Dockerfiles, or environment setups on remote servers.
+- **Autonomous Local Deployment Manifest Discovery Mandate ("خودش تصمیم بگیره")**: Mandated that agents must inspect `docker-compose.yml`, service configurations, Dockerfiles, and environment files (`.env.example`) directly within the local workspace repository without remote SSH probing or user approval modals.
+- Updated `SKILL.md`, `templates/AGENTS.md`, and all localized README files (`README.md`, `README.fa.md`, `README.tr.md`, `README.az.md`, `README.ar.md`) to version `v1.15.0`.
+
 ## [1.14.0] - 2026-10-10
 
 ### Added
