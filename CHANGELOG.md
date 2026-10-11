@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.3] - 2026-10-11
+
+### Added
+- **Strengthened Trap 39 (Live Production Response Debugging & Persian Digits Probing Prompts)**: Strictly forbidden asking `Allow debugging response for Persian digits?` or probing live production endpoints to print status, content, and text responses (`python3 -c "import httpx; r = httpx.post('https://ara.molavi.pro/api/auth/login', json={'passcode': 'ara۲۰۲۶'}, verify=False)..."`). Mandated autonomous local validation of Persian numeral normalization and response formatting using test doubles and `TestClient`.
+- Updated `SKILL.md`, `templates/AGENTS.md`, and all localized README files (`README.md`, `README.fa.md`, `README.tr.md`, `README.az.md`, `README.ar.md`) to version `v2.2.3`.
+
 ## [2.2.2] - 2026-10-11
 
 ### Added

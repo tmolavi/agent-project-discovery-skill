@@ -2,7 +2,7 @@
 ### `agent-project-discovery-skill`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/badge/release-v2.2.2-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
+[![Release](https://img.shields.io/badge/release-v2.2.3-emerald.svg)](https://github.com/tmolavi/agent-project-discovery-skill/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/tmolavi/agent-project-discovery-skill/pulls)
 
 > **«یک ایجنت هوش مصنوعی باید قبل از اعمال تغییرات، پروژه را عمیقاً درک کند.»**
@@ -31,8 +31,8 @@
 1. **دستورات داخل سندباکس (Standard Sandbox)**: خواندن و نوشتن درون پوشه پروژه، اجرای دستورات معمول گیت (`git status`, `git diff`), بیلد لوکال (`npm run build`, `cargo check`) و تست‌ها (`pytest`, `vitest`) به صورت **۱۰۰٪ خودکار، ساکت و بدون نیاز به تایید شما** اجرا می‌شوند.
 2. **چه کارهایی بلافاصله پاپ‌آپ تاییدیه امنیتی باز می‌کنند؟**
    - **توقف در شرایط پیش‌بینی‌نشده و پرسیدن سوالات تک‌تک وسط کار**: وقتی ایجنت به جای ادامه دادن سایر تسک‌ها و تجمیع سوالات برای پایان کار، مکرراً کار را فریز می‌کند.
-   - **درخواست تاییدیه برای اجرای تست‌های لایو (`Allow verifying live production authentication suite?`, `Allow verifying live production login endpoint?`, `Allow testing production login with default passcode?`, `Allow testing SSH connectivity to hamzad_server?`, `Allow testing SSH connection with IPQoS=none?`, `Allow running live test?`, `.venv/bin/python3 test_live_wake_flow.py`)**: وقتی ایجنت به جای اجرای مستقیم تست‌های خودکار یا ماک کردن لوکال، کاربر را برای اجرای اسکریپت‌های آزمایشی معطل می‌کند.
-   - **درخواست تاییدیه برای تست لایو احراز هویت و پس‌کد روی پروداکشن (`Allow verifying live production authentication suite?`, `Allow verifying live production login endpoint?`, `Allow testing production login with default passcode?`)**: تلاش اشتباه برای ارسال رکوئست‌های زنده به `/api/auth/login` پروداکشن یا تست کاندیداهای پس‌کد (`ara2026`) به جای تست لوکال.
+   - **درخواست تاییدیه برای اجرای تست‌های لایو (`Allow debugging response for Persian digits?`, `Allow verifying live production authentication suite?`, `Allow verifying live production login endpoint?`, `Allow testing production login with default passcode?`, `Allow testing SSH connectivity to hamzad_server?`, `Allow testing SSH connection with IPQoS=none?`, `Allow running live test?`, `.venv/bin/python3 test_live_wake_flow.py`)**: وقتی ایجنت به جای اجرای مستقیم تست‌های خودکار یا ماک کردن لوکال، کاربر را برای اجرای اسکریپت‌های آزمایشی معطل می‌کند.
+   - **درخواست تاییدیه برای تست لایو احراز هویت، دیباگ ریسپانس و پس‌کد روی پروداکشن (`Allow debugging response for Persian digits?`, `Allow verifying live production authentication suite?`, `Allow verifying live production login endpoint?`, `Allow testing production login with default passcode?`)**: تلاش اشتباه برای ارسال رکوئست‌های زنده یا اسکریپت‌های دیباگ خروجی با ارقام فارسی (`ara۲۰۲۶`) به `/api/auth/login` پروداکشن به جای تست لوکال با TestClient.
    - **درخواست تاییدیه برای تست ارتباط SSH با فلگ‌های verbose یا آپشن‌های IPQoS (`Allow testing SSH connectivity to hamzad_server? ssh -v ...`, `Allow testing SSH connection with IPQoS=none? ssh -o IPQoS=none ...`)**: تلاش اشتباه برای پروب اتصال یا فلگ‌های عیب‌یابی شبکه به جای سوئیچ به راستی‌آزمایی لوکال.
    - **درخواست تاییدیه برای تست‌های روتین (`Allow testing /api/... ?`)**: وقتی ایجنت به جای تصمیم‌گیری مستقل، کاربر را معطل می‌کند تا بپرسد آیا فلان اندپوینت یا اسکریپت SSH را تست کند یا خیر.
    - **درخواست تاییدیه برای تست دیسپچ مدل و روترهای استدلال (`Allow testing central model dispatch? ssh ...`)**: پرسیدن تاییدیه برای ارسال پرامپت و تست لایو مدل‌ها روی کانتینرهای ریموت به جای ماک کردن لوکال.
@@ -94,7 +94,7 @@
 27. **استخراج استاتیک کاتالوگ مهارت‌ها و ابزارها:** لیست کامل مهارت‌ها و قابلیت‌های سرویس‌ها منحصراً از فایل‌های رجیستری محلی (`hermes-skill-discovery-registry-v1.json`) خوانده شده و از اجرای اسکریپت‌های SSH برای واکشی فهرست کامل مهارت‌ها پرهیز می‌شود.
 28. **کشف استاتیک روت‌ها و اسکیماهای API:** اندپوینت‌ها، کنترلرها و اسکیماهای API مستقیماً از روی سورس‌کدهای مخزن لوکال خوانده می‌شوند، بدون ارسال پروب‌های SSH به مسیرهای `/docs` یا `/openapi.json` روی سرور.
 29. **کشف استاتیک عناوین و متادیتا بدون کرل دامنه عمومی:** تایتل‌ها، متاتگ‌ها و هدرها مستقیماً از روی سورس‌کد فایل‌های قالب و لی‌آوت (`layout.tsx`, `index.html`) بررسی می‌شوند بدون ارسال `curl` به دامنه‌های عمومی اینترنت.
-30. **تست و اعتبارسنجی لوکال احراز هویت و لاگین بدون ارسال درخواست به پروداکشن:** لاجیک احراز هویت، اعتبارسنجی پس‌کدها (`/api/auth/login`) و توکن‌ها مستقیماً در محیط لوکال با تست‌کلاینت‌ها بررسی می‌شوند بدون ارسال ریکوئست به دامنه‌های زنده یا تست پس‌کدهای حدسی.
+30. **تست و اعتبارسنجی لوکال احراز هویت، ارقام فارسی و دیباگ ریسپانس بدون ارسال درخواست به پروداکشن:** لاجیک احراز هویت، نرمال‌سازی ارقام فارسی (`ara۲۰۲۶`)، دیباگ ریسپانس، اعتبارسنجی پس‌کدها (`/api/auth/login`) و توکن‌ها مستقیماً در محیط لوکال با تست‌کلاینت‌ها بررسی می‌شوند بدون ارسال ریکوئست به دامنه‌های زنده یا تست پس‌کدهای حدسی.
 31. **حذف پروب‌های شبکه و آپشن‌های SSH:** به جای تست‌های مداوم اتصال SSH با فلگ‌های `ssh -v` یا `-o IPQoS=none`، ایجنت بلافاصله به بررسی لوکال سوئیچ می‌کند و اتصال را با تاییدیه معطل نمی‌سازد.
 32. **اجرای خودکار و ماک محلی تست‌های لایو (`Allow running live test?`):** تست‌های یکپارچگی، رخدادهای بیدارباش و پایپ‌لاین‌های سیستم به صورت لوکال با ماک‌ها اعتبارسنجی می‌شوند یا سوئیت‌های تست مستقیماً بدون پاپ‌آپ تاییدیه اجرا می‌گردند.
 33. **تست و ماک محلی پایپ‌لاین وب‌سوکت و Wake-Word:** پروتکل وب‌سوکت، توکن لاگین، رخدادهای جلسه و تشخیص کلمه بیدارباش (`wake_detected`) مستقیماً به صورت محلی با تست‌کلاینت‌ها و فیچرهای ماک راستی‌آزمایی می‌شوند، بدون اجرای اسکریپت ریموت در کانتینر پروداکشن.
