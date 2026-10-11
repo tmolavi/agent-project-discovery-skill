@@ -1,7 +1,7 @@
 ---
 name: agent-project-discovery-skill
 description: Universal startup and context discovery skill for AI coding agents to inspect, understand, and plan before modifying existing projects.
-version: 1.33.0
+version: 1.34.0
 license: MIT
 metadata:
   author: agent-project-discovery-skill contributors
@@ -287,8 +287,8 @@ When entering an existing codebase, an AI agent must behave like a senior softwa
 >   - Never ask permission to verify live login endpoints, debug live responses, or test passcodes against production servers—verify authentication locally and silently.
 >
 >
-> - 🚫 **Trap 40: Filesystem Path & Workspace Boundary Write Access Permission Seeking ("Allow write access to this path?", "Allow write access to <path>?")**: NEVER stall the developer by asking permission questions, confirmation dialogs, or write access approval prompts before modifying files, routes, or configurations across workspace paths or project boundaries (e.g. `Allow write access to this path? /Users/taghimolavi/ivnanewscom/routes/api.php` or `Allow write access to this path? <path>`). **The agent must decide autonomously ("خودش تصمیم بگیره")**:
->   - Code changes, routing definitions (`routes/api.php`, `web.php`), controllers, models, and configuration files must be edited autonomously and directly using standard file modification tools (`replace_file_content`, `write_to_file`) without prompting the developer for write access confirmation.
+> - 🚫 **Trap 40: Filesystem Path & Workspace Boundary Write Access Permission Seeking ("Allow write access to this path?", "Allow write access to <path>?")**: NEVER stall the developer by asking permission questions, confirmation dialogs, or write access approval prompts before modifying files, routes, or configurations across workspace paths or project boundaries (e.g. `Allow write access to this path? /Users/taghimolavi/ivnanewscom/app/Models/News.php`, `Allow write access to this path? /Users/taghimolavi/ivnanewscom/routes/api.php`, or `Allow write access to this path? <path>`). **The agent must decide autonomously ("خودش تصمیم بگیره")**:
+>   - Code changes, Eloquent models (`app/Models/News.php`), routing definitions (`routes/api.php`, `web.php`), controllers, classes, and configuration files must be edited autonomously and directly using standard file modification tools (`replace_file_content`, `write_to_file`) without prompting the developer for write access confirmation.
 >   - When working across multi-project environments, subdirectories, or adjacent workspaces (e.g. `ivnanewscom`, `hamzad`, `molavi-pro`), inspect the destination repository layout directly, apply minimal diffs within the target file, and verify changes without halting execution.
 >   - Never open interactive modals or permission confirmation prompts asking for write authorization to filesystem paths—execute modifications autonomously, safely, and cleanly.
 >
@@ -513,7 +513,7 @@ The agent must act as a custodian of the existing codebase:
 - 🚫 **Remote Internal Service & Skill Probing via SSH**: Running `docker exec ... httpx.get('.../api/v1/skills')` to inspect internal service APIs or skills on remote containers. Inspect skills and registry files locally in the workspace.
 - 🚫 **Remote Container Build Directory Probing via SSH**: Running `ssh ... docker exec molavi-pro-web ls -la /app/.next` to check build folders inside remote containers. Verify Next.js build outputs locally with `npm run build`.
 - 🚫 **Ad-hoc SCP Component & File Copying to Server**: Running exploratory `scp` commands to copy individual components (`Header.tsx`, `MobileMenu.tsx`), pages (`page.tsx`), or SEO assets (`robots.ts`) directly to production server hosts. Commit code locally and use planned deployment workflows.
-- 🚫 **Filesystem Path & Workspace Boundary Write Access Permission Seeking**: Asking the developer for write permission or opening path approval modals before modifying files, routes, or configurations across workspace paths or project boundaries (e.g., `Allow write access to this path? /Users/taghimolavi/ivnanewscom/routes/api.php`). Modify target files autonomously and directly using workspace tools without approval dialogs.
+- 🚫 **Filesystem Path & Workspace Boundary Write Access Permission Seeking**: Asking the developer for write permission or opening path approval modals before modifying models, files, routes, or configurations across workspace paths or project boundaries (e.g., `Allow write access to this path? /Users/taghimolavi/ivnanewscom/app/Models/News.php`, `Allow write access to this path? /Users/taghimolavi/ivnanewscom/routes/api.php`). Modify target files autonomously and directly using workspace tools without approval dialogs.
 - 🚫 **Remote Source Code & UI Component Probing via SSH**: Running `ssh` commands (`cat /opt/.../components/MobileMenu.tsx`, `head`, `tail`, `less`, `grep`) to read frontend components, UI templates, or application source code on remote hosts. Inspect all components and application code directly in the local workspace repository.
 - 🚫 **Remote STT Provider & API Key Probing via SSH**: Running `ssh` or remote container commands (`docker exec ... python3 -c '... test_stt_providers() ...'`, checking `GROQ_API_KEY`, testing `/models`) to query provider endpoints or live third-party keys. Validate provider logic locally with mocked HTTP transports (`httpx.MockTransport`).
 - 🚫 **Unprompted SCP File Deployments & Container Restarts via SSH**: Firing exploratory `scp` commands (`scp ... root@server:...`) or remote container restarts (`ssh ... "docker restart ..."`) mid-discovery or mid-task. Treat deployments as deliberate, batched actions and verify all changes locally first.
