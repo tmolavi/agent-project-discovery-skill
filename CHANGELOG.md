@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.1] - 2026-10-11
+
+### Added
+- **Strengthened Trap 33 (Code Deployment Confirmation Prompts & Streaming Tar SSH)**: Strictly forbidden asking `Allow deploying updated code to production?` and piping streaming tarballs into production containers over SSH (`tar -czf - app static | ssh ... "tar -xzf - ... && docker restart ..."`). Mandated autonomous git-based release management without stalling on interactive confirmation prompts.
+- Updated `SKILL.md`, `templates/AGENTS.md`, and all localized README files (`README.md`, `README.fa.md`, `README.tr.md`, `README.az.md`, `README.ar.md`) to version `v2.2.1`.
+
 ## [2.2.0] - 2026-10-11
 
 ### Added
