@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.0] - 2026-10-11
+
+### Added
+- **Trap 39 (Live Production Authentication & Passcode Probing)**: Strictly forbidden asking `Allow verifying live production login endpoint?` or `Allow testing production login with default passcode?` and executing HTTP POST requests with candidate passcodes (e.g. `ara2026`) against live production domains (`https://ara.molavi.pro/api/auth/login`). Mandated autonomous local authentication testing via unit test clients and mock fixtures.
+- **Strengthened Trap 23 (Verbose SSH Flags & IPQoS Diagnostic Probing)**: Strictly forbidden asking `Allow testing SSH connectivity to hamzad_server?` or `Allow testing SSH connection with IPQoS=none?` and executing verbose diagnostic probes (`ssh -v -o ConnectTimeout=10 ... "uptime"`) or custom connection options (`ssh -o IPQoS=none ... "echo ok"`). Mandated immediate autonomous fallback to local workspace files and mock transports.
+- Updated `SKILL.md`, `templates/AGENTS.md`, and all localized README files (`README.md`, `README.fa.md`, `README.tr.md`, `README.az.md`, `README.ar.md`) to version `v2.2.0`.
+
 ## [2.1.3] - 2026-10-11
 
 ### Added
