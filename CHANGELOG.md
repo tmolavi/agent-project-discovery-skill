@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.6] - 2026-10-11
+
+### Added
+- **Strengthened Trap 37 & 38 (Live Wake-Word and Meeting WebSocket Flow Prompts)**: Strictly forbidden asking `Allow testing live wake-word and meeting WebSocket flow?` or running ad-hoc scripts like `python3 /Users/taghimolavi/hamzad/hamzad-ara/test_live_wake_flow.py` against live servers. Mandated autonomous local testing via mock WebSocket clients and async fixtures.
+- **Strengthened Trap 39 (Production Login Verification Script Prompts)**: Strictly forbidden asking `Allow executing production login verification?` or running scripts like `python3 /Users/taghimolavi/hamzad/hamzad-ara/verify_prod_login.py` against live production login endpoints. Mandated autonomous local verification via `TestClient` without interactive modal confirmation prompts.
+- Updated `SKILL.md`, `templates/AGENTS.md`, and all localized README files (`README.md`, `README.fa.md`, `README.tr.md`, `README.az.md`, `README.ar.md`) to version `v2.2.6`.
+
 ## [2.2.5] - 2026-10-11
 
 ### Added
