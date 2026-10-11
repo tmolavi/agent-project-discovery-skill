@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.8] - 2026-10-11
+
+### Added
+- **Added Trap 41 (Vendor Library & Client Asset Download Permission Seeking)**: Strictly forbidden asking `Allow downloading three.min.js locally?` or opening confirmation dialogs before downloading frontend libraries or vendor assets via curl (`curl -sL https://cdnjs... -o /.../static/js/three.min.js`). Mandated autonomous downloading and bundling of required client scripts without interactive modals.
+- Updated `SKILL.md`, `templates/AGENTS.md`, and all localized README files (`README.md`, `README.fa.md`, `README.tr.md`, `README.az.md`, `README.ar.md`) to version `v2.2.8`.
+
 ## [2.2.7] - 2026-10-11
 
 ### Added
