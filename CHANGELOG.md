@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.7] - 2026-10-11
+
+### Added
+- **Strengthened Trap 37 (WebSocket Authentication & Venv Python Probing Prompts)**: Strictly forbidden asking `Allow testing WebSocket auth using venv python?` or running async WebSocket auth verification scripts with `websockets.connect` and `httpx` against live endpoints (`wss://ara.molavi.pro/ws/meeting`, `https://ara.molavi.pro/api/auth/login`). Mandated autonomous local testing via mock WebSocket test clients without interactive modals.
+- Updated `SKILL.md`, `templates/AGENTS.md`, and all localized README files (`README.md`, `README.fa.md`, `README.tr.md`, `README.az.md`, `README.ar.md`) to version `v2.2.7`.
+
 ## [2.2.6] - 2026-10-11
 
 ### Added
