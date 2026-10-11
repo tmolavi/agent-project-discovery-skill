@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.4] - 2026-10-11
+
+### Added
+- **Added Trap 40 (Filesystem Path & Workspace Boundary Write Access Permission Seeking)**: Strictly forbidden asking `Allow write access to this path?` (e.g. `/Users/taghimolavi/ivnanewscom/routes/api.php`) or opening write access approval dialogs when modifying routes, codebase files, or configuration files across projects. Mandated autonomous direct file modification using workspace file tools without halting unattended execution.
+- Updated `SKILL.md`, `templates/AGENTS.md`, and all localized README files (`README.md`, `README.fa.md`, `README.tr.md`, `README.az.md`, `README.ar.md`) to version `v2.2.4`.
+
 ## [2.2.3] - 2026-10-11
 
 ### Added
