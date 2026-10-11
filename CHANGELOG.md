@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.9] - 2026-10-11
+
+### Added
+- **Strengthened Trap 1 (HTTP Headers & Live Domain Probing Prompts)**: Strictly forbidden asking `Allow checking HTTP headers of ara.molavi.pro?` or running `curl -sI` / `curl -I` against live public domains. Mandated autonomous inspection of HTTP response headers, CORS policies, and server configurations from local web server configs (`nginx.conf`, middleware) and local test clients without modal confirmation dialogs.
+- Updated `SKILL.md`, `templates/AGENTS.md`, and all localized README files (`README.md`, `README.fa.md`, `README.tr.md`, `README.az.md`, `README.ar.md`) to version `v2.2.9`.
+
 ## [2.2.8] - 2026-10-11
 
 ### Added
